@@ -88,31 +88,24 @@ export class UsersRepository implements IUsersRepository {
     }
 
     async listUsers({ page, per_page }): Promise<User[]> {
-        let users;
-        let exist = true;
-        const number_pages = (await prisma.user.count()) / per_page;
+        let users: User[];
 
-        if (page && per_page) {
-            while (exist) {
-                const result = await prisma.user.findMany({
-                    take: per_page,
-                    skip: (page - 1) * per_page,
-                    orderBy: {
-                        id: "desc",
-                    },
-                });
-
-                if (result.length <= 0) {
-                    exist = false;
-                }
-            }
-        } else {
+        if (!page || !per_page) {
             users = await prisma.user.findMany({
                 orderBy: {
                     id: "desc",
                 },
             });
+        } else {
+            users = await prisma.user.findMany({
+                take: Number(per_page),
+                skip: (Number(page) - 1) * Number(per_page),
+                orderBy: {
+                    id: "desc",
+                },
+            });
         }
+
         return users;
     }
 
