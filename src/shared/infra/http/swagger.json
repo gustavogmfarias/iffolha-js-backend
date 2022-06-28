@@ -7,11 +7,11 @@
         "contact": { "email": "gustavogmfarias@gmail.com" }
     },
     "paths": {
-        "/categories": {
+        "/users": {
             "post": {
-                "tags": ["Category"],
-                "summary": "Create Category",
-                "description": "Create a new category",
+                "tags": ["Users"],
+                "summary": "Create Users",
+                "description": "Create a new user",
                 "security": [
                     {
                         "bearerAuth": []
@@ -26,13 +26,21 @@
                                     "name": {
                                         "type": "string"
                                     },
-                                    "description": {
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
                                         "type": "string"
                                     }
                                 },
                                 "example": {
-                                    "name": "category name sample",
-                                    "description": "category description sample"
+                                    "name": "Your name",
+                                    "last_name": "Your Last Name",
+                                    "password": "teste",
+                                    "email": "teste@gmail.com"
                                 }
                             }
                         }
@@ -43,17 +51,38 @@
                         "description": "Created"
                     },
                     "500": {
-                        "description": "Category already exists"
+                        "description": "User already exists"
                     }
                 }
             },
             "get": {
-                "tags": ["Category"],
-                "summary": "List all categories",
-                "description": "List all categories",
+                "tags": ["Users"],
+                "summary": "List all Users",
+                "description": "List all Users",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Sucess",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -61,10 +90,22 @@
                                     "items": {
                                         "type": "object",
                                         "properties": {
+                                            "email": {
+                                                "type": "string"
+                                            },
                                             "name": {
                                                 "type": "string"
                                             },
-                                            "description": {
+                                            "last_name": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "avatar_url": {
+                                                "type": "string"
+                                            },
+                                            "role": {
                                                 "type": "string"
                                             }
                                         }
