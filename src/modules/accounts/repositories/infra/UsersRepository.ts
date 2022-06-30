@@ -54,6 +54,7 @@ export class UsersRepository implements IUsersRepository {
         email,
         id,
         role,
+        avatar_url,
     }: IUpdateUserDTO): Promise<void> {
         await prisma.user.update({
             where: { id },
@@ -63,6 +64,7 @@ export class UsersRepository implements IUsersRepository {
                 password,
                 email,
                 role,
+                avatar_url,
             },
         });
     }

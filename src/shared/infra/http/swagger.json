@@ -275,12 +275,9 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "images": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "format": "binary"
-                                        }
+                                    "avatar": {
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 }
                             }

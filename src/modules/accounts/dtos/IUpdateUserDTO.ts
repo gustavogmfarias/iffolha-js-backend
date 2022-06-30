@@ -9,4 +9,5 @@ export interface IUpdateUserDTO {
     password?: string;
     confirm_password?: string;
     old_password?: string;
+    avatar_url?: string;
 }
