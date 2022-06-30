@@ -7,7 +7,7 @@ import { ProfileUserController } from "@modules/accounts/useCases/profileUserUse
 import { ListUsersController } from "@modules/accounts/useCases/ListUsers/ListUsersController";
 import { DeleteUserController } from "@modules/accounts/useCases/deleteUser/DeleteUserController";
 import { UpdateUserController } from "@modules/accounts/useCases/updateUser/UpdateUserController";
-import { ChangeOwnPasswordController } from "@modules/accounts/useCases/ChangeOwnPassword/ChangeOwnPasswordController";
+import { ChangeOwnPasswordController } from "@modules/accounts/useCases/changeOwnPassword/ChangeOwnPasswordController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 

@@ -117,6 +117,38 @@
                 }
             }
         },
+        "/users/avatar": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Change Avatar",
+                "description": "Upload a new Avatar",
+                "security": [{ "bearerAuth": [] }],
+
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
         "/categories/import": {
             "post": {
                 "tags": ["Category"],
@@ -275,16 +307,14 @@
                 }
             }
         },
-        "Car": {
+        "User": {
             "type": "object",
             "properties": {
                 "name": { "type": "string" },
-                "description": { "type": "string" },
-                "daily_rate": { "type": "number" },
-                "license_plate": { "type": "string" },
-                "fine_amount": { "type": "number" },
-                "brand": { "type": "string" },
-                "category_id": { "type": "string" }
+                "last_name": { "type": "string" },
+                "email": { "type": "string" },
+                "avatar_url": { "type": "string" },
+                "role": { "type": "string" }
             }
         }
     },
