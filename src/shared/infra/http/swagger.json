@@ -118,7 +118,7 @@
             }
         },
         "/users/avatar": {
-            "post": {
+            "patch": {
                 "tags": ["Users"],
                 "summary": "Change Avatar",
                 "description": "Upload a new Avatar",
@@ -130,12 +130,9 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "images": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "format": "binary"
-                                        }
+                                    "avatar": {
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 }
                             }
@@ -252,6 +249,54 @@
                     "description": "Created"
                 },
                 "400": { "description": "Car already exists" }
+            }
+        },
+        "/users/change-password": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "Change Own Password",
+                "description": "Change your own password",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "old_password": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "old_password": "Your last password",
+                                    "password": "Your new Password",
+                                    "confirm_password": "The same password you fill out before"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    },
+                    "401": {
+                        "description": "Last Password doesn't match"
+                    },
+                    "401": {
+                        "description": "Passwords don't match"
+                    }
+                }
             }
         },
         "/cars/images/{id}": {
