@@ -5,8 +5,8 @@
     "license": "MIT",
     "scripts": {
         "dev": "ts-node-dev  -r tsconfig-paths/register --exit-child --transpile-only --poll --ignore-watch node_modules --respawn   src/shared/infra/http/server.ts",
-        "debug": "nodemon src/shared/infra/http/server.ts",
-        "seed": "ts-node-dev prisma/seed.ts"
+        "dev:debug": "ts-node-dev --files --transpile-only --respawn --inspect=4321 --project tsconfig.json src/shared/infra/http/server.ts",
+        "seed": "ts-node-dev --inspect prisma/seed.ts"
     },
     "dependencies": {
         "@prisma/client": "^3.14.0",
@@ -23,6 +23,7 @@
         "mime": "^3.0.0",
         "multer": "^1.4.4",
         "pg": "^8.7.3",
+        "pirates": "^4.0.5",
         "reflect-metadata": "^0.1.13",
         "swagger-ui-express": "^4.4.0",
         "tsyringe": "^4.6.0",
