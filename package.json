@@ -5,6 +5,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "ts-node-dev  -r tsconfig-paths/register --exit-child --transpile-only --poll --ignore-watch node_modules --respawn   src/shared/infra/http/server.ts",
+        "debug": "nodemon src/shared/infra/http/server.ts",
         "seed": "ts-node-dev prisma/seed.ts"
     },
     "dependencies": {
@@ -43,8 +44,10 @@
         "eslint-import-resolver-typescript": "^2.7.1",
         "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-prettier": "^4.0.0",
+        "nodemon": "^2.0.19",
         "prettier": "^2.6.2",
         "prisma": "^3.14.0",
+        "sucrase": "^3.23.0",
         "ts-node-dev": "^1.1.8",
         "tsconfig-paths": "^4.0.0"
     }
