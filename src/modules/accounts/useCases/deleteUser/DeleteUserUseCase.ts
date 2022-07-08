@@ -1,4 +1,5 @@
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { User } from "@prisma/client";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
@@ -9,7 +10,12 @@ class DeleteUserUseCase {
     ) {}
 
     async execute(id: string): Promise<void> {
-        const user = this.usersRepository.findById(id);
+        let user;
+        if (typeof id === "string") {
+            user = this.usersRepository.findById(id);
+        } else {
+            throw new AppError("Format not allowed", 406);
+        }
 
         if (!user) {
             throw new AppError("User doesn't exists", 404);

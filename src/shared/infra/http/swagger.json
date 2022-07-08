@@ -268,6 +268,40 @@
                 }
             }
         },
+        "/users/delete/{id}": {
+            "delete": {
+                "tags": ["Users"],
+                "summary": "Delete a user",
+                "description": "Delete a user",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "User Deleted Successfully"
+                    },
+                    "404": {
+                        "description": "User doesn't exists"
+                    },
+                    "406": {
+                        "description": "Format not allowed"
+                    }
+                }
+            }
+        },
+
         "/categories/import": {
             "post": {
                 "tags": ["Category"],

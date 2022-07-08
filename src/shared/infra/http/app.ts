@@ -1,5 +1,5 @@
-import "dotenv/config";
 import "reflect-metadata";
+import "dotenv/config";
 import "@shared/container";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
