@@ -7,6 +7,32 @@
         "contact": { "email": "gustavogmfarias@gmail.com" }
     },
     "paths": {
+        "/sessions": {
+            "post": {
+                "tags": ["Session"],
+                "summary": "Authentication user",
+                "description": "Authentication user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": { "type": "string" },
+                                    "password": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": { "description": "E-mail or password incorrect" }
+                }
+            }
+        },
         "/users": {
             "post": {
                 "tags": ["Users"],
@@ -146,6 +172,102 @@
                 }
             }
         },
+        "/users/change-password": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "Change Own Password",
+                "description": "Change your own password",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "old_password": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "old_password": "Your last password",
+                                    "password": "Your new Password",
+                                    "confirm_password": "The same password you fill out before"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    },
+                    "401": {
+                        "description": "Last Password doesn't match"
+                    },
+                    "401": {
+                        "description": "Passwords don't match"
+                    }
+                }
+            }
+        },
+        "/users/profile": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Show the user logged's profile",
+                "description": "Show the user logged's profile",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "last_name": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "avatar_url": {
+                                                "type": "string"
+                                            },
+                                            "role": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/categories/import": {
             "post": {
                 "tags": ["Category"],
@@ -205,32 +327,7 @@
                 }
             }
         },
-        "/sessions": {
-            "post": {
-                "tags": ["Session"],
-                "summary": "Authentication user",
-                "description": "Authentication user",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": { "type": "string" },
-                                    "password": { "type": "string" }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "400": { "description": "E-mail or password incorrect" }
-                }
-            }
-        },
+
         "/cars": {
             "post": {
                 "tags": ["Cars"],
@@ -251,54 +348,7 @@
                 "400": { "description": "Car already exists" }
             }
         },
-        "/users/change-password": {
-            "patch": {
-                "tags": ["Users"],
-                "summary": "Change Own Password",
-                "description": "Change your own password",
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "old_password": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    },
-                                    "confirm_password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "example": {
-                                    "old_password": "Your last password",
-                                    "password": "Your new Password",
-                                    "confirm_password": "The same password you fill out before"
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Updated"
-                    },
-                    "401": {
-                        "description": "Last Password doesn't match"
-                    },
-                    "401": {
-                        "description": "Passwords don't match"
-                    }
-                }
-            }
-        },
+
         "/cars/images/{id}": {
             "post": {
                 "tags": ["Cars"],
