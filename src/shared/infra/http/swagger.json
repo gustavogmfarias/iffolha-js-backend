@@ -294,9 +294,6 @@
                     },
                     "404": {
                         "description": "User doesn't exists"
-                    },
-                    "406": {
-                        "description": "Format not allowed"
                     }
                 }
             }

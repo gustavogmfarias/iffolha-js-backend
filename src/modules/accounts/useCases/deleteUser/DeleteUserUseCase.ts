@@ -10,12 +10,7 @@ class DeleteUserUseCase {
     ) {}
 
     async execute(id: string): Promise<void> {
-        let user;
-        if (typeof id === "string") {
-            user = this.usersRepository.findById(id);
-        } else {
-            throw new AppError("Format not allowed", 406);
-        }
+        const user = await this.usersRepository.findById(id);
 
         if (!user) {
             throw new AppError("User doesn't exists", 404);
