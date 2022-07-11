@@ -9,7 +9,7 @@
     "paths": {
         "/sessions": {
             "post": {
-                "tags": ["Session"],
+                "tags": ["Authenticate"],
                 "summary": "Authentication user",
                 "description": "Authentication user",
                 "requestBody": {
@@ -202,6 +202,79 @@
                                     "old_password": "Your last password",
                                     "password": "Your new Password",
                                     "confirm_password": "The same password you fill out before"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    },
+                    "401": {
+                        "description": "Last Password doesn't match"
+                    },
+                    "401": {
+                        "description": "Passwords don't match"
+                    }
+                }
+            }
+        },
+        "/users/update/{id}": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "Update Users",
+                "description": "Update Users",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "old_password": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Your name",
+                                    "last_name": "Your Last Name",
+                                    "role": "User",
+                                    "old_password": "teste1",
+                                    "password": "teste2",
+                                    "confirm_password": "teste2",
+                                    "email": "teste@gmail.com"
                                 }
                             }
                         }

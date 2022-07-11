@@ -9,8 +9,8 @@ class UpdateUserController {
         const {
             name,
             last_name,
-            password,
             old_password,
+            password,
             confirm_password,
             email,
             role,
@@ -21,8 +21,8 @@ class UpdateUserController {
         await updateUserUseCase.execute({
             name,
             last_name,
-            password,
             old_password,
+            password,
             confirm_password,
             email,
             id,
