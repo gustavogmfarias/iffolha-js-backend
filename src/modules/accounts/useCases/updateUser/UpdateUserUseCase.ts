@@ -52,11 +52,12 @@ class UpdateUserUseCase {
                 throw new AppError("Last Password doesn't match", 401);
             }
         }
-
-        if (password === confirm_password) {
-            passwordHash = await hash(password, 12);
-        } else {
-            throw new AppError("Passwords don't match", 401);
+        if (password && confirm_password) {
+            if (password === confirm_password) {
+                passwordHash = await hash(password, 12);
+            } else {
+                throw new AppError("Passwords don't match", 401);
+            }
         }
 
         this.usersRepository.update({

@@ -284,10 +284,10 @@
                     "200": {
                         "description": "Updated"
                     },
-                    "401": {
+                    "401 A": {
                         "description": "Last Password doesn't match"
                     },
-                    "401": {
+                    "401 B": {
                         "description": "Passwords don't match"
                     }
                 }
