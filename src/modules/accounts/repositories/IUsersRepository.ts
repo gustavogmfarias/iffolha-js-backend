@@ -10,6 +10,10 @@ export interface IUsersRepository {
     listUsers(data: IPaginationRequestDTO): Promise<User[] | null>;
     findByEmail(email: string): Promise<User | null>;
     findById(id: string): Promise<User | null>;
+    findByName(
+        name: string,
+        data: IPaginationRequestDTO
+    ): Promise<User[] | null>;
     update(data: IUpdateUserDTO): Promise<void>;
     avatarUrl(user: User): Promise<string>;
     changeOwnPassword(data: IUpdateUserDTO): Promise<void>;

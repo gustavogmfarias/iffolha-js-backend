@@ -7,8 +7,42 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 
 import { prisma } from "@shared/database/prismaClient";
 import { IUpdateUserDTO } from "@modules/accounts/dtos/IUpdateUserDTO";
+import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
 
 export class UsersRepository implements IUsersRepository {
+    async findByName(
+        name: string,
+        { page, per_page }: IPaginationRequestDTO
+    ): Promise<User[] | null> {
+        let users: User[];
+
+        if (!page || !per_page) {
+            users = await prisma.user.findMany({
+                where: {
+                    name: {
+                        contains: name,
+                        mode: "insensitive",
+                    },
+                },
+                orderBy: { name: "desc" },
+            });
+        } else {
+            users = await prisma.user.findMany({
+                where: {
+                    name: {
+                        contains: name,
+                        mode: "insensitive",
+                    },
+                },
+                orderBy: { name: "desc" },
+                take: Number(per_page),
+                skip: (Number(page) - 1) * Number(per_page),
+            });
+        }
+
+        return users;
+    }
+
     async findByEmail(email: string): Promise<User | null> {
         const user = await prisma.user.findUnique({
             where: {

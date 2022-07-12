@@ -33,6 +33,31 @@
                 }
             }
         },
+        "/refresh-token": {
+            "post": {
+                "tags": ["Authenticate"],
+                "summary": "Refresh token for Authentication",
+                "description": "Refresh token for Authentication",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "refreshToken": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": { "description": "Refresh Token doesn't exist" }
+                }
+            }
+        },
         "/users": {
             "post": {
                 "tags": ["Users"],
