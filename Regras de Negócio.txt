@@ -9,7 +9,7 @@
 +- Should not be able to create a new user with the same email;
 +- Only admins should be able to include a new user; 
 + Only admins should be able to delete a user;
-- Only admins should be able to edit a user;
++ Only admins should be able to edit a user;
 + Should be able to list users;
 - Should be able to search an user by name;
 - Should be able to search an user by email;
