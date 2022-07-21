@@ -77,7 +77,7 @@
                                     "name": {
                                         "type": "string"
                                     },
-                                    "last_name": {
+                                    "lastName": {
                                         "type": "string"
                                     },
                                     "email": {
@@ -89,7 +89,7 @@
                                 },
                                 "example": {
                                     "name": "Your name",
-                                    "last_name": "Your Last Name",
+                                    "lastName": "Your Last Name",
                                     "password": "teste",
                                     "email": "teste@gmail.com"
                                 }
@@ -124,7 +124,7 @@
                         "Schema": { "type": "string" }
                     },
                     {
-                        "name": "per_page",
+                        "name": "perPage",
                         "in": "query",
                         "description": "Number of objects in the page of view",
                         "required": false,
@@ -147,13 +147,13 @@
                                             "name": {
                                                 "type": "string"
                                             },
-                                            "last_name": {
+                                            "lastName": {
                                                 "type": "string"
                                             },
                                             "id": {
                                                 "type": "string"
                                             },
-                                            "avatar_url": {
+                                            "avatarUrl": {
                                                 "type": "string"
                                             },
                                             "role": {
@@ -213,20 +213,20 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "old_password": {
+                                    "previousPassword": {
                                         "type": "string"
                                     },
                                     "password": {
                                         "type": "string"
                                     },
-                                    "confirm_password": {
+                                    "confirmNewPassword": {
                                         "type": "string"
                                     }
                                 },
                                 "example": {
-                                    "old_password": "Your last password",
+                                    "previousPassword": "Your last password",
                                     "password": "Your new Password",
-                                    "confirm_password": "The same password you fill out before"
+                                    "confirmNewPassword": "The same password you fill out before"
                                 }
                             }
                         }
@@ -273,7 +273,7 @@
                                     "name": {
                                         "type": "string"
                                     },
-                                    "last_name": {
+                                    "lastName": {
                                         "type": "string"
                                     },
                                     "email": {
@@ -282,23 +282,23 @@
                                     "role": {
                                         "type": "string"
                                     },
-                                    "old_password": {
+                                    "previousPassword": {
                                         "type": "string"
                                     },
                                     "password": {
                                         "type": "string"
                                     },
-                                    "confirm_password": {
+                                    "confirmNewPassword": {
                                         "type": "string"
                                     }
                                 },
                                 "example": {
                                     "name": "Your name",
-                                    "last_name": "Your Last Name",
+                                    "lastName": "Your Last Name",
                                     "role": "User",
-                                    "old_password": "teste1",
+                                    "previousPassword": "teste1",
                                     "password": "teste2",
-                                    "confirm_password": "teste2",
+                                    "confirmNewPassword": "teste2",
                                     "email": "teste@gmail.com"
                                 }
                             }
@@ -345,13 +345,13 @@
                                             "name": {
                                                 "type": "string"
                                             },
-                                            "last_name": {
+                                            "lastName": {
                                                 "type": "string"
                                             },
                                             "id": {
                                                 "type": "string"
                                             },
-                                            "avatar_url": {
+                                            "avatarUrl": {
                                                 "type": "string"
                                             },
                                             "role": {
@@ -532,9 +532,9 @@
             "type": "object",
             "properties": {
                 "name": { "type": "string" },
-                "last_name": { "type": "string" },
+                "lastName": { "type": "string" },
                 "email": { "type": "string" },
-                "avatar_url": { "type": "string" },
+                "avatarUrl": { "type": "string" },
                 "role": { "type": "string" }
             }
         }

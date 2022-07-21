@@ -4,8 +4,8 @@ import { AppError } from "@shared/errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 interface IRequest {
-    user_id: string;
-    avatar_file: string;
+    userId: string;
+    avatarFile: string;
 }
 
 @injectable()
@@ -17,20 +17,20 @@ class UpdateUserAvatarUseCase {
         private storageProvider: IStorageProvider
     ) {}
 
-    async execute({ user_id, avatar_file }: IRequest): Promise<void> {
-        const user = await this.usersRepository.findById(user_id);
+    async execute({ userId, avatarFile }: IRequest): Promise<void> {
+        const user = await this.usersRepository.findById(userId);
 
         if (!user) {
             throw new AppError("User doesn't exist");
         }
 
-        if (user.avatar_url) {
-            await this.storageProvider.delete(user.avatar_url, "avatar");
+        if (user.avatarUrl) {
+            await this.storageProvider.delete(user.avatarUrl, "avatar");
         }
 
-        await this.storageProvider.save(avatar_file, "avatar");
+        await this.storageProvider.save(avatarFile, "avatar");
 
-        user.avatar_url = avatar_file;
+        user.avatarUrl = avatarFile;
 
         await this.usersRepository.update(user);
     }

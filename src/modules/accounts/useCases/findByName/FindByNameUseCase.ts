@@ -13,11 +13,11 @@ class FindByNameUseCase {
 
     async execute(
         name: string,
-        { page, per_page }: IPaginationRequestDTO
+        { page, perPage }: IPaginationRequestDTO
     ): Promise<IUserResponseDTO[] | null> {
         const users = await this.usersRepository.findByName(name, {
             page,
-            per_page,
+            perPage,
         });
 
         const usersDTO = users.map((user) => {

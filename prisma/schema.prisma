@@ -19,47 +19,49 @@ enum Role {
 }
 
 model User {
-    id         String   @id @default(uuid())
-    name       String
-    last_name  String
-    password   String
-    email      String   @unique
-    created_at DateTime @default(now())
-    avatar_url String?
-    role       Role     @default(USER)
+    id        String   @id @default(uuid())
+    name      String
+    lastName  String
+    password  String
+    email     String   @unique
+    createdAt DateTime @default(now())
+    avatarUrl String?
+    role      Role     @default(USER)
 
-    user_token UserToken[]
-    Log        Log[]
+    userToken UserToken[]
+    Log       Log[]
 
     @@map("users")
 }
 
 model UserToken {
-    id            String   @id @default(uuid())
-    token         String
-    refresh_token String
-    user_id       String
-    user          User     @relation(fields: [user_id], references: [id])
-    created_at    DateTime @default(now())
-    expires_date  DateTime
+    id           String   @id @default(uuid())
+    token        String
+    refreshToken String
+    userId       String
+    user         User     @relation(fields: [userId], references: [id])
+    createdAt    DateTime @default(now())
+    expiresDate  DateTime
 
     @@map("user_tokens")
 }
 
 model Log {
-    id               String        @id @default(uuid())
-    logRepository    LogRepository
-    descricao        String
-    criadoEm         DateTime      @default(now())
-    user             User          @relation(fields: [userId], references: [id])
-    conteudoAnterior String        @default("Sem conteúdo Anterior")
-    conteudoNovo     String
-    userId           String
-    modelEditedId    String
+    id              String        @id @default(uuid())
+    logRepository   LogRepository
+    description     String
+    createdAt       DateTime      @default(now())
+    user            User          @relation(fields: [editedByUserId], references: [id])
+    previousContent String        @default("Sem conteúdo Anterior")
+    contentEdited   String
+    editedByUserId  String
+    modelEditedId   String
 
     @@map("logs")
 }
 
 enum LogRepository {
-    USERSREPOSITORY
+    USER
+    USERTOKEN
+    LOG
 }

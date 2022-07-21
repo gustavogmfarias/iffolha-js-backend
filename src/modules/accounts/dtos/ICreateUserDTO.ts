@@ -2,9 +2,9 @@ import { Role } from "@prisma/client";
 
 export interface ICreateUserDTO {
     name: string;
-    last_name: string;
+    lastName: string;
     password: string;
     email: string;
-    avatar_url?: string;
+    avatarUrl?: string;
     role?: Role;
 }

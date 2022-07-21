@@ -13,30 +13,33 @@ class ChangeOwnPasswordUseCase {
 
     async execute({
         id,
-        password,
-        old_password,
-        confirm_password,
+        newPassword,
+        previousPassword,
+        confirmNewPassword,
     }: IUpdateUserDTO): Promise<User> {
         const user = await this.usersRepository.findById(id);
         let passwordHash;
 
-        if (old_password) {
-            const passwordMatch = await compare(old_password, user.password);
+        if (previousPassword) {
+            const passwordMatch = await compare(
+                previousPassword,
+                user.password
+            );
 
             if (!passwordMatch) {
                 throw new AppError("Last Password doesn't match", 401);
             }
         }
 
-        if (password === confirm_password) {
-            passwordHash = await hash(password, 12);
+        if (newPassword === confirmNewPassword) {
+            passwordHash = await hash(newPassword, 12);
         } else {
             throw new AppError("Passwords don't match", 401);
         }
 
         this.usersRepository.update({
             id,
-            password: passwordHash,
+            newPassword: passwordHash,
         });
 
         return user;

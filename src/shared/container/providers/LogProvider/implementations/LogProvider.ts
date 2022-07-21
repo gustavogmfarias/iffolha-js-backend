@@ -6,19 +6,19 @@ import { ILogProvider } from "../ILogProvider";
 export class LogProvider implements ILogProvider {
     async create({
         logRepository,
-        descricao,
-        conteudoAnterior,
-        conteudoNovo,
-        editedById,
+        description,
+        previousContent,
+        contentEdited,
+        editedByUserId,
         modelEditedId,
     }: ILogCreateDTO): Promise<Log> {
         const logCreated = await prisma.log.create({
             data: {
                 logRepository,
-                descricao,
-                conteudoAnterior,
-                conteudoNovo,
-                userId: editedById,
+                description,
+                previousContent,
+                contentEdited,
+                editedByUserId,
                 modelEditedId,
             },
         });

@@ -14,30 +14,36 @@ class UpdateUserUseCase {
         @inject("LogProvider") private logProvider: ILogProvider
     ) {}
 
-    async execute({
-        id,
-        name,
-        last_name,
-        email,
-        role,
-        password,
-        old_password,
-        confirm_password,
-    }: IUpdateUserDTO): Promise<User> {
-        const user = await this.usersRepository.findById(id);
+    async execute(
+        userAdminId: string,
+        {
+            id,
+            name,
+            lastName,
+            email,
+            role,
+            newPassword,
+            previousPassword,
+            confirmNewPassword,
+        }: IUpdateUserDTO
+    ): Promise<User> {
+        const userToEdit = await this.usersRepository.findById(id);
 
         let passwordHash;
 
-        if (old_password) {
-            const passwordMatch = await compare(old_password, user.password);
+        if (previousPassword) {
+            const passwordMatch = await compare(
+                previousPassword,
+                userToEdit.password
+            );
 
             if (!passwordMatch) {
                 throw new AppError("Last Password doesn't match", 401);
             }
         }
-        if (password && confirm_password) {
-            if (password === confirm_password) {
-                passwordHash = await hash(password, 12);
+        if (newPassword && confirmNewPassword) {
+            if (newPassword === confirmNewPassword) {
+                passwordHash = await hash(newPassword, 12);
             } else {
                 throw new AppError("Passwords don't match", 401);
             }
@@ -46,22 +52,22 @@ class UpdateUserUseCase {
         const userEdited = await this.usersRepository.update({
             id,
             name,
-            last_name,
-            password: passwordHash,
+            lastName,
+            newPassword: passwordHash,
             email,
             role,
         });
 
         const log = await this.logProvider.create({
-            logRepository: "USERSREPOSITORY",
-            descricao: `Updated the user ${user.id}`,
-            conteudoAnterior: JSON.stringify(user),
-            conteudoNovo: JSON.stringify(userEdited),
-            editedById: user.id,
-            modelEditedId: user.id,
+            logRepository: "USER",
+            description: `Updated the user`,
+            previousContent: JSON.stringify(userToEdit),
+            contentEdited: JSON.stringify(userEdited),
+            editedByUserId: userAdminId,
+            modelEditedId: userToEdit.id,
         });
 
-        return user;
+        return userEdited;
     }
 }
 

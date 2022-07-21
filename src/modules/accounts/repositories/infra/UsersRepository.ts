@@ -12,11 +12,11 @@ import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequest
 export class UsersRepository implements IUsersRepository {
     async findByName(
         name: string,
-        { page, per_page }: IPaginationRequestDTO
+        { page, perPage }: IPaginationRequestDTO
     ): Promise<User[] | null> {
         let users: User[];
 
-        if (!page || !per_page) {
+        if (!page || !perPage) {
             users = await prisma.user.findMany({
                 where: {
                     name: {
@@ -35,8 +35,8 @@ export class UsersRepository implements IUsersRepository {
                     },
                 },
                 orderBy: { name: "desc" },
-                take: Number(per_page),
-                skip: (Number(page) - 1) * Number(per_page),
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
             });
         }
 
@@ -65,7 +65,7 @@ export class UsersRepository implements IUsersRepository {
 
     async create({
         name,
-        last_name,
+        lastName,
         password,
         email,
         role,
@@ -73,7 +73,7 @@ export class UsersRepository implements IUsersRepository {
         await prisma.user.create({
             data: {
                 name,
-                last_name,
+                lastName,
                 password,
                 email,
                 role,
@@ -83,22 +83,22 @@ export class UsersRepository implements IUsersRepository {
 
     async update({
         name,
-        last_name,
+        lastName,
         password,
         email,
         id,
         role,
-        avatar_url,
+        avatarUrl,
     }: IUpdateUserDTO): Promise<User> {
         const user = await prisma.user.update({
             where: { id },
             data: {
                 name,
-                last_name,
+                lastName,
                 password,
                 email,
                 role,
-                avatar_url,
+                avatarUrl,
             },
         });
 
@@ -117,18 +117,18 @@ export class UsersRepository implements IUsersRepository {
     async avatarUrl(user: User): Promise<string> {
         switch (process.env.DISK) {
             case "local":
-                return `${process.env.APP_API_URL}/avatar/${user.avatar_url}`;
+                return `${process.env.APP_API_URL}/avatar/${user.avatarUrl}`;
             case "s3":
-                return `${process.env.AWS_BUCKET_URL}/avatar/${user.avatar_url}`;
+                return `${process.env.AWS_BUCKET_URL}/avatar/${user.avatarUrl}`;
             default:
                 return null;
         }
     }
 
-    async listUsers({ page, per_page }): Promise<User[]> {
+    async listUsers({ page, perPage }): Promise<User[]> {
         let users: User[];
 
-        if (!page || !per_page) {
+        if (!page || !perPage) {
             users = await prisma.user.findMany({
                 orderBy: {
                     id: "desc",
@@ -136,8 +136,8 @@ export class UsersRepository implements IUsersRepository {
             });
         } else {
             users = await prisma.user.findMany({
-                take: Number(per_page),
-                skip: (Number(page) - 1) * Number(per_page),
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {
                     id: "desc",
                 },

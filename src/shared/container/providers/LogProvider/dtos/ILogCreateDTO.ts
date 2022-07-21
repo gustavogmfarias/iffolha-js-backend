@@ -2,9 +2,9 @@ import { LogRepository } from "@prisma/client";
 
 export interface ILogCreateDTO {
     logRepository: LogRepository;
-    descricao: string;
-    conteudoAnterior: string;
-    conteudoNovo: string;
-    editedById: string;
+    description: string;
+    previousContent: string;
+    contentEdited: string;
+    editedByUserId: string;
     modelEditedId: string;
 }

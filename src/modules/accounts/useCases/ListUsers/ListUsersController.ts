@@ -6,9 +6,9 @@ class ListUsersController {
     async handle(request: Request, response: Response): Promise<Response> {
         const listUsersUseCase = container.resolve(ListUsersUseCase);
 
-        const { per_page, page } = request.query;
+        const { perPage, page } = request.query;
 
-        const all = await listUsersUseCase.execute({ page, per_page });
+        const all = await listUsersUseCase.execute({ page, perPage });
 
         return response.json(all);
     }

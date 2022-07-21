@@ -3,19 +3,19 @@ import { UserToken } from "@prisma/client";
 
 interface IUsersTokensRepository {
     create({
-        expires_date,
-        user_id,
-        refresh_token,
+        expiresDate,
+        userId,
+        refreshToken,
     }: ICreateUserTokenDTO): Promise<UserToken>;
 
     findByUserIdAndRefreshToken(
-        user_id: string,
-        refresh_token: string
+        userId: string,
+        refreshToken: string
     ): Promise<UserToken>;
 
     deleteById(id: string): Promise<void>;
 
-    findByRefreshToken(refresh_token: string): Promise<UserToken>;
+    findByRefreshToken(refreshToken: string): Promise<UserToken>;
 }
 
 export { IUsersTokensRepository };

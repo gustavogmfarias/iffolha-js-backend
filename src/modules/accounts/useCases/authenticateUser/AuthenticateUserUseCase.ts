@@ -16,7 +16,7 @@ interface IRequest {
 interface IResponse {
     user: { name: string; email: string; role: string };
     token: string;
-    refresh_token: string;
+    refreshToken: string;
 }
 
 @injectable()
@@ -34,11 +34,11 @@ class AuthenticateUserUseCase {
         // verificar se o usuario existe
         const user = await this.usersRepository.findByEmail(email);
         const {
-            expires_in_token,
-            secret_refresh_token,
-            secret_token,
-            expires_in_refresh_token,
-            expires_in_refresh_days,
+            expiresInToken,
+            secretRefreshToken,
+            secretToken,
+            expiresInRefreshToken,
+            expiresInRefreshDays,
         } = auth;
 
         if (!user) {
@@ -53,28 +53,27 @@ class AuthenticateUserUseCase {
         }
 
         // gerar jswonwebtoken
-        const token = sign({ email, role: user.role }, secret_token, {
+        const token = sign({ email, role: user.role }, secretToken, {
             subject: user.id,
-            expiresIn: expires_in_token,
+            expiresIn: expiresInToken,
         });
 
-        const refresh_token = sign(
+        const refreshToken = sign(
             { email, role: user.role },
-            secret_refresh_token,
+            secretRefreshToken,
             {
                 subject: user.id,
-                expiresIn: expires_in_refresh_token,
+                expiresIn: expiresInRefreshToken,
             }
         );
 
-        const refresh_token_expires_date = this.dateProvider.addDays(
-            expires_in_refresh_days
-        );
+        const refreshToken_expiresDate =
+            this.dateProvider.addDays(expiresInRefreshDays);
 
         this.usersTokensRepository.create({
-            expires_date: refresh_token_expires_date,
-            refresh_token,
-            user_id: user.id,
+            expiresDate: refreshToken_expiresDate,
+            refreshToken,
+            userId: user.id,
             token,
         });
 
@@ -85,7 +84,7 @@ class AuthenticateUserUseCase {
                 email: user.email,
                 role: user.role,
             },
-            refresh_token,
+            refreshToken,
         };
 
         return tokenReturn;

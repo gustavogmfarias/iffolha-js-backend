@@ -5,7 +5,7 @@ import { FindByNameUseCase } from "./FindByNameUseCase";
 
 interface IRequest {
     page?: number;
-    per_page?: number;
+    perPage?: number;
     name?: string;
 }
 
@@ -15,9 +15,9 @@ class FindByNameController {
 
         const { name }: IRequest = request.body;
 
-        const { page, per_page }: IRequest = request.query;
+        const { page, perPage }: IRequest = request.query;
 
-        const all = await findByNameUseCase.execute(name, { page, per_page });
+        const all = await findByNameUseCase.execute(name, { page, perPage });
 
         return response.json(all);
     }

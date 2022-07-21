@@ -6,17 +6,17 @@ class UserMap {
     static toDTO({
         email,
         name,
-        last_name,
+        lastName,
         id,
-        avatar_url,
+        avatarUrl,
         role,
     }: User): IUserResponseDTO {
         const user = instanceToInstance({
             email,
             name,
-            last_name,
+            lastName,
             id,
-            avatar_url,
+            avatarUrl,
             role,
         });
         return user;

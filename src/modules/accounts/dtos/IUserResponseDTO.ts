@@ -1,9 +1,9 @@
 interface IUserResponseDTO {
     email: string;
     name: string;
-    last_name: string;
+    lastName: string;
     id: string;
-    avatar_url: string;
+    avatarUrl: string;
     role: string;
 }
 

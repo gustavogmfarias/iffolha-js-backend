@@ -5,24 +5,24 @@ import { prisma } from "@shared/database/prismaClient";
 
 class UsersTokensRepository implements IUsersTokensRepository {
     async create({
-        expires_date,
-        user_id,
-        refresh_token,
+        expiresDate,
+        userId,
+        refreshToken,
         token,
     }: ICreateUserTokenDTO): Promise<UserToken> {
         const userToken = await prisma.userToken.create({
-            data: { expires_date, user_id, refresh_token, token },
+            data: { expiresDate, userId, refreshToken, token },
         });
 
         return userToken;
     }
 
     async findByUserIdAndRefreshToken(
-        user_id: string,
-        refresh_token: string
+        userId: string,
+        refreshToken: string
     ): Promise<UserToken> {
         const userTokens = await prisma.userToken.findFirst({
-            where: { user_id, refresh_token },
+            where: { userId, refreshToken },
         });
 
         return userTokens;
@@ -32,9 +32,9 @@ class UsersTokensRepository implements IUsersTokensRepository {
         await prisma.userToken.delete({ where: { id } });
     }
 
-    async findByRefreshToken(refresh_token: string): Promise<UserToken> {
+    async findByRefreshToken(refreshToken: string): Promise<UserToken> {
         const userToken = await prisma.userToken.findFirst({
-            where: { refresh_token },
+            where: { refreshToken },
         });
         return userToken;
     }

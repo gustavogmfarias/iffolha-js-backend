@@ -4,32 +4,33 @@ import { UpdateUserUseCase } from "./UpdateUserUseCase";
 
 class UpdateUserController {
     async handle(request: Request, response: Response): Promise<Response> {
-        const { id } = request.params;
+        const { userToEditId } = request.params;
+        const { id } = request.user;
 
         const {
             name,
-            last_name,
-            old_password,
-            password,
-            confirm_password,
+            lastName,
+            previousPassword,
+            newPassword,
+            confirmNewPassword,
             email,
             role,
         } = request.body;
 
         const updateUserUseCase = container.resolve(UpdateUserUseCase);
 
-        const user = await updateUserUseCase.execute({
+        const userEdited = await updateUserUseCase.execute(id, {
             name,
-            last_name,
-            old_password,
-            password,
-            confirm_password,
+            lastName,
+            previousPassword,
+            newPassword,
+            confirmNewPassword,
             email,
-            id,
+            id: userToEditId,
             role,
         });
 
-        return response.status(200).json(user);
+        return response.status(200).json(userEdited);
     }
 }
 

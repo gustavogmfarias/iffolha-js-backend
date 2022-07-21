@@ -13,7 +13,7 @@ class ProfileUserUseCase {
 
     async execute(id: string): Promise<IUserResponseDTO> {
         const user = await this.usersRepository.findById(id);
-        user.avatar_url = await this.usersRepository.avatarUrl(user);
+        user.avatarUrl = await this.usersRepository.avatarUrl(user);
         return UserMap.toDTO(user);
     }
 }
