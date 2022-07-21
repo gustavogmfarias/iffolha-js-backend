@@ -18,7 +18,7 @@ class UpdateUserController {
 
         const updateUserUseCase = container.resolve(UpdateUserUseCase);
 
-        await updateUserUseCase.execute({
+        const user = await updateUserUseCase.execute({
             name,
             last_name,
             old_password,
@@ -29,7 +29,7 @@ class UpdateUserController {
             role,
         });
 
-        return response.status(200).json();
+        return response.status(200).json(user);
     }
 }
 

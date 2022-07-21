@@ -52,7 +52,7 @@ class UpdateUserUseCase {
             role,
         });
 
-        await this.logProvider.create({
+        const log = await this.logProvider.create({
             logRepository: "USERSREPOSITORY",
             descricao: `Updated the user ${user.id}`,
             conteudoAnterior: JSON.stringify(user),
