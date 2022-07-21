@@ -89,8 +89,8 @@ export class UsersRepository implements IUsersRepository {
         id,
         role,
         avatar_url,
-    }: IUpdateUserDTO): Promise<void> {
-        await prisma.user.update({
+    }: IUpdateUserDTO): Promise<User> {
+        const user = await prisma.user.update({
             where: { id },
             data: {
                 name,
@@ -101,6 +101,8 @@ export class UsersRepository implements IUsersRepository {
                 avatar_url,
             },
         });
+
+        return user;
     }
 
     async changeOwnPassword({ password, id }: IUpdateUserDTO): Promise<void> {

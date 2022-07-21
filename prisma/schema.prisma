@@ -16,11 +16,9 @@ enum Role {
     ADMIN
     EDITOR
     AUTHOR
-
 }
 
 model User {
-
     id         String   @id @default(uuid())
     name       String
     last_name  String
@@ -31,11 +29,12 @@ model User {
     role       Role     @default(USER)
 
     user_token UserToken[]
+    Log        Log[]
+
     @@map("users")
 }
 
 model UserToken {
-
     id            String   @id @default(uuid())
     token         String
     refresh_token String
@@ -44,6 +43,23 @@ model UserToken {
     created_at    DateTime @default(now())
     expires_date  DateTime
 
-
     @@map("user_tokens")
+}
+
+model Log {
+    id               String        @id @default(uuid())
+    logRepository    LogRepository
+    descricao        String
+    criadoEm         DateTime      @default(now())
+    user             User          @relation(fields: [userId], references: [id])
+    conteudoAnterior String        @default("Sem conteúdo Anterior")
+    conteudoNovo     String
+    userId           String
+    modelEditedId    String
+
+    @@map("logs")
+}
+
+enum LogRepository {
+    USERSREPOSITORY
 }

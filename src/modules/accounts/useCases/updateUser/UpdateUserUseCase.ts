@@ -1,6 +1,7 @@
 import { IUpdateUserDTO } from "@modules/accounts/dtos/IUpdateUserDTO";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { User } from "@prisma/client";
+import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { compare, hash } from "bcryptjs";
 import { injectable, inject } from "tsyringe";
@@ -9,7 +10,8 @@ import { injectable, inject } from "tsyringe";
 class UpdateUserUseCase {
     constructor(
         @inject("UsersRepository")
-        private usersRepository: IUsersRepository
+        private usersRepository: IUsersRepository,
+        @inject("LogProvider") private logProvider: ILogProvider
     ) {}
 
     async execute({
@@ -23,27 +25,8 @@ class UpdateUserUseCase {
         confirm_password,
     }: IUpdateUserDTO): Promise<User> {
         const user = await this.usersRepository.findById(id);
+
         let passwordHash;
-
-        if (!user) {
-            throw new AppError("User doesn't exist", 404);
-        }
-
-        if (name) {
-            user.name = name;
-        }
-
-        if (last_name) {
-            user.last_name = last_name;
-        }
-
-        if (email) {
-            user.email = email;
-        }
-
-        if (role) {
-            user.role = role;
-        }
 
         if (old_password) {
             const passwordMatch = await compare(old_password, user.password);
@@ -60,13 +43,22 @@ class UpdateUserUseCase {
             }
         }
 
-        this.usersRepository.update({
+        const userEdited = await this.usersRepository.update({
             id,
             name,
             last_name,
             password: passwordHash,
             email,
             role,
+        });
+
+        await this.logProvider.create({
+            logRepository: "USERSREPOSITORY",
+            descricao: `Updated the user ${user.id}`,
+            conteudoAnterior: JSON.stringify(user),
+            conteudoNovo: JSON.stringify(userEdited),
+            editedById: user.id,
+            modelEditedId: user.id,
         });
 
         return user;

@@ -1,7 +1,10 @@
 ===> Regra das Classes
 
 
-
+# Logs
+Should be able to include a log after every call to the database
+Should be able to list the logs
+Should be able to filter by period
 
 
 # Persistir Usuários
@@ -11,18 +14,18 @@
 + Only admins should be able to delete a user;
 + Only admins should be able to edit a user;
 + Should be able to list users;
-- Should be able to search an user by name;
-- Should be able to search an user by email;
-- Should be able to search an user by id;
++- Should be able to search an user by name;
++- Should be able to search an user by email;
++- Should be able to search an user by id;
 
 # Login
 => Regras de Negócio
-- User should be able to login 
-- User should be able to change his password
-- User should be able to recovery his password
-- User shouldn't be able to login if the password is incorrect
-- User shoudln't be able to change his password if he doesn't know his before password 
++- User should be able to login 
++- User should be able to change his password
++- User shouldn't be able to login if the password is incorrect
++- User shoudln't be able to change his password if he doesn't know his before password 
 - If user doesn't know his before password, he should to recovery by email
+- User should be able to recovery his password
 
 
 
@@ -142,10 +145,7 @@ Should be able to change to set the menu alert;
 Guests should be able to send a contact message on the portal
 Should be able to list the contacts calls
 
-# Logs
-Should be able to include a log after every call to the database
-Should be able to list the logs
-Should be able to filter by period
+
 
 # Newsletter
 Should be able to register a newsletter on the webpage
