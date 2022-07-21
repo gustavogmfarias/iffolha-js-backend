@@ -84,18 +84,18 @@ export class UsersRepository implements IUsersRepository {
     async update({
         name,
         lastName,
-        password,
+        newPassword,
         email,
-        id,
+        userToEditId,
         role,
         avatarUrl,
     }: IUpdateUserDTO): Promise<User> {
         const user = await prisma.user.update({
-            where: { id },
+            where: { id: userToEditId },
             data: {
                 name,
                 lastName,
-                password,
+                password: newPassword,
                 email,
                 role,
                 avatarUrl,
@@ -105,11 +105,14 @@ export class UsersRepository implements IUsersRepository {
         return user;
     }
 
-    async changeOwnPassword({ password, id }: IUpdateUserDTO): Promise<void> {
+    async changeOwnPassword({
+        newPassword,
+        userToEditId,
+    }: IUpdateUserDTO): Promise<void> {
         await prisma.user.update({
-            where: { id },
+            where: { id: userToEditId },
             data: {
-                password,
+                password: newPassword,
             },
         });
     }

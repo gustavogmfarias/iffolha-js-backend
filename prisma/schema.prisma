@@ -43,7 +43,7 @@ model UserToken {
     createdAt    DateTime @default(now())
     expiresDate  DateTime
 
-    @@map("user_tokens")
+    @@map("userTokens")
 }
 
 model Log {

@@ -14,20 +14,18 @@ class UpdateUserUseCase {
         @inject("LogProvider") private logProvider: ILogProvider
     ) {}
 
-    async execute(
-        userAdminId: string,
-        {
-            id,
-            name,
-            lastName,
-            email,
-            role,
-            newPassword,
-            previousPassword,
-            confirmNewPassword,
-        }: IUpdateUserDTO
-    ): Promise<User> {
-        const userToEdit = await this.usersRepository.findById(id);
+    async execute({
+        userAdminId,
+        userToEditId,
+        name,
+        lastName,
+        email,
+        role,
+        newPassword,
+        previousPassword,
+        confirmNewPassword,
+    }: IUpdateUserDTO): Promise<User> {
+        const userToEdit = await this.usersRepository.findById(userToEditId);
 
         let passwordHash;
 
@@ -50,7 +48,7 @@ class UpdateUserUseCase {
         }
 
         const userEdited = await this.usersRepository.update({
-            id,
+            userToEditId,
             name,
             lastName,
             newPassword: passwordHash,

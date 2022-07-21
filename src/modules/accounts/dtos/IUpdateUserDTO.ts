@@ -1,7 +1,8 @@
 import { Role } from "@prisma/client";
 
 export interface IUpdateUserDTO {
-    id: string;
+    userAdminId?: string;
+    userToEditId: string;
     name?: string;
     lastName?: string;
     email?: string;
