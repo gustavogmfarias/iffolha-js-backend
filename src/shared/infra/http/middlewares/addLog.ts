@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UsersRepository } from "@modules/accounts/repositories/infra/UsersRepository";
 import { AppError } from "@shared/errors/AppError";
+import { LogProvider } from "@shared/container/providers/LogProvider/implementations/LogProvider";
 
 export async function ensureAdmin(
     request: Request,
@@ -9,6 +10,7 @@ export async function ensureAdmin(
 ) {
     const { id } = request.user;
     const usersRepository = new UsersRepository();
+    const logProvider = new LogProvider();
     const user = await usersRepository.findById(id);
 
     const log = await this.logProvider.create({
