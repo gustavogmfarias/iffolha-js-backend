@@ -9,6 +9,7 @@ import { DeleteUserController } from "@modules/accounts/useCases/deleteUser/Dele
 import { UpdateUserController } from "@modules/accounts/useCases/updateUser/UpdateUserController";
 import { ChangeOwnPasswordController } from "@modules/accounts/useCases/changeOwnPassword/ChangeOwnPasswordController";
 import { FindByNameController } from "@modules/accounts/useCases/findByName/FindByNameController";
+import { FindByIdController } from "@modules/accounts/useCases/findById/FindByIdController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -24,6 +25,7 @@ const deleteUserController = new DeleteUserController();
 const updateUserController = new UpdateUserController();
 const changeOwnPasswordController = new ChangeOwnPasswordController();
 const findByNameController = new FindByNameController();
+const findByIdController = new FindByIdController();
 
 usersRoutes.post(
     "/",
@@ -59,6 +61,8 @@ usersRoutes.get(
     ensureAuthenticated,
     findByNameController.handle
 );
+
+usersRoutes.get("/findbyid", ensureAuthenticated, findByIdController.handle);
 
 usersRoutes.delete(
     "/delete/:id",
