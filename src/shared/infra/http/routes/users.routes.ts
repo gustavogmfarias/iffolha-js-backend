@@ -71,7 +71,8 @@ usersRoutes.patch(
     "/update/:id",
     ensureAuthenticated,
     ensureAdmin,
-    updateUserController.handle
+    updateUserController.handle,
+    addlog
 );
 
 export { usersRoutes };
