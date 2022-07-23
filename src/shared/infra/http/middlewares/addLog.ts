@@ -3,7 +3,7 @@ import { UsersRepository } from "@modules/accounts/repositories/infra/UsersRepos
 import { AppError } from "@shared/errors/AppError";
 import { LogProvider } from "@shared/container/providers/LogProvider/implementations/LogProvider";
 
-export async function ensureAdmin(
+export async function addLog(
     request: Request,
     response: Response,
     next: NextFunction
