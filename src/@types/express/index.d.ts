@@ -3,5 +3,10 @@ declare namespace Express {
         user: {
             id: string;
         };
+        log: {
+            logRepository: string;
+            description: string;
+            modelEditedId: string;
+        };
     }
 }

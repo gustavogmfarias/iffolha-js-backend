@@ -8,10 +8,18 @@ export async function ensureAdmin(
     response: Response,
     next: NextFunction
 ) {
-    const { id } = request.user;
+    request.log = {
+        modelEditedId,
+        logRepository,
+        description,
+        previousContent,
+        contentEdited,
+    };
+
+    const userAdminId = request.user.id;
     const usersRepository = new UsersRepository();
     const logProvider = new LogProvider();
-    const user = await usersRepository.findById(id);
+    const modelToEdited = await usersRepository.findById(modelEditedId);
 
     const log = await this.logProvider.create({
         logRepository: "USER",
@@ -19,7 +27,7 @@ export async function ensureAdmin(
         previousContent: JSON.stringify(userToEdit),
         contentEdited: JSON.stringify(userEdited),
         editedByUserId: userAdminId,
-        modelEditedId: userToEdit.id,
+        modelEditedId: modelToEdited.id,
     });
 
     return next();
