@@ -3,12 +3,18 @@
  * https://jestjs.io/docs/configuration
  */
 
+import { pathsToModuleNameMapper } from "ts-jest/dist/config/paths-to-module-name-mapper";
+import { compilerOptions } from "./tsconfig.json";
+
 export default {
     // All imported modules in your tests should be mocked automatically
     // automock: false,
 
     // Stop running tests after `n` failures
     bail: true,
+    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
+        prefix: "<rootDir>/src/",
+    }),
 
     // The directory where Jest should store its cached dependency information
     // cacheDirectory: "C:\\Users\\gusta\\AppData\\Local\\Temp\\jest",

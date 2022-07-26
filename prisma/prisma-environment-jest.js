@@ -1,8 +1,10 @@
-const NodeEnvironment = require("jest-environment-node");
+/* eslint-disable @typescript-eslint/no-var-requires */
+const NodeEnvironment = require("jest-environment-node").default;
 const { v4: uuid } = require("uuid");
 const { execSync } = require("child_process");
 const { resolve } = require("path");
 const { Client } = require("pg");
+const { prisma } = require("../src/shared/database/prismaClient");
 
 const prismaCli = "./node_modules/.bin/prisma";
 
@@ -23,7 +25,7 @@ class CustomEnvironment extends NodeEnvironment {
         this.global.process.env.DATABASE_URL = this.connectionString;
 
         // Rodar as migrations
-        execSync(`${prismaCli} migrate dev`);
+        execSync(`prisma migrate dev`);
     }
 
     async teardown() {
