@@ -4,7 +4,7 @@ import { AppError } from "@shared/errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 interface IRequest {
-    userId: string;
+    userToEditId: string;
     avatarFile: string;
 }
 
@@ -17,8 +17,8 @@ class UpdateUserAvatarUseCase {
         private storageProvider: IStorageProvider
     ) {}
 
-    async execute({ userId, avatarFile }: IRequest): Promise<void> {
-        const user = await this.usersRepository.findById(userId);
+    async execute({ userToEditId, avatarFile }: IRequest): Promise<void> {
+        const user = await this.usersRepository.findById(userToEditId);
 
         if (!user) {
             throw new AppError("User doesn't exist");

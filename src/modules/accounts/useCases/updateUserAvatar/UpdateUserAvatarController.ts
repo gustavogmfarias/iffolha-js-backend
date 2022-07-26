@@ -11,7 +11,7 @@ class UpdateUserAvatarController {
             UpdateUserAvatarUseCase
         );
 
-        await updateUserAvatarUseCase.execute({ userId: id, avatarFile });
+        await updateUserAvatarUseCase.execute({ userToEditId: id, avatarFile });
 
         return response.status(201).send();
     }

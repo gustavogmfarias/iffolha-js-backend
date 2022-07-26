@@ -17,7 +17,7 @@ class ChangeOwnPasswordController {
             newPassword,
             previousPassword,
             confirmNewPassword,
-            id,
+            userAdminId: id,
         });
 
         return response.status(200).json();
