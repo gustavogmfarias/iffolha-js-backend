@@ -15,13 +15,13 @@ describe("Create User Controller", () => {
 
         const response = await request(app)
             .post("/users")
+            .set({ Authorization: `Bearer ${token}` })
             .send({
                 email: "testIntegration@test.com.br",
                 name: "Test ",
                 lastName: "Integration",
                 password: "test",
-            })
-            .set({ Authorization: `Bearer ${token}` });
+            });
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty("id");
 
@@ -29,19 +29,31 @@ describe("Create User Controller", () => {
     });
 
     it("Should not be able to create an existing user", async () => {
-        await request(app).post("/users").send({
-            email: "testIntegration@test.com.br",
-            name: "Test ",
-            lastName: "Integration",
-            password: "test",
-        });
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "admin@admin.com", password: "admin" });
 
-        const response = await request(app).post("/users").send({
-            email: "testIntegration@test.com.br",
-            name: "Test ",
-            lastName: "Integration",
-            password: "test",
-        });
+        const { token } = responseToken.body;
+
+        await request(app)
+            .post("/users")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                email: "testIntegration@test.com.br",
+                name: "Test ",
+                lastName: "Integration",
+                password: "test",
+            });
+
+        const response = await await request(app)
+            .post("/users")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                email: "testIntegration@test.com.br",
+                name: "Test ",
+                lastName: "Integration",
+                password: "test",
+            });
 
         expect(response.status).toBe(400);
 
