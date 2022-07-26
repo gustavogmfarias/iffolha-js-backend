@@ -1,0 +1,6 @@
+1- como inicializar o projeto
+git clone https://github.com/gustavogmfarias/iffolha-js-backend
+yarn
+docker-compose up
+yarn seed (para alimentar o bd de usuário)
+yarn dev
