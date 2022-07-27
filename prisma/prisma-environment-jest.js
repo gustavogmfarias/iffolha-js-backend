@@ -24,7 +24,7 @@ class CustomEnvironment extends NodeEnvironment {
         this.global.process.env.DATABASE_URL = this.connectionString;
 
         // Rodar as migrations
-        execSync(`${prismaCli} migrate dev`);
+        execSync(`yarn prisma migrate dev`);
         execSync(`yarn seed`);
     }
 
