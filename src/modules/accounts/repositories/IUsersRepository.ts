@@ -5,7 +5,7 @@ import { IUpdateUserDTO } from "../dtos/IUpdateUserDTO";
 import { IPaginationRequestDTO } from "../dtos/IPaginationRequestDTO";
 
 export interface IUsersRepository {
-    create(data: ICreateUserDTO): Promise<void>;
+    create(data: ICreateUserDTO): Promise<User>;
     delete(id: string): Promise<void>;
     listUsers(data: IPaginationRequestDTO): Promise<User[] | null>;
     findByEmail(email: string): Promise<User | null>;
