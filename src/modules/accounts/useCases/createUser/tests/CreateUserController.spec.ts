@@ -7,6 +7,8 @@ import request from "supertest";
 
 describe("Create User Controller", () => {
     it("Should be able to create a new user", async () => {
+        console.log("iniciando teste 1");
+
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
@@ -22,13 +24,14 @@ describe("Create User Controller", () => {
                 lastName: "Integration",
                 password: "test",
             });
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty("id");
 
-        console.log("teste");
+        console.log(response.body);
+
+        expect(response.status).toBe(201);
     });
 
     it("Should not be able to create an existing user", async () => {
+        console.log("iniciando teste 2 ");
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
@@ -45,7 +48,7 @@ describe("Create User Controller", () => {
                 password: "test",
             });
 
-        const response = await await request(app)
+        const response = await request(app)
             .post("/users")
             .set({ Authorization: `Bearer ${token}` })
             .send({
@@ -55,8 +58,8 @@ describe("Create User Controller", () => {
                 password: "test",
             });
 
-        expect(response.status).toBe(400);
+        console.log(response.body);
 
-        console.log("teste2");
+        expect(response.status).toBe(400);
     });
 });

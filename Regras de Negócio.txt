@@ -1,5 +1,5 @@
 ===> Regra das Classes
-
+**adicionar data certa em vez do padrão do prisma
 
 # Logs
 Should be able to include a log after every call to the database

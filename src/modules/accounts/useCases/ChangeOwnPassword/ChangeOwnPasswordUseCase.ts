@@ -12,12 +12,12 @@ class ChangeOwnPasswordUseCase {
     ) {}
 
     async execute({
-        id,
+        userAdminId,
         newPassword,
         previousPassword,
         confirmNewPassword,
     }: IUpdateUserDTO): Promise<User> {
-        const user = await this.usersRepository.findById(id);
+        const user = await this.usersRepository.findById(userAdminId);
         let passwordHash;
 
         if (previousPassword) {
@@ -38,7 +38,7 @@ class ChangeOwnPasswordUseCase {
         }
 
         this.usersRepository.update({
-            id,
+            userAdminId,
             newPassword: passwordHash,
         });
 
