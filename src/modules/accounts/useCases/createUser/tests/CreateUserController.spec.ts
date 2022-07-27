@@ -60,35 +60,23 @@ describe("Create User Controller", () => {
     it("Only admins should be able to include a new user", async () => {
         const responseToken = await request(app)
             .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
+            .send({ email: "gustavo@gmail.com", password: "gustavo" });
         // .send({ email: "admin@admin.com", password: "admin" });
 
         const { token } = responseToken.body;
 
-        // const userResponse = await new Promise(
-        //     request(app)
-        //         .post("/users")
-        //         .set({ Authorization: `Bearer ${token}` })
-        //         .send({
-        //             email: "testIntegration@test.com.br",
-        //             name: "Test ",
-        //             lastName: "Integration",
-        //             password: "test",
-        //         })
-        // );
+        const userResponse = await request(app)
+            .post("/users")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                email: "testIntegration@test.com.br",
+                name: "Test ",
+                lastName: "Integration",
+                password: "test",
+            });
 
-        try {
-            const user = await request(app)
-                .post("/users")
-                .set({ Authorization: `Bearer ${token}` })
-                .send({
-                    email: "testIntegration@test.com.br",
-                    name: "Test ",
-                    lastName: "Integration",
-                    password: "test",
-                });
-        } catch (error) {
-            return expect(error).toEqual({ message: "User is not an Admin!" });
-        }
+        expect(userResponse).rejects.toEqual(
+            new AppError("User is not an Admin!")
+        );
     });
 });
