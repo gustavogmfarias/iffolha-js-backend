@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Log, User } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { hash } from "bcryptjs";
@@ -18,7 +18,7 @@ class CreateUserUseCase {
     async execute(
         userAdminId: string,
         { name, lastName, password, email, avatarUrl, role }: ICreateUserDTO
-    ): Promise<User> {
+    ): Promise<(User | Log)[]> {
         const userAlreadyExists = await this.usersRepository.findByEmail(email);
         let user;
         if (userAlreadyExists) {
@@ -42,14 +42,14 @@ class CreateUserUseCase {
 
         const log = await this.logProvider.create({
             logRepository: "USER",
-            description: `Create a user`,
+            description: `User created successfully!`,
             previousContent: JSON.stringify(user),
             contentEdited: JSON.stringify(user),
             editedByUserId: userAdminId,
             modelEditedId: user.id,
         });
 
-        return user;
+        return [user, log];
     }
 }
 

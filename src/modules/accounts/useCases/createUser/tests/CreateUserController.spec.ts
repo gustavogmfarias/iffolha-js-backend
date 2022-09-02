@@ -24,6 +24,15 @@ describe("Create User Controller", () => {
                 password: "test",
             });
 
+        const novoUserLogin = await request(app)
+            .post("/sessions")
+            .send({ email: "testIntegration@test.com.br", password: "test" });
+
+        const log = response.body[1];
+
+        expect(novoUserLogin.body).toHaveProperty("token");
+        expect(log.description).toBe("User created successfully!");
+
         expect(response.status).toBe(201);
     });
 
@@ -61,7 +70,6 @@ describe("Create User Controller", () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "gustavo@gmail.com", password: "gustavo" });
-        // .send({ email: "admin@admin.com", password: "admin" });
 
         const { token } = responseToken.body;
 
@@ -69,14 +77,12 @@ describe("Create User Controller", () => {
             .post("/users")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                email: "testIntegration@test.com.br",
+                email: "testIntegration@test2.com.br",
                 name: "Test ",
                 lastName: "Integration",
                 password: "test",
             });
 
-        expect(userResponse).rejects.toEqual(
-            new AppError("User is not an Admin!")
-        );
+        expect(userResponse.body.message).toEqual("User is not an Admin!");
     });
 });

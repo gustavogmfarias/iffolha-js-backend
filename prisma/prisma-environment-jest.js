@@ -4,6 +4,8 @@ const { v4: uuid } = require("uuid");
 const { execSync } = require("child_process");
 const { resolve } = require("path");
 const { Client } = require("pg");
+const { setTimeout } = require("timers/promises");
+const fs = require("mz/fs");
 
 const prismaCli = "./node_modules/.bin/prisma";
 
@@ -14,8 +16,12 @@ require("dotenv").config({
 class CustomEnvironment extends NodeEnvironment {
     constructor(config) {
         super(config);
+        process.env.DATABASE_URL =
+            "postgresql://docker:ignite@localhost:8081/iffolha_test?schema=";
         this.schema = `code_schema_${uuid().slice(0, 5)}`;
         console.log("schemas", this.schema);
+        this.connectionString = `${process.env.DATABASE_URL}`;
+
         this.connectionString = `${process.env.DATABASE_URL}${this.schema}`;
     }
 

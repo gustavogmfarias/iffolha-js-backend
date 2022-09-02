@@ -7,12 +7,13 @@
         "dev": "ts-node-dev  -r tsconfig-paths/register --exit-child --transpile-only --poll --ignore-watch node_modules --respawn   src/shared/infra/http/server.ts",
         "dev:debug": "ts-node-dev -r tsconfig-paths/register --files --transpile-only --respawn --inspect=4321 --project tsconfig.json src/shared/infra/http/server-debug.ts",
         "seed": "ts-node-dev prisma/seed.ts",
-        "test": "jest  --runInBand --detectOpenHandles"
+        "test": "jest  --runInBand"
     },
     "dependencies": {
         "@prisma/client": "^3.14.0",
         "@types/supertest": "^2.0.12",
         "@types/uuid": "^8.3.4",
+        "@types/mz": "^2.7.4",
         "aws-sdk": "^2.1137.0",
         "bcryptjs": "^2.4.3",
         "class-transformer": "^0.5.1",
@@ -53,6 +54,7 @@
         "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-prettier": "^4.0.0",
         "jest": "^28.1.3",
+        "mz": "^2.7.0",
         "nodemon": "^2.0.19",
         "prettier": "^2.6.2",
         "prisma": "^3.14.0",

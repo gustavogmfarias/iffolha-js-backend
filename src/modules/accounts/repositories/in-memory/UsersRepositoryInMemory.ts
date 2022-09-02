@@ -1,67 +1,16 @@
-/* eslint-disable no-await-in-loop */
-import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
-
-import { User } from "@prisma/client";
-
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-
-import { prisma } from "@shared/database/prismaClient";
-import { IUpdateUserDTO } from "@modules/accounts/dtos/IUpdateUserDTO";
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
+import { IUpdateUserDTO } from "@modules/accounts/dtos/IUpdateUserDTO";
+import { Log, User, UserToken } from "@prisma/client";
+import { v4 as uuidv4 } from "uuid";
+import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
+import { IUsersRepository } from "../IUsersRepository";
 
-export class UsersRepository implements IUsersRepository {
-    async findByName(
-        name: string,
-        { page, perPage }: IPaginationRequestDTO
-    ): Promise<User[] | null> {
-        let users: User[];
+export class UsersRepositoryInMemory implements IUsersRepository {
+    users: User[] = [];
 
-        if (!page || !perPage) {
-            users = await prisma.user.findMany({
-                where: {
-                    name: {
-                        contains: name,
-                        mode: "insensitive",
-                    },
-                },
-                orderBy: { name: "desc" },
-            });
-        } else {
-            users = await prisma.user.findMany({
-                where: {
-                    name: {
-                        contains: name,
-                        mode: "insensitive",
-                    },
-                },
-                orderBy: { name: "desc" },
-                take: Number(perPage),
-                skip: (Number(page) - 1) * Number(perPage),
-            });
-        }
+    userTokens: UserToken[] = [];
 
-        return users;
-    }
-
-    async findByEmail(email: string): Promise<User | null> {
-        const user = await prisma.user.findUnique({
-            where: {
-                email,
-            },
-        });
-
-        return user;
-    }
-
-    async findById(id: string): Promise<User | null> {
-        const user = await prisma.user.findUnique({
-            where: {
-                id,
-            },
-        });
-
-        return user;
-    }
+    logs: Log[] = [];
 
     async create({
         name,
@@ -70,91 +19,57 @@ export class UsersRepository implements IUsersRepository {
         email,
         role,
     }: ICreateUserDTO): Promise<User> {
-        const user = await prisma.user.create({
-            data: {
-                name,
-                lastName,
-                password,
-                email,
-                role,
-            },
+        const user: User = new User();
+
+        Object.assign(user, {
+            id: uuidv4(),
+            name,
+            lastName,
+            password,
+            email,
+            role,
+            createdAt: new Date(),
+            avatarUrl: String(),
+            userToken: this.userTokens,
+            log: this.logs,
         });
+
+        this.users.push(user);
 
         return user;
     }
 
-    async update({
-        name,
-        lastName,
-        newPassword,
-        email,
-        userToEditId,
-        role,
-        avatarUrl,
-    }: IUpdateUserDTO): Promise<User> {
-        const user = await prisma.user.update({
-            where: { id: userToEditId },
-            data: {
-                name,
-                lastName,
-                password: newPassword,
-                email,
-                role,
-                avatarUrl,
-            },
-        });
-
-        return user;
+    delete(id: string): Promise<void> {
+        throw new Error("Method not implemented.");
     }
 
-    async changeOwnPassword({
-        newPassword,
-        userToEditId,
-    }: IUpdateUserDTO): Promise<void> {
-        await prisma.user.update({
-            where: { id: userToEditId },
-            data: {
-                password: newPassword,
-            },
-        });
+    listUsers(data: IPaginationRequestDTO): Promise<User[]> {
+        throw new Error("Method not implemented.");
     }
 
-    async avatarUrl(user: User): Promise<string> {
-        switch (process.env.DISK) {
-            case "local":
-                return `${process.env.APP_API_URL}/avatar/${user.avatarUrl}`;
-            case "s3":
-                return `${process.env.AWS_BUCKET_URL}/avatar/${user.avatarUrl}`;
-            default:
-                return null;
-        }
+    findByEmail(email: string): Promise<User> {
+        const userFound = this.users.find((user) => user.email === email);
+
+        return user; ///ver no youtube
     }
 
-    async listUsers({ page, perPage }): Promise<User[]> {
-        let users: User[];
-
-        if (!page || !perPage) {
-            users = await prisma.user.findMany({
-                orderBy: {
-                    id: "desc",
-                },
-            });
-        } else {
-            users = await prisma.user.findMany({
-                take: Number(perPage),
-                skip: (Number(page) - 1) * Number(perPage),
-                orderBy: {
-                    id: "desc",
-                },
-            });
-        }
-
-        return users;
+    findById(id: string): Promise<User> {
+        throw new Error("Method not implemented.");
     }
 
-    async delete(id: string): Promise<void> {
-        await prisma.user.delete({
-            where: { id },
-        });
+    findByName(name: string, data: IPaginationRequestDTO): Promise<User[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    update(data: IUpdateUserDTO): Promise<User> {
+        throw new Error("Method not implemented.");
+    }
+
+    avatarUrl(user: User): Promise<string> {
+        throw new Error("Method not implemented.");
+    }
+
+    changeOwnPassword(data: IUpdateUserDTO): Promise<void> {
+        throw new Error("Method not implemented.");
     }
 }

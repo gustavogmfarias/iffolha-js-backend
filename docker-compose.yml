@@ -22,7 +22,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://docker:ignite@iffolha_database:5432/iffolha
     ports: 
-      - 9999:9999
+      - 8888:8888
       - 5000:5000
     volumes: 
       - .:/usr/app
