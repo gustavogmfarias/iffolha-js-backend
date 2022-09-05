@@ -13,14 +13,14 @@ class ChangeOwnPasswordController {
             ChangeOwnPasswordUseCase
         );
 
-        await changeOwnPasswordUseCase.execute({
+        const userUpdated = await changeOwnPasswordUseCase.execute({
             newPassword,
             previousPassword,
             confirmNewPassword,
             userAdminId: id,
         });
 
-        return response.status(200).json();
+        return response.status(200).json(userUpdated);
     }
 }
 

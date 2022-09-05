@@ -1,6 +1,7 @@
 import { IUpdateUserDTO } from "@modules/accounts/dtos/IUpdateUserDTO";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { User } from "@prisma/client";
+import { Log, User } from "@prisma/client";
+import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { compare, hash } from "bcryptjs";
 import { inject, injectable } from "tsyringe";
@@ -8,7 +9,9 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 class ChangeOwnPasswordUseCase {
     constructor(
-        @inject("UsersRepository") private usersRepository: IUsersRepository
+        @inject("UsersRepository") private usersRepository: IUsersRepository,
+        @inject("LogProvider")
+        private logProvider: ILogProvider
     ) {}
 
     async execute({
@@ -16,7 +19,7 @@ class ChangeOwnPasswordUseCase {
         newPassword,
         previousPassword,
         confirmNewPassword,
-    }: IUpdateUserDTO): Promise<User> {
+    }: IUpdateUserDTO): Promise<(User | Log)[]> {
         const user = await this.usersRepository.findById(userAdminId);
         let passwordHash;
 
@@ -37,13 +40,33 @@ class ChangeOwnPasswordUseCase {
             throw new AppError("Passwords don't match", 401);
         }
 
-        await this.usersRepository.update({
-            userToEditId: userAdminId,
-            userAdminId,
-            newPassword: passwordHash,
-        });
+        let userUpdated: User;
+        let log: Log;
 
-        return user;
+        try {
+            userUpdated = await this.usersRepository.update({
+                userToEditId: userAdminId,
+                userAdminId,
+                newPassword: passwordHash,
+            });
+        } catch (error) {
+            return error.message;
+        }
+
+        try {
+            log = await this.logProvider.create({
+                logRepository: "USER",
+                description: `User's password updated successfully!`,
+                previousContent: JSON.stringify(user),
+                contentEdited: JSON.stringify(userUpdated),
+                editedByUserId: userAdminId,
+                modelEditedId: user.id,
+            });
+        } catch (error) {
+            return error.message;
+        }
+
+        return [userUpdated, log];
     }
 }
 

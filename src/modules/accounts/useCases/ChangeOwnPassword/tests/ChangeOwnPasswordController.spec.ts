@@ -8,7 +8,7 @@ import { hash } from "bcryptjs";
 import request from "supertest";
 
 describe("Accounts - Change Own Password Controller", () => {
-    it("Should be able to the user change its own password", async () => {
+    it("Should be able to the user change its own password and generate a log", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
@@ -24,11 +24,16 @@ describe("Accounts - Change Own Password Controller", () => {
             })
             .set({ Authorization: `Bearer ${token}` });
 
+        const responseLog = response.body[1];
+
         const loginNewPassword = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "newPassword" });
 
         expect(loginNewPassword.body).toHaveProperty("token");
+        expect(responseLog.description).toBe(
+            "User's password updated successfully!"
+        );
         expect(response.status).toBe(200);
     });
 
