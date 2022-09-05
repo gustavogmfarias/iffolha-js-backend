@@ -37,7 +37,8 @@ class ChangeOwnPasswordUseCase {
             throw new AppError("Passwords don't match", 401);
         }
 
-        this.usersRepository.update({
+        await this.usersRepository.update({
+            userToEditId: userAdminId,
             userAdminId,
             newPassword: passwordHash,
         });
