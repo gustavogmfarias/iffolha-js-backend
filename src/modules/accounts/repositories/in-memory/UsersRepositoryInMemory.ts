@@ -19,7 +19,7 @@ export class UsersRepositoryInMemory implements IUsersRepository {
         email,
         role,
     }: ICreateUserDTO): Promise<User> {
-        const user: User = new User();
+        let user: User;
 
         Object.assign(user, {
             id: uuidv4(),
@@ -47,10 +47,10 @@ export class UsersRepositoryInMemory implements IUsersRepository {
         throw new Error("Method not implemented.");
     }
 
-    findByEmail(email: string): Promise<User> {
+    async findByEmail(email: string): Promise<User> {
         const userFound = this.users.find((user) => user.email === email);
 
-        return user; ///ver no youtube
+        return userFound;
     }
 
     findById(id: string): Promise<User> {

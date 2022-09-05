@@ -30,9 +30,10 @@ class UpdateUserAvatarUseCase {
 
         await this.storageProvider.save(avatarFile, "avatar");
 
-        user.avatarUrl = avatarFile;
-
-        await this.usersRepository.update(user);
+        await this.usersRepository.update({
+            userToEditId,
+            avatarUrl: avatarFile,
+        });
     }
 }
 
