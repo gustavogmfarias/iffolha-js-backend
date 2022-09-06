@@ -19,7 +19,7 @@ class CreateUserUseCase {
     async execute(
         userAdminId: string,
         { name, lastName, password, email, avatarUrl, role }: ICreateUserDTO
-    ): Promise<User> {
+    ): Promise<(User | Log)[]> {
         const userAlreadyExists = await this.usersRepository.findByEmail(email);
         if (userAlreadyExists) {
             throw new AppError("User already exists", 400);
@@ -45,7 +45,7 @@ class CreateUserUseCase {
             modelEditedId: user.id,
         });
 
-        return user;
+        return [user, log];
     }
 }
 

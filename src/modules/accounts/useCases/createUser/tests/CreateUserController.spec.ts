@@ -7,7 +7,7 @@ import { app } from "@shared/infra/http/app";
 import request from "supertest";
 
 describe("Create User Controller", () => {
-    it("Should be able to create a new user", async () => {
+    it("Should be able to create a new user and add a log", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
@@ -47,7 +47,7 @@ describe("Create User Controller", () => {
             .post("/users")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                email: "testIntegration@test.com.br",
+                email: "testIntegration2@test.com.br",
                 name: "Test ",
                 lastName: "Integration",
                 password: "test",
@@ -57,13 +57,14 @@ describe("Create User Controller", () => {
             .post("/users")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                email: "testIntegration@test.com.br",
+                email: "testIntegration2@test.com.br",
                 name: "Test ",
                 lastName: "Integration",
                 password: "test",
             });
 
         expect(userDuplicate.status).toBe(400);
+        expect(userDuplicate.body.message).toBe("User already exists");
     });
 
     it("Only admins should be able to include a new user", async () => {
@@ -84,5 +85,105 @@ describe("Create User Controller", () => {
             });
 
         expect(userResponse.body.message).toEqual("User is not an Admin!");
+    });
+
+    it("Should not be able to create a new user without a Name ", async () => {
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "admin@admin.com", password: "admin" });
+
+        const { token } = responseToken.body;
+
+        const userResponse = await request(app)
+            .post("/users")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                email: "testIntegration@test2.com.br",
+                lastName: "Integration",
+                password: "test",
+            });
+
+        expect(userResponse.status).toBe(500);
+    });
+
+    it("Should not be able to create a new user without a Last Name ", async () => {
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "admin@admin.com", password: "admin" });
+        const { token } = responseToken.body;
+
+        const userResponse = await request(app)
+            .post("/users")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                email: "testIntegration@test2.com.br",
+                name: "Test",
+                password: "test",
+            });
+
+        expect(userResponse.status).toBe(500);
+    });
+
+    it("Should not be able to create a new user without a email ", async () => {
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "admin@admin.com", password: "admin" });
+
+        const { token } = responseToken.body;
+
+        const userResponse = await request(app)
+            .post("/users")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Test",
+                lastName: "Test",
+                password: "test",
+            });
+
+        expect(userResponse.status).toBe(500);
+    });
+
+    it("Should not be able to create a new user without a password ", async () => {
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "gustavo@gmail.com", password: "gustavo" });
+
+        const { token } = responseToken.body;
+
+        const userResponse = await request(app)
+            .post("/users")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Test",
+                email: "a@a.com",
+                lastName: "Test",
+            });
+
+        expect(userResponse.status).toBe(400);
+    });
+
+    it("Should not be able to create a new user if the token is invalid", async () => {
+        const response = await request(app)
+            .post("/users")
+            .send({
+                email: "testIntegration2@test.com.br",
+                name: "Test ",
+                lastName: "Integration",
+                password: "test",
+            })
+            .set({ Authorization: `Bearer 111` });
+
+        expect(response.body.message).toBe("Invalid Token");
+    });
+
+    it("Should not be able to create a new user if user is not logged", async () => {
+        const response = await request(app).post("/users").send({
+            email: "testIntegration2@test.com.br",
+            name: "Test ",
+            lastName: "Integration",
+            password: "test",
+        });
+
+        expect(response.body.message).toBe("Token missing");
     });
 });
