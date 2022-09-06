@@ -37,66 +37,66 @@ describe("Accounts - Change Own Password Controller", () => {
         expect(response.status).toBe(200);
     });
 
-    // it("usuário precisa estar com token válido para trocar a própria password", async () => {
-    //     const response = await request(app)
-    //         .patch("/usuários/change-password")
-    //         .send({
-    //             passwordAntiga: "gustavo",
-    //             password: "gustavo",
-    //             confirmapassword: "gustavo",
-    //         })
-    //         .set({ Authorization: `Bearer passwordErrada` });
+    it("Should not be able to change the own passoword if the token is invalid", async () => {
+        const response = await request(app)
+            .patch("/users/change-password")
+            .send({
+                previousPassword: "gustavo",
+                newPassword: "gustavo",
+                confirmNewPassword: "gustavo",
+            })
+            .set({ Authorization: `Bearer 111` });
 
-    //     expect(response.body.message).toBe("Invalid Token");
-    // });
+        expect(response.body.message).toBe("Invalid Token");
+    });
 
-    // it("usuário precisa estar logado para trocar a própria password", async () => {
-    //     const response = await request(app)
-    //         .patch("/usuários/change-password")
-    //         .send({
-    //             passwordAntiga: "gustavo",
-    //             password: "gustavo",
-    //             confirmapassword: "gustavo",
-    //         });
+    it("Should not be able to change the own passoword if user is not logged", async () => {
+        const response = await request(app)
+            .patch("/users/change-password")
+            .send({
+                previousPassword: "gustavo",
+                newPassword: "gustavo",
+                confirmNewPassword: "gustavo",
+            });
 
-    //     expect(response.body.message).toBe("Token missing");
-    // });
+        expect(response.body.message).toBe("Token missing");
+    });
 
-    // it("Não alterar as passwords se a password anterior estiver errada", async () => {
-    //     const responseToken = await request(app)
-    //         .post("/sessions")
-    //         .send({ email: "admin", password: "admin" });
+    it("Should not be able to change the own password if the previous password is wrong", async () => {
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "gustavo@gmail.com", password: "gustavo" });
 
-    //     const { token } = responseToken.body;
+        const { token } = responseToken.body;
 
-    //     const response = await request(app)
-    //         .patch("/usuários/change-password")
-    //         .send({
-    //             passwordAntiga: "passwordErrada",
-    //             password: "gustavo",
-    //             confirmapassword: "gustavo",
-    //         })
-    //         .set({ Authorization: `Bearer ${token}` });
+        const response = await request(app)
+            .patch("/users/change-password")
+            .send({
+                previousPassword: "wrongPassword",
+                password: "gustavo",
+                confirmNewPassword: "gustavo",
+            })
+            .set({ Authorization: `Bearer ${token}` });
 
-    //     expect(response.body.message).toBe("Last Password doesn't match");
-    // });
+        expect(response.body.message).toBe("Last Password doesn't match");
+    });
 
-    // it("Não alterar as passwords se a nova password e confirmação de password não forem as mesmas", async () => {
-    //     const responseToken = await request(app)
-    //         .post("/sessions")
-    //         .send({ email: "admin", password: "admin" });
+    it("Should not be able to change the own password if the new password and the confirmNewPassword are not the same", async () => {
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "gustavo@gmail.com", password: "gustavo" });
 
-    //     const { token } = responseToken.body;
+        const { token } = responseToken.body;
 
-    //     const response = await request(app)
-    //         .patch("/usuários/change-password")
-    //         .send({
-    //             passwordAntiga: "admin",
-    //             password: "gustavo",
-    //             confirmapassword: "gustavopasswordErrada",
-    //         })
-    //         .set({ Authorization: `Bearer ${token}` });
+        const response = await request(app)
+            .patch("/users/change-password")
+            .send({
+                previousPassword: "gustavo",
+                newPassword: "gustavo",
+                confirmNewPassword: "gustavoWrongPassowrd",
+            })
+            .set({ Authorization: `Bearer ${token}` });
 
-    //     expect(response.body.message).toBe("Passwords don't match");
-    // });
+        expect(response.body.message).toBe("Passwords don't match");
+    });
 });
