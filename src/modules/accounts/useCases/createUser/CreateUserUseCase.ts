@@ -21,20 +21,34 @@ class CreateUserUseCase {
         { name, lastName, password, email, avatarUrl, role }: ICreateUserDTO
     ): Promise<(User | Log)[]> {
         const userAlreadyExists = await this.usersRepository.findByEmail(email);
+        let user: User;
+
         if (userAlreadyExists) {
             throw new AppError("User already exists", 400);
         }
 
         const passwordHash = await hash(password, 12);
 
-        const user = await this.usersRepository.create({
-            name,
-            lastName,
-            password: passwordHash,
-            email,
-            avatarUrl,
-            role,
-        });
+        if (role) {
+            const roleExists = await this.usersRepository.findRoleByName(role);
+
+            if (!roleExists) {
+                throw new AppError("Role doesn't exist", 400);
+            }
+        }
+
+        try {
+            user = await this.usersRepository.create({
+                name,
+                lastName,
+                password: passwordHash,
+                email,
+                avatarUrl,
+                role,
+            });
+        } catch (err) {
+            throw new AppError(err.message, 400);
+        }
 
         const log = await this.logProvider.create({
             logRepository: "USER",

@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 
 import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
 import { IUpdateUserDTO } from "../dtos/IUpdateUserDTO";
@@ -17,4 +17,5 @@ export interface IUsersRepository {
     update(data: IUpdateUserDTO): Promise<User>;
     avatarUrl(user: User): Promise<string>;
     changeOwnPassword(data: IUpdateUserDTO): Promise<void>;
+    findRoleByName(name: string): Promise<boolean>;
 }

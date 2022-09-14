@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
 
-import { User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 
@@ -156,5 +156,16 @@ export class UsersRepository implements IUsersRepository {
         await prisma.user.delete({
             where: { id },
         });
+    }
+
+    async findRoleByName(name: string): Promise<boolean> {
+        const roles = ["USER", "ADMIN", "EDITOR", "AUTHOR"];
+
+        const role = roles.find((roleSought) => roleSought === name);
+
+        if (role) {
+            return true;
+        }
+        return false;
     }
 }

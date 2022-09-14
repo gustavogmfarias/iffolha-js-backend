@@ -2,17 +2,28 @@
  * @jest-environment ./prisma/prisma-environment-jest
  */
 
+import { prisma } from "@shared/database/prismaClient";
 import { AppError } from "@shared/errors/AppError";
 import { app } from "@shared/infra/http/app";
 import request from "supertest";
 
 describe("Create User Controller", () => {
-    it("Should be able to create a new user and add a log with default role", async () => {
+    it("Should be able to delete a user and add a log", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
 
         const { token } = responseToken.body;
+
+        const userCreated = await request(app)
+            .post("/users")
+            .send({
+                name: "Fabiano",
+                lestName: "Agape",
+                username: "fabiano",
+                senha: "fabiano",
+            })
+            .set({ Authorization: `Bearer ${token}` });
 
         const response = await request(app)
             .post("/users")
@@ -30,64 +41,10 @@ describe("Create User Controller", () => {
 
         const log = response.body[1];
 
-        expect(response.body[0].role).toBe("USER");
         expect(novoUserLogin.body).toHaveProperty("token");
         expect(log.description).toBe("User created successfully!");
 
         expect(response.status).toBe(201);
-    });
-
-    it("Should be able to create a new user and add a log with Admin role", async () => {
-        const responseToken = await request(app)
-            .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
-
-        const { token } = responseToken.body;
-
-        const response = await request(app)
-            .post("/users")
-            .set({ Authorization: `Bearer ${token}` })
-            .send({
-                email: "fabiano@test.com.br",
-                name: "Fabiano ",
-                lastName: "Agape",
-                password: "fabiano",
-                role: "ADMIN",
-            });
-
-        const novoUserLogin = await request(app)
-            .post("/sessions")
-            .send({ email: "testIntegration@test.com.br", password: "test" });
-
-        const log = response.body[1];
-
-        expect(response.body[0].role).toBe("ADMIN");
-        expect(novoUserLogin.body).toHaveProperty("token");
-        expect(log.description).toBe("User created successfully!");
-
-        expect(response.status).toBe(201);
-    });
-
-    it("Should not be able to create a new user with nonexistent role", async () => {
-        const responseToken = await request(app)
-            .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
-
-        const { token } = responseToken.body;
-
-        const response = await request(app)
-            .post("/users")
-            .set({ Authorization: `Bearer ${token}` })
-            .send({
-                email: "fabianoRole@test.com.br",
-                name: "Fabiano ",
-                lastName: "Agape",
-                password: "fabiano",
-                role: "doesn't exist",
-            });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("Role doesn't exist");
     });
 
     it("Should not be able to create a new user with the same email", async () => {
@@ -147,15 +104,17 @@ describe("Create User Controller", () => {
             .send({ email: "admin@admin.com", password: "admin" });
 
         const { token } = responseToken.body;
+
         const userResponse = await request(app)
             .post("/users")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                email: "testIntegration@test3.com.br",
+                email: "testIntegration@test2.com.br",
                 lastName: "Integration",
                 password: "test",
             });
-        expect(userResponse.status).toBe(400);
+
+        expect(userResponse.status).toBe(500);
     });
 
     it("Should not be able to create a new user without a Last Name ", async () => {
@@ -168,12 +127,12 @@ describe("Create User Controller", () => {
             .post("/users")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                email: "testIntegration@test4.com.br",
+                email: "testIntegration@test2.com.br",
                 name: "Test",
                 password: "test",
             });
 
-        expect(userResponse.status).toBe(400);
+        expect(userResponse.status).toBe(500);
     });
 
     it("Should not be able to create a new user without a email ", async () => {
