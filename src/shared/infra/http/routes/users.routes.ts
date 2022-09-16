@@ -65,7 +65,7 @@ usersRoutes.get(
 usersRoutes.get("/findbyid", ensureAuthenticated, findByIdController.handle);
 
 usersRoutes.delete(
-    "/delete/:id",
+    "/:id",
     ensureAuthenticated,
     ensureAdmin,
     deleteUserController.handle

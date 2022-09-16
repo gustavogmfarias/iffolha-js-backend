@@ -26,13 +26,19 @@ class DeleteUserUseCase {
             throw new AppError("User doesn't exists", 404);
         }
 
-        const userDeleted = this.usersRepository.delete(userToEditId);
+        let userDeleted;
+
+        try {
+            userDeleted = this.usersRepository.delete(userToEditId);
+        } catch (err) {
+            throw new AppError("User wasn't deleted", 401);
+        }
 
         const log = await this.logProvider.create({
             logRepository: "USER",
             description: `User deleted successfully!`,
-            previousContent: JSON.stringify(user),
-            contentEdited: JSON.stringify(user),
+            previousContent: JSON.stringify(userDto),
+            contentEdited: JSON.stringify(userDto),
             editedByUserId: userAdminId,
             modelEditedId: user.id,
         });
