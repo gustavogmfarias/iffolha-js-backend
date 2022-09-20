@@ -13,9 +13,9 @@ class FindUserByEmailController {
             FindUserByEmailUseCase
         );
 
-        const { email }: IRequest = request.body;
+        const { email } = request.query;
 
-        const user = await findUserByEmailUseCase.execute(email);
+        const user = await findUserByEmailUseCase.execute({ email });
 
         return response.json(user);
     }

@@ -11,7 +11,7 @@ class FindUserByEmailUseCase {
         @inject("UsersRepository") private usersRepository: IUsersRepository
     ) {}
 
-    async execute(email: string): Promise<IUserResponseDTO | null> {
+    async execute({ email }): Promise<IUserResponseDTO | null> {
         const user = await this.usersRepository.findByEmail(email);
 
         if (!user) {

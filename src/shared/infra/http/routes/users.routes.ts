@@ -64,7 +64,7 @@ usersRoutes.get(
     findByNameController.handle
 );
 
-usersRoutes.post(
+usersRoutes.get(
     "/findbyemail",
     ensureAuthenticated,
     findUserByEmailController.handle
