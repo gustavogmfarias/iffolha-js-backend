@@ -10,6 +10,7 @@ import { UpdateUserController } from "@modules/accounts/useCases/updateUser/Upda
 import { ChangeOwnPasswordController } from "@modules/accounts/useCases/changeOwnPassword/ChangeOwnPasswordController";
 import { FindByNameController } from "@modules/accounts/useCases/findByName/FindByNameController";
 import { FindByIdController } from "@modules/accounts/useCases/findById/FindByIdController";
+import { FindUserByEmailController } from "@modules/accounts/useCases/findUserByEmail/FindUserByEmailController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -26,6 +27,7 @@ const updateUserController = new UpdateUserController();
 const changeOwnPasswordController = new ChangeOwnPasswordController();
 const findByNameController = new FindByNameController();
 const findByIdController = new FindByIdController();
+const findUserByEmailController = new FindUserByEmailController();
 
 usersRoutes.post(
     "/",
@@ -60,6 +62,12 @@ usersRoutes.get(
     "/findbyname",
     ensureAuthenticated,
     findByNameController.handle
+);
+
+usersRoutes.post(
+    "/findbyemail",
+    ensureAuthenticated,
+    findUserByEmailController.handle
 );
 
 usersRoutes.get("/findbyid", ensureAuthenticated, findByIdController.handle);

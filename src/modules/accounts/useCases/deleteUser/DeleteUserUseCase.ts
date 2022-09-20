@@ -19,13 +19,12 @@ class DeleteUserUseCase {
         userToEditId: string
     ): Promise<(IUserResponseDTO | Log)[]> {
         const user = await this.usersRepository.findById(userToEditId);
-        user.avatarUrl = await this.usersRepository.avatarUrl(user);
-        const userDto = UserMap.toDTO(user);
 
         if (!user) {
             throw new AppError("User doesn't exists", 404);
         }
-
+        user.avatarUrl = await this.usersRepository.avatarUrl(user);
+        const userDto = UserMap.toDTO(user);
         let userDeleted;
 
         try {

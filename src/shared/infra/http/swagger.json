@@ -168,6 +168,48 @@
                 }
             }
         },
+        "/users/findbyemail": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Find User by Email",
+                "description": "Find User by Email",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "email": "admin@admin.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "email": "admin@admin.com",
+                        "name": "Admin",
+                        "lastName": "Administrator",
+                        "id": "e1aa16a8-4e85-4608-8346-37a11d07fd1c",
+                        "avatarUrl": "http://localhost:5000/avatar/1dd74b8d752bd4b43498a45c956ce0c8-perfil.jpg",
+                        "role": "ADMIN"
+                    },
+                    "404": {
+                        "description": "User doesn't exist"
+                    }
+                }
+            }
+        },
         "/users/avatar": {
             "patch": {
                 "tags": ["Users"],

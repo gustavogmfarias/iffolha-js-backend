@@ -10,59 +10,6 @@ import { IUpdateUserDTO } from "@modules/accounts/dtos/IUpdateUserDTO";
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
 
 export class UsersRepository implements IUsersRepository {
-    async findByName(
-        name: string,
-        { page, perPage }: IPaginationRequestDTO
-    ): Promise<User[] | null> {
-        let users: User[];
-
-        if (!page || !perPage) {
-            users = await prisma.user.findMany({
-                where: {
-                    name: {
-                        contains: name,
-                        mode: "insensitive",
-                    },
-                },
-                orderBy: { name: "desc" },
-            });
-        } else {
-            users = await prisma.user.findMany({
-                where: {
-                    name: {
-                        contains: name,
-                        mode: "insensitive",
-                    },
-                },
-                orderBy: { name: "desc" },
-                take: Number(perPage),
-                skip: (Number(page) - 1) * Number(perPage),
-            });
-        }
-
-        return users;
-    }
-
-    async findByEmail(email: string): Promise<User | null> {
-        const user = await prisma.user.findUnique({
-            where: {
-                email,
-            },
-        });
-
-        return user;
-    }
-
-    async findById(id: string): Promise<User | null> {
-        const user = await prisma.user.findUnique({
-            where: {
-                id,
-            },
-        });
-
-        return user;
-    }
-
     async create({
         name,
         lastName,
@@ -117,6 +64,59 @@ export class UsersRepository implements IUsersRepository {
                 password: newPassword,
             },
         });
+    }
+
+    async findByName(
+        name: string,
+        { page, perPage }: IPaginationRequestDTO
+    ): Promise<User[] | null> {
+        let users: User[];
+
+        if (!page || !perPage) {
+            users = await prisma.user.findMany({
+                where: {
+                    name: {
+                        contains: name,
+                        mode: "insensitive",
+                    },
+                },
+                orderBy: { name: "desc" },
+            });
+        } else {
+            users = await prisma.user.findMany({
+                where: {
+                    name: {
+                        contains: name,
+                        mode: "insensitive",
+                    },
+                },
+                orderBy: { name: "desc" },
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
+            });
+        }
+
+        return users;
+    }
+
+    async findByEmail(email: string): Promise<User | null> {
+        const user = await prisma.user.findUnique({
+            where: {
+                email,
+            },
+        });
+
+        return user;
+    }
+
+    async findById(id: string): Promise<User | null> {
+        const user = await prisma.user.findUnique({
+            where: {
+                id,
+            },
+        });
+
+        return user;
     }
 
     async avatarUrl(user: User): Promise<string> {
