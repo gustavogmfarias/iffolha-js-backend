@@ -8,6 +8,8 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { prisma } from "@shared/database/prismaClient";
 import { IUpdateUserDTO } from "@modules/accounts/dtos/IUpdateUserDTO";
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
+import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
+import { UserMap } from "@modules/accounts/mapper/UserMap";
 
 export class UsersRepository implements IUsersRepository {
     async create({
@@ -167,5 +169,12 @@ export class UsersRepository implements IUsersRepository {
             return true;
         }
         return false;
+    }
+
+    async convertDTO(user: User): Promise<IUserResponseDTO> {
+        user.avatarUrl = await this.avatarUrl(user);
+        const userDTO = UserMap.toDTO(user);
+
+        return userDTO;
     }
 }

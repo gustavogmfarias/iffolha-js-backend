@@ -3,6 +3,7 @@ import { Role, User } from "@prisma/client";
 import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
 import { IUpdateUserDTO } from "../dtos/IUpdateUserDTO";
 import { IPaginationRequestDTO } from "../dtos/IPaginationRequestDTO";
+import { IUserResponseDTO } from "../dtos/IUserResponseDTO";
 
 export interface IUsersRepository {
     create(data: ICreateUserDTO): Promise<User>;
@@ -18,4 +19,5 @@ export interface IUsersRepository {
     avatarUrl(user: User): Promise<string>;
     changeOwnPassword(data: IUpdateUserDTO): Promise<void>;
     findRoleByName(name: string): Promise<boolean>;
+    convertDTO(user: User): Promise<IUserResponseDTO>;
 }

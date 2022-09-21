@@ -9,8 +9,8 @@ import { DeleteUserController } from "@modules/accounts/useCases/deleteUser/Dele
 import { UpdateUserController } from "@modules/accounts/useCases/updateUser/UpdateUserController";
 import { ChangeOwnPasswordController } from "@modules/accounts/useCases/changeOwnPassword/ChangeOwnPasswordController";
 import { FindByNameController } from "@modules/accounts/useCases/findByName/FindByNameController";
-import { FindByIdController } from "@modules/accounts/useCases/findById/FindByIdController";
 import { FindUserByEmailController } from "@modules/accounts/useCases/findUserByEmail/FindUserByEmailController";
+import { FindUserByIdController } from "@modules/accounts/useCases/findUserById/FindUserByIdController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -26,7 +26,7 @@ const deleteUserController = new DeleteUserController();
 const updateUserController = new UpdateUserController();
 const changeOwnPasswordController = new ChangeOwnPasswordController();
 const findByNameController = new FindByNameController();
-const findByIdController = new FindByIdController();
+const findUserByIdController = new FindUserByIdController();
 const findUserByEmailController = new FindUserByEmailController();
 
 usersRoutes.post(
@@ -70,7 +70,11 @@ usersRoutes.get(
     findUserByEmailController.handle
 );
 
-usersRoutes.get("/findbyid", ensureAuthenticated, findByIdController.handle);
+usersRoutes.get(
+    "/findbyid",
+    ensureAuthenticated,
+    findUserByIdController.handle
+);
 
 usersRoutes.delete(
     "/:id",

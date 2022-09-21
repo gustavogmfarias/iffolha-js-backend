@@ -6,21 +6,19 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class FindByIdUseCase {
+class FindUserByIdUseCase {
     constructor(
         @inject("UsersRepository") private usersRepository: IUsersRepository
     ) {}
 
-    async execute(id: string): Promise<IUserResponseDTO | null> {
+    async execute({ id }): Promise<IUserResponseDTO | null> {
         const user = await this.usersRepository.findById(id);
 
         if (!user) {
             throw new AppError("User doesn't exist", 404);
         }
-
-        const userDTO = UserMap.toDTO(user);
-
+        const userDTO = await this.usersRepository.convertDTO(user);
         return userDTO;
     }
 }
-export { FindByIdUseCase };
+export { FindUserByIdUseCase };

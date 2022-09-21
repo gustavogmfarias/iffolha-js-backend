@@ -18,10 +18,9 @@ class FindUserByEmailUseCase {
             throw new AppError("User doesn't exist", 404);
         }
 
-        user.avatarUrl = await this.usersRepository.avatarUrl(user);
-        const userDto = UserMap.toDTO(user);
+        const userDTO = await this.usersRepository.convertDTO(user);
 
-        return userDto;
+        return userDTO;
     }
 }
 export { FindUserByEmailUseCase };

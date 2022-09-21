@@ -23,8 +23,7 @@ class DeleteUserUseCase {
         if (!user) {
             throw new AppError("User doesn't exists", 404);
         }
-        user.avatarUrl = await this.usersRepository.avatarUrl(user);
-        const userDto = UserMap.toDTO(user);
+        const userDto = await this.usersRepository.convertDTO(user);
         let userDeleted;
 
         try {

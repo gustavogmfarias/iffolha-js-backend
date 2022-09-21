@@ -169,7 +169,7 @@
             }
         },
         "/users/findbyemail": {
-            "post": {
+            "get": {
                 "tags": ["Users"],
                 "summary": "Find User by Email",
                 "description": "Find User by Email",
@@ -178,23 +178,49 @@
                         "bearerAuth": []
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string"
-                                    }
-                                },
-                                "example": {
-                                    "email": "admin@admin.com"
-                                }
-                            }
-                        }
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "E-mail to search",
+                        "required": true,
+                        "Schema": { "type": "string" }
                     }
-                },
+                ],
+                "responses": {
+                    "200": {
+                        "email": "admin@admin.com",
+                        "name": "Admin",
+                        "lastName": "Administrator",
+                        "id": "e1aa16a8-4e85-4608-8346-37a11d07fd1c",
+                        "avatarUrl": "http://localhost:5000/avatar/1dd74b8d752bd4b43498a45c956ce0c8-perfil.jpg",
+                        "role": "ADMIN"
+                    },
+                    "404": {
+                        "description": "User doesn't exist"
+                    }
+                }
+            }
+        },
+        "/users/findbyid": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Find User by Id",
+                "description": "Find User by Id",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Id to search",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "email": "admin@admin.com",
