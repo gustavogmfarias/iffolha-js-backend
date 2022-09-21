@@ -270,13 +270,15 @@
                     }
                 ],
                 "responses": {
-                    "200": description: { {
-                        "email": "admin@admin.com",
-                        "name": "Admin",
-                        "lastName": "Administrator",
-                        "id": "e1aa16a8-4e85-4608-8346-37a11d07fd1c",
-                        "avatarUrl": "http://localhost:5000/avatar/1dd74b8d752bd4b43498a45c956ce0c8-perfil.jpg",
-                        "role": "ADMIN"
+                    "200": {
+                        "description": {
+                            "email": "admin@admin.com",
+                            "name": "Admin",
+                            "lastName": "Administrator",
+                            "id": "e1aa16a8-4e85-4608-8346-37a11d07fd1c",
+                            "avatarUrl": "http://localhost:5000/avatar/1dd74b8d752bd4b43498a45c956ce0c8-perfil.jpg",
+                            "role": "ADMIN"
+                        }
                     }
                 }
             }
