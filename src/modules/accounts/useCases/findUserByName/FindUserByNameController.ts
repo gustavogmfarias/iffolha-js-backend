@@ -1,7 +1,7 @@
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { FindByNameUseCase } from "./FindByNameUseCase";
+import { FindUserByNameUseCase } from "./FindUserByNameUseCase";
 
 interface IRequest {
     page?: number;
@@ -9,18 +9,21 @@ interface IRequest {
     name?: string;
 }
 
-class FindByNameController {
+class FindUserByNameController {
     async handle(request: Request, response: Response): Promise<Response> {
-        const findByNameUseCase = container.resolve(FindByNameUseCase);
+        const findUserByNameUseCase = container.resolve(FindUserByNameUseCase);
 
-        const { name }: IRequest = request.body;
+        const { name }: IRequest = request.query;
 
         const { page, perPage }: IRequest = request.query;
 
-        const all = await findByNameUseCase.execute(name, { page, perPage });
+        const all = await findUserByNameUseCase.execute(name, {
+            page,
+            perPage,
+        });
 
         return response.json(all);
     }
 }
 
-export { FindByNameController };
+export { FindUserByNameController };

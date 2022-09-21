@@ -6,7 +6,7 @@ import { User } from "@prisma/client";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class FindByNameUseCase {
+class FindUserByNameUseCase {
     constructor(
         @inject("UsersRepository") private usersRepository: IUsersRepository
     ) {}
@@ -20,11 +20,13 @@ class FindByNameUseCase {
             perPage,
         });
 
-        const usersDTO = users.map((user) => {
-            return UserMap.toDTO(user);
+        const usersDTO: IUserResponseDTO[] = [];
+        // parei em fazer o findbyname funcionar com o dto;
+        users.map(async (user) => {
+            usersDTO.push(await this.usersRepository.convertDTO(user));
         });
 
         return usersDTO;
     }
 }
-export { FindByNameUseCase };
+export { FindUserByNameUseCase };

@@ -8,7 +8,7 @@ import { ListUsersController } from "@modules/accounts/useCases/ListUsers/ListUs
 import { DeleteUserController } from "@modules/accounts/useCases/deleteUser/DeleteUserController";
 import { UpdateUserController } from "@modules/accounts/useCases/updateUser/UpdateUserController";
 import { ChangeOwnPasswordController } from "@modules/accounts/useCases/changeOwnPassword/ChangeOwnPasswordController";
-import { FindByNameController } from "@modules/accounts/useCases/findByName/FindByNameController";
+import { FindUserByNameController } from "@modules/accounts/useCases/findUserByName/FindUserByNameController";
 import { FindUserByEmailController } from "@modules/accounts/useCases/findUserByEmail/FindUserByEmailController";
 import { FindUserByIdController } from "@modules/accounts/useCases/findUserById/FindUserByIdController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
@@ -25,7 +25,7 @@ const listUsersController = new ListUsersController();
 const deleteUserController = new DeleteUserController();
 const updateUserController = new UpdateUserController();
 const changeOwnPasswordController = new ChangeOwnPasswordController();
-const findByNameController = new FindByNameController();
+const findUserByNameController = new FindUserByNameController();
 const findUserByIdController = new FindUserByIdController();
 const findUserByEmailController = new FindUserByEmailController();
 
@@ -61,7 +61,7 @@ usersRoutes.get(
 usersRoutes.get(
     "/findbyname",
     ensureAuthenticated,
-    findByNameController.handle
+    findUserByNameController.handle
 );
 
 usersRoutes.get(
