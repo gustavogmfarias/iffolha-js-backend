@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
 import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
 
@@ -82,7 +83,7 @@ export class UsersRepository implements IUsersRepository {
                         mode: "insensitive",
                     },
                 },
-                orderBy: { name: "desc" },
+                orderBy: { name: "asc" },
             });
         } else {
             users = await prisma.user.findMany({
@@ -92,7 +93,7 @@ export class UsersRepository implements IUsersRepository {
                         mode: "insensitive",
                     },
                 },
-                orderBy: { name: "desc" },
+                orderBy: { name: "asc" },
                 take: Number(perPage),
                 skip: (Number(page) - 1) * Number(perPage),
             });
@@ -121,7 +122,7 @@ export class UsersRepository implements IUsersRepository {
         return user;
     }
 
-    async avatarUrl(user: User): Promise<string> {
+    avatarUrl(user: User): string {
         switch (process.env.DISK) {
             case "local":
                 return `${process.env.APP_API_URL}/avatar/${user.avatarUrl}`;
@@ -171,8 +172,8 @@ export class UsersRepository implements IUsersRepository {
         return false;
     }
 
-    async convertDTO(user: User): Promise<IUserResponseDTO> {
-        user.avatarUrl = await this.avatarUrl(user);
+    convertDTO(user: User): IUserResponseDTO {
+        user.avatarUrl = this.avatarUrl(user);
         const userDTO = UserMap.toDTO(user);
 
         return userDTO;

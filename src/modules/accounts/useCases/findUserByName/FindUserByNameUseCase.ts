@@ -22,8 +22,8 @@ class FindUserByNameUseCase {
 
         const usersDTO: IUserResponseDTO[] = [];
         // parei em fazer o findbyname funcionar com o dto;
-        users.map(async (user) => {
-            usersDTO.push(await this.usersRepository.convertDTO(user));
+        users.map((user) => {
+            return usersDTO.push(this.usersRepository.convertDTO(user));
         });
 
         return usersDTO;

@@ -236,6 +236,51 @@
                 }
             }
         },
+        "/users/findbyname": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Find User by Name",
+                "description": "Find User by Name",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name to search. You can seach with only part of the name",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "number of the Page to Search",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Amount of results per",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": description: { {
+                        "email": "admin@admin.com",
+                        "name": "Admin",
+                        "lastName": "Administrator",
+                        "id": "e1aa16a8-4e85-4608-8346-37a11d07fd1c",
+                        "avatarUrl": "http://localhost:5000/avatar/1dd74b8d752bd4b43498a45c956ce0c8-perfil.jpg",
+                        "role": "ADMIN"
+                    }
+                }
+            }
+        },
         "/users/avatar": {
             "patch": {
                 "tags": ["Users"],

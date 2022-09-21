@@ -16,8 +16,8 @@ export interface IUsersRepository {
         data: IPaginationRequestDTO
     ): Promise<User[] | null>;
     update(data: IUpdateUserDTO): Promise<User>;
-    avatarUrl(user: User): Promise<string>;
+    avatarUrl(user: User): string;
     changeOwnPassword(data: IUpdateUserDTO): Promise<void>;
     findRoleByName(name: string): Promise<boolean>;
-    convertDTO(user: User): Promise<IUserResponseDTO>;
+    convertDTO(user: User): IUserResponseDTO;
 }
