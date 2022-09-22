@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { UserMap } from "@modules/accounts/mapper/UserMap";
 import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
+import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
 
 @injectable()
 class ListUsersUseCase {
@@ -10,12 +10,17 @@ class ListUsersUseCase {
         private usersRepository: IUsersRepository
     ) {}
 
-    async execute({ page, perPage }): Promise<IUserResponseDTO[]> {
+    async execute({
+        page,
+        perPage,
+    }: IPaginationRequestDTO): Promise<IUserResponseDTO[]> {
         const users = await this.usersRepository.listUsers({ page, perPage });
 
-        const usersDTO = users.map((user) => {
-            return UserMap.toDTO(user);
+        const usersDTO: IUserResponseDTO[] = [];
+        users.map((user) => {
+            return usersDTO.push(this.usersRepository.convertDTO(user));
         });
+
         return usersDTO;
     }
 }

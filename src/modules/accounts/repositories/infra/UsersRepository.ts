@@ -133,13 +133,13 @@ export class UsersRepository implements IUsersRepository {
         }
     }
 
-    async listUsers({ page, perPage }): Promise<User[]> {
+    async listUsers({ page, perPage }: IPaginationRequestDTO): Promise<User[]> {
         let users: User[];
 
         if (!page || !perPage) {
             users = await prisma.user.findMany({
                 orderBy: {
-                    id: "desc",
+                    name: "asc",
                 },
             });
         } else {
@@ -147,7 +147,7 @@ export class UsersRepository implements IUsersRepository {
                 take: Number(perPage),
                 skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {
-                    id: "desc",
+                    name: "asc",
                 },
             });
         }
