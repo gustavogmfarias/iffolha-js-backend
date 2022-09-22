@@ -20,7 +20,7 @@ class UsersTokensRepository implements IUsersTokensRepository {
     async findByUserIdAndRefreshToken(
         userId: string,
         refreshToken: string
-    ): Promise<UserToken> {
+    ): Promise<UserToken | null> {
         const userTokens = await prisma.userToken.findFirst({
             where: { userId, refreshToken },
         });
