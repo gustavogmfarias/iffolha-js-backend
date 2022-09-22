@@ -17,7 +17,7 @@ class FindUserByIdUseCase {
         if (!user) {
             throw new AppError("User doesn't exist", 404);
         }
-        const userDTO = await this.usersRepository.convertDTO(user);
+        const userDTO = this.usersRepository.convertDTO(user);
         return userDTO;
     }
 }

@@ -13,8 +13,8 @@ class ProfileUserUseCase {
 
     async execute(id: string): Promise<IUserResponseDTO> {
         const user = await this.usersRepository.findById(id);
-        user.avatarUrl = await this.usersRepository.avatarUrl(user);
-        return UserMap.toDTO(user);
+        const userDTO = this.usersRepository.convertDTO(user);
+        return userDTO;
     }
 }
 
