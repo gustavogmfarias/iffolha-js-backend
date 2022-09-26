@@ -97,6 +97,6 @@ describe("Accounts - Change Own Password Controller", () => {
             })
             .set({ Authorization: `Bearer ${token}` });
 
-        expect(response.body.message).toBe("Passwords don't match");
+        expect(response.body.message).toBe("Passwords do not match!");
     });
 });

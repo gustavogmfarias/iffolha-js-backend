@@ -1,6 +1,7 @@
 import { IUpdateUserDTO } from "@modules/accounts/dtos/IUpdateUserDTO";
+import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { User } from "@prisma/client";
+import { Log, User } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { compare, hash } from "bcryptjs";
@@ -24,7 +25,7 @@ class UpdateUserUseCase {
         newPassword,
         previousPassword,
         confirmNewPassword,
-    }: IUpdateUserDTO): Promise<User> {
+    }: IUpdateUserDTO): Promise<(IUserResponseDTO | Log)[]> {
         const userToEdit = await this.usersRepository.findById(userToEditId);
 
         let passwordHash;
@@ -36,14 +37,14 @@ class UpdateUserUseCase {
             );
 
             if (!passwordMatch) {
-                throw new AppError("Last Password doesn't match", 401);
+                throw new AppError("Previous password is not correct", 401);
             }
         }
         if (newPassword && confirmNewPassword) {
             if (newPassword === confirmNewPassword) {
                 passwordHash = await hash(newPassword, 12);
             } else {
-                throw new AppError("Passwords don't match", 401);
+                throw new AppError("Passwords do not match!", 401);
             }
         }
 
@@ -56,16 +57,18 @@ class UpdateUserUseCase {
             role,
         });
 
+        const userEditedDTO = this.usersRepository.convertDTO(userEdited);
+
         const log = await this.logProvider.create({
             logRepository: "USER",
-            description: `Updated the user`,
+            description: `User successfully updated!`,
             previousContent: JSON.stringify(userToEdit),
             contentEdited: JSON.stringify(userEdited),
             editedByUserId: userAdminId,
             modelEditedId: userToEdit.id,
         });
 
-        return userEdited;
+        return [userEditedDTO, log];
     }
 }
 

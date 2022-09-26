@@ -35,8 +35,8 @@ describe("Delete User Controller", () => {
             .post("/sessions")
             .send({ email: "fabiano@gmail.com", password: "fabiano" });
 
-        expect(log.description).toBe("User deleted successfully!");
-        expect(userLogin.body.message).toBe("Email or password incorrect");
+        expect(log.description).toBe("User successfully deleted!");
+        expect(userLogin.body.message).toBe("Incorrect email or password!");
         expect(userLogin.status).toBe(401);
         expect(responseDelete.status).toBe(200);
     });

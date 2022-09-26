@@ -37,7 +37,7 @@ class ChangeOwnPasswordUseCase {
         if (newPassword === confirmNewPassword) {
             passwordHash = await hash(newPassword, 12);
         } else {
-            throw new AppError("Passwords don't match", 401);
+            throw new AppError("Passwords do not match!", 401);
         }
 
         let userUpdated: User;

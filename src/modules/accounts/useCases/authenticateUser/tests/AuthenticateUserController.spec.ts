@@ -20,7 +20,7 @@ describe("Authenticate User Controller", () => {
             .post("/sessions")
             .send({ email: "testedeusuario", password: "testedeusuario" });
 
-        expect(responseToken.body.message).toBe("Email or password incorrect");
+        expect(responseToken.body.message).toBe("Incorrect email or password!");
     });
 
     it("Should not be able to authenticate if password doesn't match", async () => {
@@ -28,6 +28,6 @@ describe("Authenticate User Controller", () => {
             .post("/sessions")
             .send({ email: "admin", password: "amin1" });
 
-        expect(responseToken.body.message).toBe("Email or password incorrect");
+        expect(responseToken.body.message).toBe("Incorrect email or password!");
     });
 });

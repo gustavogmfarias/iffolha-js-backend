@@ -34,7 +34,7 @@ class DeleteUserUseCase {
 
         const log = await this.logProvider.create({
             logRepository: "USER",
-            description: `User deleted successfully!`,
+            description: `User successfully deleted!`,
             previousContent: JSON.stringify(userDto),
             contentEdited: JSON.stringify(userDto),
             editedByUserId: userAdminId,

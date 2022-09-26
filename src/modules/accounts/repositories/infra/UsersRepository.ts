@@ -173,7 +173,11 @@ export class UsersRepository implements IUsersRepository {
     }
 
     convertDTO(user: User): IUserResponseDTO {
-        user.avatarUrl = this.avatarUrl(user);
+        if (!user.avatarUrl) {
+            user.avatarUrl = "Sem avatar";
+        } else {
+            user.avatarUrl = this.avatarUrl(user);
+        }
         const userDTO = UserMap.toDTO(user);
 
         return userDTO;

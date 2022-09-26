@@ -42,14 +42,14 @@ class AuthenticateUserUseCase {
         } = auth;
 
         if (!user) {
-            throw new AppError("Email or password incorrect", 401);
+            throw new AppError("Incorrect email or password!", 401);
         }
 
         // senha está correta?
         const passwordMatch = await compare(password, user.password);
 
         if (!passwordMatch) {
-            throw new AppError("Email or password incorrect", 401);
+            throw new AppError("Incorrect email or password!", 401);
         }
 
         // gerar jswonwebtoken

@@ -428,7 +428,7 @@
                         "description": "Last Password doesn't match"
                     },
                     "401": {
-                        "description": "Passwords don't match"
+                        "description": "Passwords do not match!"
                     }
                 }
             }
@@ -501,7 +501,7 @@
                         "description": "Last Password doesn't match"
                     },
                     "401 B": {
-                        "description": "Passwords don't match"
+                        "description": "Passwords do not match!"
                     }
                 }
             }
