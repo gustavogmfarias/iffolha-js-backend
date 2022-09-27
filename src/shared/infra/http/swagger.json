@@ -362,7 +362,6 @@
                 "summary": "Change Avatar",
                 "description": "Upload a new Avatar",
                 "security": [{ "bearerAuth": [] }],
-
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
