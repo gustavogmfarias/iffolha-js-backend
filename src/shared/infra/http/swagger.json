@@ -129,6 +129,13 @@
                         "description": "Number of objects in the page of view",
                         "required": false,
                         "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Initial or part of the name",
+                        "required": false,
+                        "Schema": { "type": "string" }
                     }
                 ],
                 "responses": {

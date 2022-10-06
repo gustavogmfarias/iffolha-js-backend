@@ -6,10 +6,13 @@ import { ListUsersUseCase } from "./ListUsersUseCase";
 class ListUsersController {
     async handle(request: Request, response: Response): Promise<Response> {
         const listUsersUseCase = container.resolve(ListUsersUseCase);
-
+        const { name } = request.query;
         const { perPage, page }: IPaginationRequestDTO = request.query;
 
-        const all = await listUsersUseCase.execute({ page, perPage });
+        const all = await listUsersUseCase.execute(String(name), {
+            page,
+            perPage,
+        });
 
         return response.json(all);
     }

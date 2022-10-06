@@ -5,6 +5,8 @@
 import { app } from "@shared/infra/http/app";
 import request from "supertest";
 
+jest.setTimeout(200000);
+
 describe("USER - Update User Controller", () => {
     it("Should able to fully update a user", async () => {
         jest.setTimeout(200000);
@@ -238,7 +240,6 @@ describe("USER - Update User Controller", () => {
     });
 
     it("Should be able to update only a user's password", async () => {
-        jest.setTimeout(200000);
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });

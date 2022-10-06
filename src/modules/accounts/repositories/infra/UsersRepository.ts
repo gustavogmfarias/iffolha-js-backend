@@ -133,17 +133,32 @@ export class UsersRepository implements IUsersRepository {
         }
     }
 
-    async listUsers({ page, perPage }: IPaginationRequestDTO): Promise<User[]> {
+    async listUsers(
+        { page, perPage }: IPaginationRequestDTO,
+        name?: string
+    ): Promise<User[]> {
         let users: User[];
 
         if (!page || !perPage) {
             users = await prisma.user.findMany({
+                where: {
+                    name: {
+                        contains: name,
+                        mode: "insensitive",
+                    },
+                },
                 orderBy: {
                     name: "asc",
                 },
             });
         } else {
             users = await prisma.user.findMany({
+                where: {
+                    name: {
+                        contains: name,
+                        mode: "insensitive",
+                    },
+                },
                 take: Number(perPage),
                 skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {

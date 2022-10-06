@@ -10,11 +10,17 @@ class ListUsersUseCase {
         private usersRepository: IUsersRepository
     ) {}
 
-    async execute({
-        page,
-        perPage,
-    }: IPaginationRequestDTO): Promise<IUserResponseDTO[]> {
-        const users = await this.usersRepository.listUsers({ page, perPage });
+    async execute(
+        name: string,
+        { page, perPage }: IPaginationRequestDTO
+    ): Promise<IUserResponseDTO[]> {
+        const users = await this.usersRepository.listUsers(
+            {
+                page,
+                perPage,
+            },
+            name
+        );
 
         const usersDTO: IUserResponseDTO[] = [];
         users.map((user) => {

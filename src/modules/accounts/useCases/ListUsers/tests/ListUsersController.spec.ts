@@ -61,7 +61,7 @@ describe("USER - List Users Controller", () => {
         const { token } = responseToken.body;
 
         const searchA = await request(app)
-            .get(`/users`)
+            .get(`/users?page&perPage&name`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
@@ -76,15 +76,15 @@ describe("USER - List Users Controller", () => {
         const { token } = responseToken.body;
 
         const searchA = await request(app)
-            .get(`/users?page=1&perPage=1`)
+            .get(`/users?page=1&perPage=1&name`)
             .set({ Authorization: `Bearer ${token}` });
 
         const searchA2 = await request(app)
-            .get(`/users?page=2&perPage=1`)
+            .get(`/users?page=2&perPage=1&name`)
             .set({ Authorization: `Bearer ${token}` });
 
         const searchA6 = await request(app)
-            .get(`/users?page=6&perPage=1`)
+            .get(`/users?page=6&perPage=1&name`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
@@ -92,6 +92,25 @@ describe("USER - List Users Controller", () => {
         expect(searchA.body[0].name).toBe("Aa aa");
         expect(searchA2.body[0].name).toBe("Admin");
         expect(searchA6.body[0].name).toBe("Gustavo");
+    });
+
+    it("Should be able to list the users searching by name", async () => {
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "admin@admin.com", password: "admin" });
+        const { token } = responseToken.body;
+
+        const searchA = await request(app)
+            .get(`/users?name=admin`)
+            .set({ Authorization: `Bearer ${token}` });
+
+        const searchA2 = await request(app)
+            .get(`/users?name=g`)
+            .set({ Authorization: `Bearer ${token}` });
+
+        expect(searchA.status).toBe(200);
+        expect(searchA.body).toHaveLength(1);
+        expect(searchA2.body).toHaveLength(1);
     });
 
     it("Should not be able to list all users if you was not logged", async () => {
