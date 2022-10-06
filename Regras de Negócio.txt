@@ -2,11 +2,7 @@
 **adicionar data certa em vez do padrão do prisma
 
 # Logs
-+Should be able to include a log after every +call to the database
-Should be able to list the logs
-Should be able to filter by period
-
-
++ATUALIZAR BUSCA LOG POR REPOSITORY NO TEXTO 
 
 
 # Persistir Notícias

@@ -7,14 +7,14 @@ import { ListLogsUseCase } from "./ListLogsUseCase";
 class ListLogsController {
     async handle(request: Request, response: Response): Promise<Response> {
         const listLogsUseCase = container.resolve(ListLogsUseCase);
-        let {
+        const {
             startDate,
             endDate,
             logRepository,
             description,
             editedByUserId,
             modelEditedId,
-        } = request.query;
+        }: ListLogsProps = request.query;
 
         const { page, perPage }: IPaginationRequestDTO = request.query;
 

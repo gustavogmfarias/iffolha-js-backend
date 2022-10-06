@@ -28,11 +28,10 @@ class ListLogsUseCase {
         }: ListLogsProps,
         { page, perPage }: IPaginationRequestDTO
     ): Promise<Log[]> {
-        if (endDate && startDate) {
-            endDate = this.dateProvider.convertToUtc3Hours(endDate);
-
+        if (endDate) {
             endDate = this.dateProvider.addDaysToDate(endDate, 1);
         }
+
         const logs = await this.logProvider.listLogs(
             {
                 startDate,

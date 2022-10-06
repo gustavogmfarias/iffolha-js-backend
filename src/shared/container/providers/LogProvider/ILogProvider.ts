@@ -3,12 +3,12 @@ import { Log, LogRepository } from "@prisma/client";
 import { ILogCreateDTO } from "./dtos/ILogCreateDTO";
 
 export interface ListLogsProps {
-    startDate: Date;
-    endDate: Date;
-    logRepository: LogRepository;
-    description: string;
-    editedByUserId: string;
-    modelEditedId: string;
+    startDate?: Date;
+    endDate?: Date;
+    logRepository?: LogRepository;
+    description?: string;
+    editedByUserId?: string;
+    modelEditedId?: string;
 }
 
 export interface ILogProvider {

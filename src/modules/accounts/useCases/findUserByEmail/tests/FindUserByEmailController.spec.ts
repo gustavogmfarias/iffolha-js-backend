@@ -14,7 +14,6 @@ describe("USER - Find by Email Controller", () => {
 
         const response = await request(app)
             .get(`/users/findbyemail?email=admin%40admin.com`)
-            .send({ email: "admin@admin.com" })
             .set({ Authorization: `Bearer ${token}` });
 
         expect(response.status).toBe(200);

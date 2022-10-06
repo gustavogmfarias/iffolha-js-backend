@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
@@ -23,6 +23,10 @@ class DayjsDateProvider implements IDateProvider {
 
     convertToString(date: Date): string {
         return dayjs(date).toISOString();
+    }
+
+    convertToDate(date: string): Date {
+        return new Date(date);
     }
 
     onlyDate(date: Date): string {
