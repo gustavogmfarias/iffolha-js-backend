@@ -10,10 +10,10 @@
         "test": "jest  --runInBand"
     },
     "dependencies": {
-        "@prisma/client": "^3.14.0",
+        "@prisma/client": "^4.4.0",
+        "@types/mz": "^2.7.4",
         "@types/supertest": "^2.0.12",
         "@types/uuid": "^8.3.4",
-        "@types/mz": "^2.7.4",
         "aws-sdk": "^2.1137.0",
         "bcryptjs": "^2.4.3",
         "class-transformer": "^0.5.1",
@@ -57,7 +57,7 @@
         "mz": "^2.7.0",
         "nodemon": "^2.0.19",
         "prettier": "^2.6.2",
-        "prisma": "^3.14.0",
+        "prisma": "^4.4.0",
         "sucrase": "^3.23.0",
         "supertest": "^6.2.4",
         "ts-node-dev": "^1.1.8",

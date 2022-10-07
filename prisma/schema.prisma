@@ -19,17 +19,19 @@ enum Role {
 }
 
 model User {
-    id        String   @id @default(uuid())
-    name      String
-    lastName  String
-    password  String
-    email     String   @unique
-    createdAt DateTime @default(now())
-    avatarUrl String?
-    role      Role     @default(USER)
-
-    userToken UserToken[]
-    Log       Log[]
+    id               String             @id @default(uuid())
+    name             String
+    lastName         String
+    password         String
+    email            String             @unique
+    createdAt        DateTime           @default(now())
+    avatarUrl        String?
+    role             Role               @default(USER)
+    userToken        UserToken[]
+    Log              Log[]
+    Publisher        Report[]           @relation("Publisher")
+    Editor           Report[]           @relation("Editor")
+    AuthorsOnReports AuthorsOnReports[]
 
     @@map("users")
 }
@@ -64,4 +66,39 @@ enum LogRepository {
     USER
     USERTOKEN
     LOG
+}
+
+model Report {
+    id                String             @id @default(uuid())
+    title             String
+    subTitle          String
+    content           String
+    images            ReportImages[]
+    mainImage         String
+    publishedBy       User               @relation("Publisher", fields: [publishedByUserId], references: [id], onDelete: SetNull)
+    editedBy          User?              @relation("Editor", fields: [editedByUserId], references: [id], onDelete: SetNull)
+    publishedByUserId String
+    editedByUserId    String
+    publishedDate     DateTime
+    updatedDate       DateTime
+    isHighlight       Boolean
+    url               String
+    AuthorsOnReports  AuthorsOnReports[]
+}
+
+model AuthorsOnReports {
+    report   Report @relation(fields: [reportId], references: [id])
+    reportId String
+    author   User   @relation(fields: [authorId], references: [id])
+    authorId String
+
+    @@id([reportId, authorId])
+}
+
+model ReportImages {
+    id       String  @id @default(uuid())
+    Report   Report  @relation(fields: [reportId], references: [id])
+    reportId String
+    image    String
+    isMain   Boolean
 }
