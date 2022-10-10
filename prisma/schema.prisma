@@ -84,6 +84,8 @@ model Report {
     isHighlight       Boolean
     url               String
     AuthorsOnReports  AuthorsOnReports[]
+
+    @@map("reports")
 }
 
 model AuthorsOnReports {
@@ -100,5 +102,5 @@ model ReportImages {
     Report   Report  @relation(fields: [reportId], references: [id])
     reportId String
     image    String
-    isMain   Boolean
+    isMain   Boolean @default(false)
 }
