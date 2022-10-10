@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "Report" (
+CREATE TABLE "Article" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "subTitle" TEXT NOT NULL,
@@ -12,37 +12,37 @@ CREATE TABLE "Report" (
     "isHighlight" BOOLEAN NOT NULL,
     "url" TEXT NOT NULL,
 
-    CONSTRAINT "Report_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Article_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "AuthorsOnReports" (
-    "reportId" TEXT NOT NULL,
+CREATE TABLE "AuthorsOnArticles" (
+    "ArticleId" TEXT NOT NULL,
     "authorId" TEXT NOT NULL,
 
-    CONSTRAINT "AuthorsOnReports_pkey" PRIMARY KEY ("reportId","authorId")
+    CONSTRAINT "AuthorsOnArticles_pkey" PRIMARY KEY ("ArticleId","authorId")
 );
 
 -- CreateTable
-CREATE TABLE "ReportImages" (
+CREATE TABLE "ArticleImages" (
     "id" TEXT NOT NULL,
-    "reportId" TEXT NOT NULL,
+    "ArticleId" TEXT NOT NULL,
     "image" TEXT NOT NULL,
 
-    CONSTRAINT "ReportImages_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ArticleImages_pkey" PRIMARY KEY ("id")
 );
 
 -- AddForeignKey
-ALTER TABLE "Report" ADD CONSTRAINT "Report_publishedByUserId_fkey" FOREIGN KEY ("publishedByUserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Article" ADD CONSTRAINT "Article_publishedByUserId_fkey" FOREIGN KEY ("publishedByUserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Report" ADD CONSTRAINT "Report_editedByUserId_fkey" FOREIGN KEY ("editedByUserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Article" ADD CONSTRAINT "Article_editedByUserId_fkey" FOREIGN KEY ("editedByUserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AuthorsOnReports" ADD CONSTRAINT "AuthorsOnReports_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AuthorsOnArticles" ADD CONSTRAINT "AuthorsOnArticles_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AuthorsOnReports" ADD CONSTRAINT "AuthorsOnReports_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "Report"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AuthorsOnArticles" ADD CONSTRAINT "AuthorsOnArticles_ArticleId_fkey" FOREIGN KEY ("ArticleId") REFERENCES "Article"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ReportImages" ADD CONSTRAINT "ReportImages_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "Report"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ArticleImages" ADD CONSTRAINT "ArticleImages_ArticleId_fkey" FOREIGN KEY ("ArticleId") REFERENCES "Article"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

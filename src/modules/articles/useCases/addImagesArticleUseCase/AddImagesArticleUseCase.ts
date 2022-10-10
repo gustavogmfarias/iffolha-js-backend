@@ -4,12 +4,12 @@ import { AppError } from "@shared/errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 interface IRequest {
-    reportId: string;
+    ArticleId: string;
     imageFile: string;
 }
 
 @injectable()
-class AddImagesReportUseCase {
+class AddImagesArticleUseCase {
     constructor(
         @inject("UsersRepository")
         private usersRepository: IUsersRepository,
@@ -17,8 +17,8 @@ class AddImagesReportUseCase {
         private storageProvider: IStorageProvider
     ) {}
 
-    async execute({ reportId, imageFile }: IRequest): Promise<void> {
-        const user = await this.usersRepository.findById(reportId);
+    async execute({ ArticleId, imageFile }: IRequest): Promise<void> {
+        const user = await this.usersRepository.findById(ArticleId);
 
         if (!user) {
             throw new AppError("User doesn't exist");
@@ -31,10 +31,10 @@ class AddImagesReportUseCase {
         await this.storageProvider.save(imageFile, "avatar");
 
         await this.usersRepository.update({
-            reportId,
+            ArticleId,
             imageFile,
         });
     }
 }
 
-export { AddImagesReportUseCase };
+export { AddImagesArticleUseCase };

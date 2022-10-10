@@ -19,19 +19,19 @@ enum Role {
 }
 
 model User {
-    id               String             @id @default(uuid())
-    name             String
-    lastName         String
-    password         String
-    email            String             @unique
-    createdAt        DateTime           @default(now())
-    avatarUrl        String?
-    role             Role               @default(USER)
-    userToken        UserToken[]
-    Log              Log[]
-    Publisher        Report[]           @relation("Publisher")
-    Editor           Report[]           @relation("Editor")
-    AuthorsOnReports AuthorsOnReports[]
+    id                String              @id @default(uuid())
+    name              String
+    lastName          String
+    password          String
+    email             String              @unique
+    createdAt         DateTime            @default(now())
+    avatarUrl         String?
+    role              Role                @default(USER)
+    userToken         UserToken[]
+    Log               Log[]
+    Publisher         Article[]           @relation("Publisher")
+    Editor            Article[]           @relation("Editor")
+    AuthorsOnArticles AuthorsOnArticles[]
 
     @@map("users")
 }
@@ -66,41 +66,100 @@ enum LogRepository {
     USER
     USERTOKEN
     LOG
+    ARTICLE
 }
 
-model Report {
-    id                String             @id @default(uuid())
+model Article {
+    id                String              @id @default(uuid())
     title             String
     subTitle          String
     content           String
-    images            ReportImages[]
-    mainImage         String
-    publishedBy       User               @relation("Publisher", fields: [publishedByUserId], references: [id], onDelete: SetNull)
-    editedBy          User?              @relation("Editor", fields: [editedByUserId], references: [id], onDelete: SetNull)
+    images            ArticleImages[]
+    mainImage         String?
+    publishedBy       User                @relation("Publisher", fields: [publishedByUserId], references: [id], onDelete: SetNull)
+    editedBy          User?               @relation("Editor", fields: [editedByUserId], references: [id], onDelete: SetNull)
     publishedByUserId String
-    editedByUserId    String
-    publishedDate     DateTime
-    updatedDate       DateTime
-    isHighlight       Boolean
+    editedByUserId    String?
+    publishedDate     DateTime            @default(now())
+    updatedDate       DateTime?           @default(now())
+    isHighlight       Boolean             @default(true)
     url               String
-    AuthorsOnReports  AuthorsOnReports[]
+    AuthorsOnArticles AuthorsOnArticles[]
+    TagsOnArticles    TagsOnArticles[]
+    CoursesOnArticles CoursesOnArticles[]
+    ClassOnArticles   ClassOnArticles[]
 
-    @@map("reports")
+    @@map("articles")
 }
 
-model AuthorsOnReports {
-    report   Report @relation(fields: [reportId], references: [id])
-    reportId String
-    author   User   @relation(fields: [authorId], references: [id])
-    authorId String
+model AuthorsOnArticles {
+    Article   Article @relation(fields: [ArticleId], references: [id])
+    ArticleId String
+    author    User    @relation(fields: [authorId], references: [id])
+    authorId  String
 
-    @@id([reportId, authorId])
+    @@id([ArticleId, authorId])
 }
 
-model ReportImages {
-    id       String  @id @default(uuid())
-    Report   Report  @relation(fields: [reportId], references: [id])
-    reportId String
-    image    String
-    isMain   Boolean @default(false)
+model ArticleImages {
+    id        String  @id @default(uuid())
+    Article   Article @relation(fields: [ArticleId], references: [id])
+    ArticleId String
+    image     String
+    isMain    Boolean @default(false)
+}
+
+model Tag {
+    id             String           @id @default(uuid())
+    name           String
+    TagsOnArticles TagsOnArticles[]
+
+    @@map("tags")
+}
+
+model TagsOnArticles {
+    Article   Article @relation(fields: [articleId], references: [id])
+    articleId String
+    tag       Tag     @relation(fields: [tagId], references: [id])
+    tagId     String
+
+    @@id([tagId, articleId])
+}
+
+model Course {
+    id                String              @id @default(uuid())
+    name              String
+    level             String
+    Class             Class[]
+    CoursesOnArticles CoursesOnArticles[]
+
+    @@map("courses")
+}
+
+model CoursesOnArticles {
+    Article   Article @relation(fields: [articleId], references: [id])
+    articleId String
+    course    Course  @relation(fields: [courseId], references: [id])
+    courseId  String
+
+    @@id([courseId, articleId])
+}
+
+model Class {
+    id              String            @id @default(uuid())
+    name            String
+    course          Course            @relation(fields: [courseId], references: [id])
+    courseId        String
+    ClassOnArticles ClassOnArticles[]
+
+    @@map("classes")
+}
+
+model ClassOnArticles {
+    Article   Article @relation(fields: [articleId], references: [id])
+    articleId String
+    class     Class   @relation(fields: [classId], references: [id])
+    classId   String
+
+    @@id([classId, articleId])
 }

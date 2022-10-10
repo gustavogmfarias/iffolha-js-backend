@@ -39,7 +39,7 @@ export default {
     // Indicates which provider should be used to instrument code for coverage
     coverageProvider: "v8",
 
-    // A list of reporter names that Jest uses when writing coverage reports
+    // A list of Reporter names that Jest uses when writing coverage Reports
     // coverageReporters: [
     //   "json",
     //   "text",
@@ -111,8 +111,8 @@ export default {
     // Run tests from one or more projects
     // projects: undefined,
 
-    // Use this configuration option to add custom reporters to Jest
-    // reporters: undefined,
+    // Use this configuration option to add custom Reporters to Jest
+    // Reporters: undefined,
 
     // Automatically reset mock state before every test
     // resetMocks: false,
@@ -143,7 +143,7 @@ export default {
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
     // setupFilesAfterEnv: [],
 
-    // The number of seconds after which a test is considered as slow and reported as such in the results.
+    // The number of seconds after which a test is considered as slow and Reported as such in the results.
     // slowTestThreshold: 5,
 
     // A list of paths to snapshot serializer modules Jest should use for snapshot testing
@@ -187,7 +187,7 @@ export default {
     // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
     // unmockedModulePathPatterns: undefined,
 
-    // Indicates whether each individual test should be reported during the run
+    // Indicates whether each individual test should be Reported during the run
     // verbose: undefined,
 
     // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode

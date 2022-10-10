@@ -34,6 +34,53 @@ async function main() {
 
         console.log(`Created user with id: ${user.id}`);
     }
+
+    const tag1 = await prisma.tag.create({
+        data: {
+            name: "serie a",
+        },
+    });
+
+    const tag2 = await prisma.tag.create({
+        data: {
+            name: "serie b",
+        },
+    });
+
+    const tag3 = await prisma.tag.create({
+        data: {
+            name: "serie C",
+        },
+    });
+
+    const course1 = await prisma.course.create({
+        data: {
+            name: "Sistemas de Informação",
+            level: "Superior",
+        },
+    });
+
+    const course2 = await prisma.course.create({
+        data: {
+            name: "Informática",
+            level: "Ensino Médico",
+        },
+    });
+
+    const class1 = await prisma.class.create({
+        data: {
+            name: "1º Período",
+            courseId: course1.id,
+        },
+    });
+
+    const class2 = await prisma.class.create({
+        data: {
+            name: "1ª Série",
+            courseId: course2.id,
+        },
+    });
+
     console.log(`Seeding finished.`);
 }
 

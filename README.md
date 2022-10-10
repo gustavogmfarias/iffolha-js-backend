@@ -63,27 +63,27 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 
 => Regras de Negócios
 
--   Should be able to include a new report;
--   Only Admin users, authors or editor users should be able to include a new report;
--   Only admin users or editor users should be able to delete a report;
--   Only admin users or editor users should be able to edit a report;
+-   Should be able to include a new Article;
+-   Only Admin users, authors or editor users should be able to include a new Article;
+-   Only admin users or editor users should be able to delete a Article;
+-   Only admin users or editor users should be able to edit a Article;
 -   Should be able to include a main image;
 -   Should not be able to include main images with different size than default;
 -   Should be able to include Tags;
 -   Should be able to add a new tag if it doesn't exist;
 -   Should be able to Delete tags;
--   Should be able to list all the reports;
--   Should be able to order the reports by date of inclusion;
--   Should be able to search the reports by title;
--   Should be able to search the reports by author;
--   Should be able to search the reports by the user who posted the report;
--   Should be able to search the report for period of dates;
+-   Should be able to list all the Articles;
+-   Should be able to order the Articles by date of inclusion;
+-   Should be able to search the Articles by title;
+-   Should be able to search the Articles by author;
+-   Should be able to search the Articles by the user who posted the Article;
+-   Should be able to search the Article for period of dates;
 -   Should be able to order the list clicking in the head of the table;
 -   should be able to set highlight news;
 -   The highlight news should to be show in order was posted;
--   Should be able to include a Category in the report;
+-   Should be able to include a Category in the Article;
 -   Should be able to add a new category in the moment of the inclusion if it doesn't exist;
--   Should be able to include the author in the report;
+-   Should be able to include the author in the Article;
 -   Should no be able to include the author doesn't exist;
 -   If the author doesn't exist, should be able to include in the moment that was called;
 -   Should be able to generate a slug after the include of the news;
@@ -96,30 +96,30 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 
 # Persistir Textos no Repositórios
 
--   Should be able to include a new article;
--   Only Admin users, authors or editor users should be able to include a new article;
--   Only admin users or editor users should be able to delete a article;
--   Only admin users or editor users should be able to edit a article;
+-   Should be able to include a new Article;
+-   Only Admin users, authors or editor users should be able to include a new Article;
+-   Only admin users or editor users should be able to delete a Article;
+-   Only admin users or editor users should be able to edit a Article;
 -   Should be able to include a main image;
 -   Should not be able to include main images with different size than default;
 -   Should be able to include Tags;
 -   Should be able to add a new tag if it doesn't exist;
 -   Should be able to Delete tags;
--   Should be able to list all the articles;
--   Should be able to order the articles by date of inclusion;
--   Should be able to search the articles by title;
--   Should be able to search the articles by author;
--   Should be able to search the articles by the user who posted the article;
--   Should be able to search the article for period of dates;
+-   Should be able to list all the Articles;
+-   Should be able to order the Articles by date of inclusion;
+-   Should be able to search the Articles by title;
+-   Should be able to search the Articles by author;
+-   Should be able to search the Articles by the user who posted the Article;
+-   Should be able to search the Article for period of dates;
 -   Should be able to order the list clicking in the head of the table;
--   Should be able to include a Category in the article;
+-   Should be able to include a Category in the Article;
 -   Should be able to add a new category in the moment of the inclusion if it doesn't exist;
--   Should be able to include the author in the article;
+-   Should be able to include the author in the Article;
 -   Should no be able to include the author doesn't exist;
 -   If the author doesn't exist, should be able to include in the moment that was called;
 -   Should be able to generate a slug after the include of the news;
 -   Should be able to generate a review in the moment of including;
--   Should be able to download reports of the news
+-   Should be able to download Articles of the news
 -   Should be Able to include Courses
 -   Should be able to remove Courses
 -   Should be able to include classes
@@ -132,8 +132,8 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 -   Only Admin users, authors or editor users should be able to include a new tag;
 -   Only admin users or editor users should be able to delete a tag;
 -   Only admin users or editor users should be able to edit a tag;
--   Should be able to list all the reports by tags;
--   Should be abble to list all the articles by tag;
+-   Should be able to list all the Articles by tags;
+-   Should be abble to list all the Articles by tag;
 
 # Persistir Categorias de Texto
 
@@ -142,8 +142,8 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 -   Only Admin users, authors or editor users should be able to include a new category;
 -   Only admin users or editor users should be able to delete a category;
 -   Only admin users or editor users should be able to edit a category;
--   Should be able to list all the reports by categorys;
--   Should be abble to list all the articles by category;
+-   Should be able to list all the Articles by categorys;
+-   Should be abble to list all the Articles by category;
 
 # Persistir Courses
 
@@ -152,8 +152,8 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 -   Only Admin users, authors or editor users should be able to include a new course;
 -   Only admin users or editor users should be able to delete a course;
 -   Only admin users or editor users should be able to edit a course;
--   Should be able to list all the reports by courses;
--   Should be abble to list all the articles by course;
+-   Should be able to list all the Articles by courses;
+-   Should be abble to list all the Articles by course;
 
 # Persistir Classes
 
@@ -162,8 +162,8 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 -   Only Admin users, authors or editor users should be able to include a new classe;
 -   Only admin users or editor users should be able to delete a classe;
 -   Only admin users or editor users should be able to edit a classe;
--   Should be able to list all the reports by classes;
--   Should be abble to list all the articles by classe;
+-   Should be able to list all the Articles by classes;
+-   Should be abble to list all the Articles by classe;
 
 # Configurations
 
