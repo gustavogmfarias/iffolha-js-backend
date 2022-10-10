@@ -27,8 +27,7 @@ export class ArticleRepository implements IArticleRepository {
     }
 
     generateUrl(title: string): string {
-        const url = title.toLowerCase().replace(" ", "-");
-
+        const url = title.toLowerCase().replaceAll(" ", "-").slice(0, 30);
         return url;
     }
 

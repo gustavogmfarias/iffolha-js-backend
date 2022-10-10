@@ -111,7 +111,7 @@ model ArticleImages {
 
 model Tag {
     id             String           @id @default(uuid())
-    name           String
+    name           String           @unique
     TagsOnArticles TagsOnArticles[]
 
     @@map("tags")
@@ -128,7 +128,7 @@ model TagsOnArticles {
 
 model Course {
     id                String              @id @default(uuid())
-    name              String
+    name              String              @unique
     level             String
     Class             Class[]
     CoursesOnArticles CoursesOnArticles[]
@@ -147,7 +147,7 @@ model CoursesOnArticles {
 
 model Class {
     id              String            @id @default(uuid())
-    name            String
+    name            String            @unique
     course          Course            @relation(fields: [courseId], references: [id])
     courseId        String
     ClassOnArticles ClassOnArticles[]
