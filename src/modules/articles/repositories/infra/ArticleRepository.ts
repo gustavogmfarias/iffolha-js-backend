@@ -1,7 +1,7 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
-import { Article, User } from "@prisma/client";
+import { Article } from "@prisma/client";
 import { prisma } from "@shared/database/prismaClient";
 import { IArticleRepository } from "../IArticleRepository";
 
@@ -36,29 +36,6 @@ export class ArticleRepository implements IArticleRepository {
             .replace(/([\u0300-\u036f]|[^0-9a-zA-Z\s])/g, "")
             .replaceAll(" ", "-");
         return url;
-    }
-
-    async updateAuthors(articleId: string, authors: string[]): Promise<void> {
-        const newAuthors: User[] = [];
-
-        for (const author in authors) {
-            const authorFound = prisma.user.findUnique({
-                where: { id: author },
-            });
-
-            if (authorFound) {
-                newAuthors.push(authorFound);
-            }
-        }
-
-        const article = await prisma.article.update({
-            where: { id: articleId },
-            data: {
-                AuthorsOnArticles: newAuthors,
-            },
-        });
-
-        return article;
     }
 
     updateImages(articleId: string, images: string[]): Promise<void> {

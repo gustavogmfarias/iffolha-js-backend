@@ -7,6 +7,5 @@ export interface IArticleRepository {
     generateUrl(title: string): string;
     generateContentSummary(content: string): string;
 
-    updateAuthors(articleId: string, authors: string[]): Promise<void>;
     updateImages(articleId: string, images: string[]): Promise<void>;
 }

@@ -1,5 +1,6 @@
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
+import { IAuthorsRepository } from "@modules/articles/repositories/IAuthorsRepository";
 import { Article, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
@@ -24,7 +25,9 @@ class CreateArticleUseCase {
         @inject("LogProvider")
         private logProvider: ILogProvider,
         @inject("ArticleRepository")
-        private articleRepository: IArticleRepository
+        private articleRepository: IArticleRepository,
+        @inject("AuthorsRepository")
+        private authorsRepository: IAuthorsRepository
     ) {}
 
     async execute({
@@ -49,11 +52,11 @@ class CreateArticleUseCase {
         });
 
         if (article) {
-            // this.articleRepository.updateAuthors(article.id, authors);
-            // this.articleRepository.updateImages(article.id, images);
+            this.authorsRepository.addAuthorsToArticle(article.id, authors);
             // this.articleRepository.updateTags(article.id, tags);
             // this.articleRepository.updateCourses(article.id, courses);
             // this.articleRepository.updateClasses(article.id, classes);
+            // this.articleRepository.updateImages(article.id, images);
 
             log = await this.logProvider.create({
                 logRepository: "ARTICLE",
