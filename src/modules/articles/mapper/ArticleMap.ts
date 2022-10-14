@@ -9,6 +9,17 @@ import { ITagsRepository } from "../repositories/ITagsRepository";
 
 @injectable()
 class ArticleMap {
+    constructor(
+        @inject("UsersRepository")
+        private usersRepository: IUsersRepository,
+        @inject("ArticleRepository")
+        private articleRepository: IArticleRepository,
+        @inject("AuthorsRepository")
+        private authorsRepository: IAuthorsRepository,
+        @inject("TagsRepository")
+        private tagsRepository: ITagsRepository
+    ) {}
+
     static async toDTO({
         title,
         subTitle,
