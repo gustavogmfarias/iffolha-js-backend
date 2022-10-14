@@ -1,3 +1,3 @@
 export interface IAuthorsRepository {
-    addAuthorsToArticle(articleId: string, authors: string[]): Promise<void>;
+    addAuthorsToArticle(articleId: string, authorsId: string[]): Promise<void>;
 }

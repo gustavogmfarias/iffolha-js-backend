@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
 import { IAuthorsRepository } from "@modules/articles/repositories/IAuthorsRepository";
+import { ITagsRepository } from "@modules/articles/repositories/ITagsRepository";
 import { Article, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
@@ -13,6 +15,7 @@ interface IRequest {
     publishedByUserId: string;
     isHighlight: boolean;
     authors?: string[];
+    tags?: string[];
     images?: string[];
     userAdminId: string;
 }
@@ -27,7 +30,9 @@ class CreateArticleUseCase {
         @inject("ArticleRepository")
         private articleRepository: IArticleRepository,
         @inject("AuthorsRepository")
-        private authorsRepository: IAuthorsRepository
+        private authorsRepository: IAuthorsRepository,
+        @inject("TagsRepository")
+        private tagsRepository: ITagsRepository
     ) {}
 
     async execute({
@@ -38,6 +43,7 @@ class CreateArticleUseCase {
         isHighlight,
         authors,
         images,
+        tags,
         userAdminId,
     }: IRequest): Promise<(Article | Log)[]> {
         let log;
@@ -52,8 +58,31 @@ class CreateArticleUseCase {
         });
 
         if (article) {
-            this.authorsRepository.addAuthorsToArticle(article.id, authors);
-            // this.articleRepository.updateTags(article.id, tags);
+            if (authors) {
+                this.authorsRepository.addAuthorsToArticle(article.id, authors);
+            }
+
+            if (tags) {
+                tags = tags.filter((este, i) => tags.indexOf(este) === i);
+                tags.map(async (tag) => {
+                    const tagFound = await this.tagsRepository.findTagByName(
+                        tag
+                    );
+
+                    if (tagFound) {
+                        await this.tagsRepository.addTagsToArticle(
+                            article.id,
+                            tagFound.id
+                        );
+                    } else {
+                        const newTag = await this.tagsRepository.createTag(tag);
+                        await this.tagsRepository.addTagsToArticle(
+                            article.id,
+                            newTag.id
+                        );
+                    }
+                });
+            }
             // this.articleRepository.updateCourses(article.id, courses);
             // this.articleRepository.updateClasses(article.id, classes);
             // this.articleRepository.updateImages(article.id, images);

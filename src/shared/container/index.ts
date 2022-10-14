@@ -10,6 +10,8 @@ import { IArticleImagesRepository } from "@modules/articles/repositories/IArticl
 import { ArticleImagesRepository } from "@modules/articles/repositories/infra/ArticleImagesRepository";
 import { IAuthorsRepository } from "@modules/articles/repositories/IAuthorsRepository";
 import { AuthorsRepository } from "@modules/articles/repositories/infra/AuthorsRepository";
+import { ITagsRepository } from "@modules/articles/repositories/ITagsRepository";
+import { TagsRepository } from "@modules/articles/repositories/infra/TagsRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -35,3 +37,5 @@ container.registerSingleton<IAuthorsRepository>(
     "AuthorsRepository",
     AuthorsRepository
 );
+
+container.registerSingleton<ITagsRepository>("TagsRepository", TagsRepository);
