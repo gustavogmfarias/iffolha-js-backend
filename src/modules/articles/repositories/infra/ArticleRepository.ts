@@ -1,7 +1,9 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
+import { IArticleResponseDTO } from "@modules/articles/dtos/IArticleResponseDTO";
 import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
+import { ArticleMap } from "@modules/articles/mapper/ArticleMap";
 import { Article, Tag } from "@prisma/client";
 import { prisma } from "@shared/database/prismaClient";
 import { IArticleRepository } from "../IArticleRepository";
@@ -54,6 +56,12 @@ export class ArticleRepository implements IArticleRepository {
         }
 
         return articles;
+    }
+
+    convertDTO(article: Article): IArticleResponseDTO {
+        const articleDTO = ArticleMap.toDTO(article);
+
+        return articleDTO;
     }
 
     generateUrl(title: string): string {

@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
 import { Article } from "@prisma/client";
+import { IArticleResponseDTO } from "@modules/articles/dtos/IArticleResponseDTO";
 
 @injectable()
 class ListArticlesUseCase {
@@ -17,6 +18,11 @@ class ListArticlesUseCase {
         const articles = await this.articleRepository.list({
             page,
             perPage,
+        });
+
+        const articlesDTO: IArticleResponseDTO[] = [];
+        articles.map((article) => {
+            return articlesDTO.push(this.articleRepository.convertDTO(article));
         });
 
         return articles;
