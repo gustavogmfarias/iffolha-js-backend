@@ -5,6 +5,6 @@ export interface IArticleResponseDTO {
     publishedByUserId: string;
     isHighlight: boolean;
     url: string;
-    TagsOnArticles: string[];
-    AuthorsOnArticles: string[];
+    TagsOnArticles?: string[];
+    AuthorsOnArticles?: string[];
 }

@@ -7,7 +7,7 @@ export interface IArticleRepository {
     create(data: ICreateArticleDTO): Promise<Article>;
 
     list({ page, perPage }: IPaginationRequestDTO): Promise<Article[]>;
-    convertDTO(article: Article): IArticleResponseDTO;
+    convertDTO(article: Article, tags: string[]): IArticleResponseDTO;
 
     generateUrl(title: string): string;
     generateContentSummary(content: string): string;

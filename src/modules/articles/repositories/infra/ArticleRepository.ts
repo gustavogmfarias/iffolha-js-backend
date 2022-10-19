@@ -58,8 +58,8 @@ export class ArticleRepository implements IArticleRepository {
         return articles;
     }
 
-    convertDTO(article: Article): IArticleResponseDTO {
-        const articleDTO = ArticleMap.toDTO(article);
+    convertDTO(article: Article, tags: string[]): IArticleResponseDTO {
+        const articleDTO = ArticleMap.toDTO(article, tags);
 
         return articleDTO;
     }
