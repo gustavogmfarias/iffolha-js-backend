@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-return-await */
 import { inject, injectable } from "tsyringe";
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
@@ -19,9 +20,8 @@ class ListArticlesUseCase {
         page,
         perPage,
     }: IPaginationRequestDTO): Promise<IArticleResponseDTO[]> {
-        const TagsNameOfThisArticle: string[] = [];
-        const allArticlsDTO: IArticleResponseDTO[] = [];
-        const TagsIdsOfThisArticle = [];
+        const TagsIdsOfThisArticle: string[] = [];
+        const articlesDTO: IArticleResponseDTO[] = [];
 
         const articles: Article[] = await this.articleRepository.list({
             page,
@@ -31,18 +31,25 @@ class ListArticlesUseCase {
         const allArticlesAndTags =
             await this.tagsRepository.listAllTagsOnArticle();
 
-        const allTags = this.tagsRepository.articles.map((article) => {
-            const articleTagFound = allArticlesAndTags.find(
-                (ArticleOnTag) => ArticleOnTag.articleId === article.id
+        articles.map((article) => {
+            const articleTagFoundById = allArticlesAndTags.map((ArticleOnTag) =>
+                ArticleOnTag.articleId === article.id
+                    ? TagsIdsOfThisArticle.push(ArticleOnTag.tagId)
+                    : null
             );
-
-            return TagsIdsOfThisArticle.push(articleTagFound);
         });
 
-        // return articlesDTO.push(
-        //     this.articleRepository.convertDTO(article, articleTagsName)
-        // );
+        const tagsOfTheArticle = await this.tagsRepository.findTagsByIds(
+            TagsIdsOfThisArticle
+        );
 
+        const tagsNameOfTheArticle = tagsOfTheArticle.map((tag) => {
+            return tag.name;
+        });
+
+        articlesDTO.push(
+            this.articleRepository.convertDTO(article, tagsNameOfTheArticle)
+        );
         return articlesDTO;
     }
 }
