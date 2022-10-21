@@ -5,6 +5,7 @@ import { IArticleResponseDTO } from "../dtos/IArticleResponseDTO";
 class ArticleMap {
     static toDTO(
         {
+            id,
             title,
             subTitle,
             content,
@@ -12,9 +13,11 @@ class ArticleMap {
             isHighlight,
             url,
         }: Article,
-        tags: string[]
+        tags: string[],
+        authors: string[]
     ): IArticleResponseDTO {
         const article = instanceToInstance({
+            id,
             title,
             subTitle,
             content,
@@ -22,6 +25,7 @@ class ArticleMap {
             isHighlight,
             url,
             TagsOnArticles: tags,
+            AuthorsOnArticles: authors,
         });
         return article;
     }

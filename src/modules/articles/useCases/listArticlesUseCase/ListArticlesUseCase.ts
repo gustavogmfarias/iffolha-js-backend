@@ -20,36 +20,36 @@ class ListArticlesUseCase {
         page,
         perPage,
     }: IPaginationRequestDTO): Promise<IArticleResponseDTO[]> {
-        const TagsIdsOfThisArticle: string[] = [];
-        const articlesDTO: IArticleResponseDTO[] = [];
-
         const articles: Article[] = await this.articleRepository.list({
             page,
             perPage,
         });
-
-        const allArticlesAndTags =
-            await this.tagsRepository.listAllTagsOnArticle();
+        const articlesDTO: IArticleResponseDTO[] = [];
 
         articles.map((article) => {
-            const articleTagFoundById = allArticlesAndTags.map((ArticleOnTag) =>
-                ArticleOnTag.articleId === article.id
-                    ? TagsIdsOfThisArticle.push(ArticleOnTag.tagId)
-                    : null
+            const TagsOnArticle: string[] = [];
+            const AuthorsOnArticle: string[] = [];
+
+            article.TagsOnArticles.map((data) => {
+                const tagName = data.tag.name;
+
+                TagsOnArticle.push(data.tag.name);
+            });
+
+            article.AuthorsOnArticles.map((data) => {
+                const authorName = data.author.name;
+                AuthorsOnArticle.push(authorName);
+            });
+
+            const articleDTO = this.articleRepository.convertDTO(
+                article,
+                TagsOnArticle,
+                AuthorsOnArticle
             );
+
+            articlesDTO.push(articleDTO);
         });
 
-        const tagsOfTheArticle = await this.tagsRepository.findTagsByIds(
-            TagsIdsOfThisArticle
-        );
-
-        const tagsNameOfTheArticle = tagsOfTheArticle.map((tag) => {
-            return tag.name;
-        });
-
-        articlesDTO.push(
-            this.articleRepository.convertDTO(article, tagsNameOfTheArticle)
-        );
         return articlesDTO;
     }
 }

@@ -42,7 +42,10 @@ export class ArticleRepository implements IArticleRepository {
                 orderBy: {
                     publishedDate: "desc",
                 },
-                include: { TagsOnArticles: true, AuthorsOnArticles: true },
+                include: {
+                    TagsOnArticles: { include: { tag: true } },
+                    AuthorsOnArticles: { include: { author: true } },
+                },
             });
         } else {
             articles = await prisma.article.findMany({
@@ -51,15 +54,22 @@ export class ArticleRepository implements IArticleRepository {
                 orderBy: {
                     publishedDate: "desc",
                 },
-                include: { TagsOnArticles: true, AuthorsOnArticles: true },
+                include: {
+                    TagsOnArticles: { include: { tag: true } },
+                    AuthorsOnArticles: { include: { author: true } },
+                },
             });
         }
 
         return articles;
     }
 
-    convertDTO(article: Article, tags: string[]): IArticleResponseDTO {
-        const articleDTO = ArticleMap.toDTO(article, tags);
+    convertDTO(
+        article: Article,
+        tags: string[],
+        authors: string[]
+    ): IArticleResponseDTO {
+        const articleDTO = ArticleMap.toDTO(article, tags, authors);
 
         return articleDTO;
     }

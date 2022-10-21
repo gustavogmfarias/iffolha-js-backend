@@ -1,4 +1,5 @@
 export interface IArticleResponseDTO {
+    id: string;
     title: string;
     subTitle: string;
     content: string;
