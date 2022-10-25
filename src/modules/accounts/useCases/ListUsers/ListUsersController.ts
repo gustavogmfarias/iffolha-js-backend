@@ -14,7 +14,9 @@ class ListUsersController {
             perPage,
         });
 
-        return response.json(all);
+        return response
+            .setHeader("x-total-count", String(all.length))
+            .json(all);
     }
 }
 

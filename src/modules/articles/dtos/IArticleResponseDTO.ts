@@ -8,4 +8,5 @@ export interface IArticleResponseDTO {
     url: string;
     TagsOnArticles?: string[];
     AuthorsOnArticles?: string[];
+    CoursesOnArticles?: string[];
 }

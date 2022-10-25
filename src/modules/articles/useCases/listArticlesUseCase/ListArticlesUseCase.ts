@@ -29,6 +29,7 @@ class ListArticlesUseCase {
         articles.map((article) => {
             const TagsOnArticle: string[] = [];
             const AuthorsOnArticle: string[] = [];
+            const CoursesOnArticle: string[] = [];
 
             article.TagsOnArticles.map((data) => {
                 const tagName = data.tag.name;
@@ -38,13 +39,20 @@ class ListArticlesUseCase {
 
             article.AuthorsOnArticles.map((data) => {
                 const authorName = data.author.name;
-                AuthorsOnArticle.push(authorName);
+
+                AuthorsOnArticle.push(data.author.name);
+            });
+
+            article.CoursesOnArticles.map((data) => {
+                const courseName = data.course.name;
+                CoursesOnArticle.push(courseName);
             });
 
             const articleDTO = this.articleRepository.convertDTO(
                 article,
                 TagsOnArticle,
-                AuthorsOnArticle
+                AuthorsOnArticle,
+                CoursesOnArticle
             );
 
             articlesDTO.push(articleDTO);

@@ -3,6 +3,7 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
 import { IAuthorsRepository } from "@modules/articles/repositories/IAuthorsRepository";
 import { ITagsRepository } from "@modules/articles/repositories/ITagsRepository";
+import { ICoursesRepository } from "@modules/articles/repositories/ICoursesRepository";
 import { Article, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
@@ -17,6 +18,7 @@ interface IRequest {
     authors?: string[];
     tags?: string[];
     images?: string[];
+    courses?: string[];
     userAdminId: string;
 }
 
@@ -32,7 +34,9 @@ class CreateArticleUseCase {
         @inject("AuthorsRepository")
         private authorsRepository: IAuthorsRepository,
         @inject("TagsRepository")
-        private tagsRepository: ITagsRepository
+        private tagsRepository: ITagsRepository,
+        @inject("CoursesRepository")
+        private coursesRepository: ICoursesRepository
     ) {}
 
     async execute({
@@ -42,6 +46,7 @@ class CreateArticleUseCase {
         publishedByUserId,
         isHighlight,
         authors,
+        courses,
         images,
         tags,
         userAdminId,
@@ -59,7 +64,10 @@ class CreateArticleUseCase {
 
         if (article) {
             if (authors) {
-                this.authorsRepository.addAuthorsToArticle(article.id, authors);
+                await this.authorsRepository.addAuthorsToArticle(
+                    article.id,
+                    authors
+                );
             }
 
             if (tags) {
@@ -83,7 +91,13 @@ class CreateArticleUseCase {
                     }
                 });
             }
-            // this.articleRepository.updateCourses(article.id, courses);
+
+            if (courses) {
+                await this.coursesRepository.addCoursesToArticle(
+                    article.id,
+                    courses
+                );
+            }
             // this.articleRepository.updateClasses(article.id, classes);
             // this.articleRepository.updateImages(article.id, images);
 
