@@ -11,7 +11,8 @@ export interface IArticleRepository {
         article: Article,
         tags: string[],
         authors: string[],
-        courses: string[]
+        courses: string[],
+        classes: string[]
     ): IArticleResponseDTO;
 
     generateUrl(title: string): string;

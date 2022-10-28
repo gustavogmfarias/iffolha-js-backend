@@ -46,6 +46,7 @@ export class ArticleRepository implements IArticleRepository {
                     TagsOnArticles: { include: { tag: true } },
                     AuthorsOnArticles: { include: { author: true } },
                     CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
                 },
             });
         } else {
@@ -59,6 +60,7 @@ export class ArticleRepository implements IArticleRepository {
                     TagsOnArticles: { include: { tag: true } },
                     AuthorsOnArticles: { include: { author: true } },
                     CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
                 },
             });
         }
@@ -70,9 +72,16 @@ export class ArticleRepository implements IArticleRepository {
         article: Article,
         tags: string[],
         authors: string[],
-        courses: string[]
+        courses: string[],
+        classes: string[]
     ): IArticleResponseDTO {
-        const articleDTO = ArticleMap.toDTO(article, tags, authors, courses);
+        const articleDTO = ArticleMap.toDTO(
+            article,
+            tags,
+            authors,
+            courses,
+            classes
+        );
 
         return articleDTO;
     }

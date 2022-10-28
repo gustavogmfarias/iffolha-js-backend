@@ -30,6 +30,7 @@ class ListArticlesUseCase {
             const TagsOnArticle: string[] = [];
             const AuthorsOnArticle: string[] = [];
             const CoursesOnArticle: string[] = [];
+            const ClassesOnArticle: string[] = [];
 
             article.TagsOnArticles.map((data) => {
                 const tagName = data.tag.name;
@@ -48,11 +49,17 @@ class ListArticlesUseCase {
                 CoursesOnArticle.push(courseName);
             });
 
+            article.ClassOnArticles.map((data) => {
+                const className = data.class.name;
+                ClassesOnArticle.push(className);
+            });
+
             const articleDTO = this.articleRepository.convertDTO(
                 article,
                 TagsOnArticle,
                 AuthorsOnArticle,
-                CoursesOnArticle
+                CoursesOnArticle,
+                ClassesOnArticle
             );
 
             articlesDTO.push(articleDTO);

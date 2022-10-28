@@ -5,7 +5,6 @@ import { CreateArticleUseCase } from "./CreateArticleUseCase";
 class CreateArticleController {
     async handle(request: Request, response: Response): Promise<Response> {
         const images = [];
-        const classes = [];
 
         const { id: userAdminId } = request.user;
         const {
@@ -16,6 +15,7 @@ class CreateArticleController {
             authors,
             tags,
             courses,
+            classes,
         } = request.body;
         const createArticleUseCase = container.resolve(CreateArticleUseCase);
 
@@ -29,6 +29,7 @@ class CreateArticleController {
             authors,
             tags,
             courses,
+            classes,
         });
 
         return response.status(201).send(article);

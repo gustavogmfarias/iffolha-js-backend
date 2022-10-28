@@ -8,6 +8,7 @@ import { Article, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
+import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
 
 interface IRequest {
     title: string;
@@ -19,6 +20,7 @@ interface IRequest {
     tags?: string[];
     images?: string[];
     courses?: string[];
+    classes?: string[];
     userAdminId: string;
 }
 
@@ -36,7 +38,9 @@ class CreateArticleUseCase {
         @inject("TagsRepository")
         private tagsRepository: ITagsRepository,
         @inject("CoursesRepository")
-        private coursesRepository: ICoursesRepository
+        private coursesRepository: ICoursesRepository,
+        @inject("ClassesRepository")
+        private classesRepository: IClassesRepository
     ) {}
 
     async execute({
@@ -50,6 +54,7 @@ class CreateArticleUseCase {
         images,
         tags,
         userAdminId,
+        classes,
     }: IRequest): Promise<(Article | Log)[]> {
         let log;
 
@@ -98,7 +103,14 @@ class CreateArticleUseCase {
                     courses
                 );
             }
-            // this.articleRepository.updateClasses(article.id, classes);
+
+            if (classes) {
+                await this.classesRepository.addClassesToArticle(
+                    article.id,
+                    classes
+                );
+            }
+
             // this.articleRepository.updateImages(article.id, images);
 
             log = await this.logProvider.create({

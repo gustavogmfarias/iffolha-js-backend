@@ -14,6 +14,8 @@ import { ITagsRepository } from "@modules/articles/repositories/ITagsRepository"
 import { TagsRepository } from "@modules/articles/repositories/infra/TagsRepository";
 import { ICoursesRepository } from "@modules/articles/repositories/ICoursesRepository";
 import { CoursesRepository } from "@modules/articles/repositories/infra/CoursesRepository";
+import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
+import { ClassesRepository } from "@modules/articles/repositories/infra/ClassesRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -43,6 +45,11 @@ container.registerSingleton<IAuthorsRepository>(
 container.registerSingleton<ICoursesRepository>(
     "CoursesRepository",
     CoursesRepository
+);
+
+container.registerSingleton<IClassesRepository>(
+    "ClassesRepository",
+    ClassesRepository
 );
 
 container.registerSingleton<ITagsRepository>("TagsRepository", TagsRepository);
