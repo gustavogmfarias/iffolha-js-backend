@@ -31,6 +31,7 @@ class ListArticlesUseCase {
             const AuthorsOnArticle: string[] = [];
             const CoursesOnArticle: string[] = [];
             const ClassesOnArticle: string[] = [];
+            const images: string[] = [];
 
             article.TagsOnArticles.map((data) => {
                 const tagName = data.tag.name;
@@ -54,12 +55,21 @@ class ListArticlesUseCase {
                 ClassesOnArticle.push(className);
             });
 
+            article.images.map((data) => {
+                const imagesLinkName = this.articleRepository.imageUrl(
+                    data.image
+                );
+
+                images.push(imagesLinkName);
+            });
+
             const articleDTO = this.articleRepository.convertDTO(
                 article,
                 TagsOnArticle,
                 AuthorsOnArticle,
                 CoursesOnArticle,
-                ClassesOnArticle
+                ClassesOnArticle,
+                images
             );
 
             articlesDTO.push(articleDTO);

@@ -16,7 +16,8 @@ class ArticleMap {
         tags: string[],
         authors: string[],
         courses: string[],
-        classes: string[]
+        classes: string[],
+        images: string[]
     ): IArticleResponseDTO {
         const article = instanceToInstance({
             id,
@@ -30,6 +31,7 @@ class ArticleMap {
             AuthorsOnArticles: authors,
             CoursesOnArticles: courses,
             ClassesOnArticles: classes,
+            images,
         });
         return article;
     }

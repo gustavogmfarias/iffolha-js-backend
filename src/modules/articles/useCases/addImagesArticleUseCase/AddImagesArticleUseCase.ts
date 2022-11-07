@@ -1,38 +1,39 @@
 import { inject, injectable } from "tsyringe";
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
 import { AppError } from "@shared/errors/AppError";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { ArticleRepository } from "@modules/articles/repositories/infra/ArticleRepository";
+import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
 
 interface IRequest {
-    ArticleId: string;
-    imageFile: string;
+    articleId: string;
+    fileNames: string[];
+    isMain: boolean;
 }
 
 @injectable()
 class AddImagesArticleUseCase {
     constructor(
-        @inject("UsersRepository")
-        private usersRepository: IUsersRepository,
         @inject("StorageProvider")
-        private storageProvider: IStorageProvider
+        private storageProvider: IStorageProvider,
+        @inject("ArticleRepository")
+        private articleRepository: IArticleRepository
     ) {}
 
-    async execute({ ArticleId, imageFile }: IRequest): Promise<void> {
-        const user = await this.usersRepository.findById(ArticleId);
+    async execute({ articleId, fileNames, isMain }: IRequest): Promise<void> {
+        // const user = await this.articleRepository.findById(articleId);
 
-        if (!user) {
-            throw new AppError("User doesn't exist");
+        if (!articleId) {
+            throw new AppError("Article doesn't exist");
         }
 
-        if (user.avatarUrl) {
-            await this.storageProvider.delete(user.avatarUrl, "avatar");
-        }
+        fileNames.map(async (articleImage) => {
+            await this.storageProvider.save(articleImage, "article-images");
 
-        await this.storageProvider.save(imageFile, "avatar");
-
-        await this.usersRepository.update({
-            ArticleId,
-            imageFile,
+            await this.articleRepository.saveImageOnArticle(
+                articleId,
+                articleImage,
+                isMain
+            );
         });
     }
 }

@@ -10,4 +10,5 @@ export interface IArticleResponseDTO {
     AuthorsOnArticles?: string[];
     CoursesOnArticles?: string[];
     ClassesOnArticles?: string[];
+    images?: string[];
 }

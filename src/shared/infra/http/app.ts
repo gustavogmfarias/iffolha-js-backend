@@ -22,6 +22,10 @@ app.use(cors());
 app.use(router);
 
 app.use("/avatar", express.static(`${upload.tmpFolder}/avatar`));
+app.use(
+    "/article-images",
+    express.static(`${upload.tmpFolder}/article-images`)
+);
 
 app.use(
     (err: Error, request: Request, response: Response, next: NextFunction) => {

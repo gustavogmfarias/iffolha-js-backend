@@ -12,11 +12,18 @@ export interface IArticleRepository {
         tags: string[],
         authors: string[],
         courses: string[],
-        classes: string[]
+        classes: string[],
+        images: string[]
     ): IArticleResponseDTO;
 
     generateUrl(title: string): string;
     generateContentSummary(content: string): string;
 
-    updateImages(articleId: string, images: string[]): Promise<void>;
+    saveImageOnArticle(
+        articleId: string,
+        image: string,
+        isMain: boolean
+    ): Promise<void>;
+
+    imageUrl(image: string): string;
 }

@@ -47,6 +47,7 @@ export class ArticleRepository implements IArticleRepository {
                     AuthorsOnArticles: { include: { author: true } },
                     CoursesOnArticles: { include: { course: true } },
                     ClassOnArticles: { include: { class: true } },
+                    images: true,
                 },
             });
         } else {
@@ -61,6 +62,7 @@ export class ArticleRepository implements IArticleRepository {
                     AuthorsOnArticles: { include: { author: true } },
                     CoursesOnArticles: { include: { course: true } },
                     ClassOnArticles: { include: { class: true } },
+                    images: true,
                 },
             });
         }
@@ -73,14 +75,16 @@ export class ArticleRepository implements IArticleRepository {
         tags: string[],
         authors: string[],
         courses: string[],
-        classes: string[]
+        classes: string[],
+        images: string[]
     ): IArticleResponseDTO {
         const articleDTO = ArticleMap.toDTO(
             article,
             tags,
             authors,
             courses,
-            classes
+            classes,
+            images
         );
 
         return articleDTO;
@@ -96,8 +100,25 @@ export class ArticleRepository implements IArticleRepository {
         return url;
     }
 
-    updateImages(articleId: string, images: string[]): Promise<void> {
-        throw new Error("Method not implemented.");
+    async saveImageOnArticle(
+        articleId: string,
+        image: string,
+        isMain: boolean
+    ): Promise<void> {
+        const articleImage = await prisma.articleImages.create({
+            data: { image, ArticleId: articleId, isMain },
+        });
+    }
+
+    imageUrl(image: string): string {
+        switch (process.env.DISK) {
+            case "local":
+                return `${process.env.APP_API_URL}/article-images/${image}`;
+            case "s3":
+                return `${process.env.AWS_BUCKET_URL}/article-images/${image}`;
+            default:
+                return null;
+        }
     }
 
     generateContentSummary(content: string): string {
