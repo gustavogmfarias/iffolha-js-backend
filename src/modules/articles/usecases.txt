@@ -1,0 +1,57 @@
+1-  article
+a) criar
+[x] adicionar tags
+[x] adicionar autores
+[x] adicionar cursos
+[x] adicionar imagens
+[x] adicionar categoria
+[] adicionar genero
+[] adicionar imagens JUNTO com a criação de articles
+
+b) listar
+[x] listar artigos
+
+c) deletar
+[x] deletar artigos
+
+e) editar artigos
+[] deletar tags de um artigo
+[] deletar curso de um artigo
+[] deletar autor de um artigo
+[] deletar imagens de um artigo
+[] deletar genero
+[] deletar categoria
+
+
+2- Tags
+[x] adicionar tags a um artigo
+[] deletar tags de um artigo
+[] deletar tags 
+
+3- cursos
+[x] Adicionar curso a um artigo
+[] deletar curso de um artigo
+[] deletar curso
+[] listar curso
+
+4- autores
+[x] Adicionar autor a um artigo
+[] deletar autor de um artigo
+[] listar autores
+
+5- Imagens
+[x] adicionar imagens a um artigo
+[] adicionar imgens junto a um artigo
+[] deletar imagens de um artigo
+[] deletar imagens
+
+6- Categorias
+[] adicionar Categorias a um artigo
+[] deletar Categorias de um artigo
+[] deletar Categorias 
+
+7- Generos
+[] adicionar Generos a um artigo
+[] deletar Generos de um artigo
+[] deletar Generos 
+
