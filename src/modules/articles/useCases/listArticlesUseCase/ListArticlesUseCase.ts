@@ -24,6 +24,7 @@ class ListArticlesUseCase {
             page,
             perPage,
         });
+
         const articlesDTO: IArticleResponseDTO[] = [];
 
         articles.map((article) => {
@@ -31,12 +32,19 @@ class ListArticlesUseCase {
             const AuthorsOnArticle: string[] = [];
             const CoursesOnArticle: string[] = [];
             const ClassesOnArticle: string[] = [];
+            const CategoriesOnArticle: string[] = [];
             const images: string[] = [];
 
             article.TagsOnArticles.map((data) => {
                 const tagName = data.tag.name;
 
                 TagsOnArticle.push(data.tag.name);
+            });
+
+            article.CategoryOnArticles.map((data) => {
+                const categoryName = data.category.name;
+
+                CategoriesOnArticle.push(categoryName);
             });
 
             article.AuthorsOnArticles.map((data) => {
@@ -69,6 +77,7 @@ class ListArticlesUseCase {
                 AuthorsOnArticle,
                 CoursesOnArticle,
                 ClassesOnArticle,
+                CategoriesOnArticle,
                 images
             );
 

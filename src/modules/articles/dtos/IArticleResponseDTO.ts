@@ -7,6 +7,7 @@ export interface IArticleResponseDTO {
     isHighlight: boolean;
     url: string;
     TagsOnArticles?: string[];
+    CategoryOnArticles?: string[];
     AuthorsOnArticles?: string[];
     CoursesOnArticles?: string[];
     ClassesOnArticles?: string[];

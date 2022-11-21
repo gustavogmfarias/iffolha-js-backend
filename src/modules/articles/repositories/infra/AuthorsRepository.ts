@@ -26,4 +26,26 @@ export class AuthorsRepository implements IAuthorsRepository {
             });
         }
     }
+
+    async delAuthorsToArticle(
+        articleId: string,
+        authorsId: string[]
+    ): Promise<void> {
+        const authorsData = [];
+        authorsId.map((author) => {
+            return authorsData.push({
+                articleId,
+                authorId: author,
+            });
+        });
+
+        for (const author of authorsData) {
+            // eslint-disable-next-line no-await-in-loop
+            await prisma.authorsOnArticles.delete({
+                where: {
+                    ArticleId_authorId: author.articleId,
+                },
+            });
+        }
+    }
 }

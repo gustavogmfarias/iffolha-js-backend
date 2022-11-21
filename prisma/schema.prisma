@@ -70,30 +70,32 @@ enum LogRepository {
 }
 
 model Article {
-    id                String              @id @default(uuid())
-    title             String
-    subTitle          String
-    content           String
-    images            ArticleImages[]
-    mainImage         String?
-    publishedBy       User                @relation("Publisher", fields: [publishedByUserId], references: [id], onDelete: SetNull)
-    editedBy          User?               @relation("Editor", fields: [editedByUserId], references: [id], onDelete: SetNull)
-    publishedByUserId String
-    editedByUserId    String?
-    publishedDate     DateTime            @default(now())
-    updatedDate       DateTime?           @default(now())
-    isHighlight       Boolean             @default(true)
-    url               String
-    AuthorsOnArticles AuthorsOnArticles[]
-    TagsOnArticles    TagsOnArticles[]
-    CoursesOnArticles CoursesOnArticles[]
-    ClassOnArticles   ClassOnArticles[]
+    id                     String                   @id @default(uuid())
+    title                  String
+    subTitle               String
+    content                String
+    images                 ArticleImages[]
+    mainImage              String?
+    publishedBy            User                     @relation("Publisher", fields: [publishedByUserId], references: [id], onDelete: SetDefault)
+    editedBy               User?                    @relation("Editor", fields: [editedByUserId], references: [id], onDelete: SetNull)
+    publishedByUserId      String
+    editedByUserId         String?
+    publishedDate          DateTime                 @default(now())
+    updatedDate            DateTime?                @default(now())
+    isHighlight            Boolean                  @default(true)
+    url                    String
+    AuthorsOnArticles      AuthorsOnArticles[]
+    TagsOnArticles         TagsOnArticles[]
+    CoursesOnArticles      CoursesOnArticles[]
+    ClassOnArticles        ClassOnArticles[]
+    CategoryOnArticles     CategoryOnArticles[]
+    TextualGenreOnArticles TextualGenreOnArticles[]
 
     @@map("articles")
 }
 
 model AuthorsOnArticles {
-    Article   Article @relation(fields: [ArticleId], references: [id])
+    Article   Article @relation(fields: [ArticleId], references: [id], onDelete: Cascade)
     ArticleId String
     author    User    @relation(fields: [authorId], references: [id])
     authorId  String
@@ -103,7 +105,7 @@ model AuthorsOnArticles {
 
 model ArticleImages {
     id        String  @id @default(uuid())
-    Article   Article @relation(fields: [ArticleId], references: [id])
+    Article   Article @relation(fields: [ArticleId], references: [id], onDelete: Cascade)
     ArticleId String
     image     String
     isMain    Boolean @default(false)
@@ -118,7 +120,7 @@ model Tag {
 }
 
 model TagsOnArticles {
-    Article   Article @relation(fields: [articleId], references: [id])
+    Article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
     articleId String
     tag       Tag     @relation(fields: [tagId], references: [id])
     tagId     String
@@ -137,7 +139,7 @@ model Course {
 }
 
 model CoursesOnArticles {
-    Article   Article @relation(fields: [articleId], references: [id])
+    Article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
     articleId String
     course    Course  @relation(fields: [courseId], references: [id])
     courseId  String
@@ -156,10 +158,46 @@ model Class {
 }
 
 model ClassOnArticles {
-    Article   Article @relation(fields: [articleId], references: [id])
+    Article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
     articleId String
     class     Class   @relation(fields: [classId], references: [id])
     classId   String
 
     @@id([classId, articleId])
+}
+
+model Category {
+    id   String @id @default(uuid())
+    name String @unique
+
+    CategoryOnArticles CategoryOnArticles[]
+
+    @@map("categories")
+}
+
+model CategoryOnArticles {
+    Article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+    articleId  String
+    category   Category @relation(fields: [categoryId], references: [id])
+    categoryId String
+
+    @@id([categoryId, articleId])
+}
+
+model TextualGenre {
+    id   String @id @default(uuid())
+    name String @unique
+
+    TextualGenreOnArticles TextualGenreOnArticles[]
+
+    @@map("textualgenres")
+}
+
+model TextualGenreOnArticles {
+    Article        Article      @relation(fields: [articleId], references: [id], onDelete: Cascade)
+    articleId      String
+    textualGenre   TextualGenre @relation(fields: [textualGenreId], references: [id])
+    textualGenreId String
+
+    @@id([textualGenreId, articleId])
 }

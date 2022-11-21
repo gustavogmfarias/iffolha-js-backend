@@ -9,6 +9,7 @@ import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvid
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
+import { ICategoriesRepository } from "@modules/articles/repositories/ICategoriesRepository";
 
 interface IRequest {
     title: string;
@@ -18,6 +19,7 @@ interface IRequest {
     isHighlight: boolean;
     authors?: string[];
     tags?: string[];
+    categories?: string[];
     images?: string[];
     courses?: string[];
     classes?: string[];
@@ -40,7 +42,9 @@ class CreateArticleUseCase {
         @inject("CoursesRepository")
         private coursesRepository: ICoursesRepository,
         @inject("ClassesRepository")
-        private classesRepository: IClassesRepository
+        private classesRepository: IClassesRepository,
+        @inject("CategoriesRepository")
+        private categoriesRepository: ICategoriesRepository
     ) {}
 
     async execute({
@@ -51,6 +55,7 @@ class CreateArticleUseCase {
         isHighlight,
         authors,
         courses,
+        categories,
         images,
         tags,
         userAdminId,
@@ -95,6 +100,13 @@ class CreateArticleUseCase {
                         );
                     }
                 });
+            }
+
+            if (categories) {
+                await this.categoriesRepository.addCategoriesToArticle(
+                    article.id,
+                    categories
+                );
             }
 
             if (courses) {

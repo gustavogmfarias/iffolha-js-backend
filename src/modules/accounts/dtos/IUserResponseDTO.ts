@@ -5,6 +5,7 @@ interface IUserResponseDTO {
     id: string;
     avatarUrl: string;
     role: string;
+    createdAt: Date;
 }
 
 export { IUserResponseDTO };

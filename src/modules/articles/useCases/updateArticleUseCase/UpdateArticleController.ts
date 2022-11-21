@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { CreateArticleUseCase } from "./CreateArticleUseCase";
+import { UpdateArticleUseCase } from "./UpdateArticleUseCase";
 
-class CreateArticleController {
+class UpdateArticleController {
     async handle(request: Request, response: Response): Promise<Response> {
         const images = [];
 
-        const { id: userAdminId } = request.user;
+        const { id: userId } = request.user;
+        const articleId = String(request.params);
         const {
             title,
             subTitle,
@@ -16,21 +17,20 @@ class CreateArticleController {
             tags,
             courses,
             classes,
-            categories,
         } = request.body;
-        const createArticleUseCase = container.resolve(CreateArticleUseCase);
+        const updateArticleUseCase = container.resolve(UpdateArticleUseCase);
 
-        const article = await createArticleUseCase.execute({
-            userAdminId,
+        const article = await updateArticleUseCase.execute({
+            id: articleId,
+
             title,
             subTitle,
             content,
-            publishedByUserId: userAdminId,
+            editedByUserId: userId,
             isHighlight,
             authors,
-            courses,
-            categories,
             tags,
+            courses,
             classes,
         });
 
@@ -38,4 +38,4 @@ class CreateArticleController {
     }
 }
 
-export { CreateArticleController };
+export { UpdateArticleController };

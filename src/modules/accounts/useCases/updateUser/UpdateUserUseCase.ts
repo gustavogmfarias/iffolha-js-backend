@@ -28,6 +28,10 @@ class UpdateUserUseCase {
     }: IUpdateUserDTO): Promise<(IUserResponseDTO | Log)[]> {
         const userToEdit = await this.usersRepository.findById(userToEditId);
 
+        if (!userToEdit) {
+            throw new AppError("User doesn't exists", 404);
+        }
+
         let passwordHash;
 
         if (previousPassword) {

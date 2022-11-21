@@ -10,6 +10,7 @@ class UserMap {
         id,
         avatarUrl,
         role,
+        createdAt,
     }: User): IUserResponseDTO {
         const user = instanceToInstance({
             email,
@@ -18,6 +19,7 @@ class UserMap {
             id,
             avatarUrl,
             role,
+            createdAt,
         });
         return user;
     }

@@ -31,6 +31,56 @@ export class ArticleRepository implements IArticleRepository {
         return article;
     }
 
+    async update(
+        id,
+        {
+            title,
+            subTitle,
+            content,
+            editedByUserId,
+            isHighlight,
+            url,
+        }: ICreateArticleDTO
+    ): Promise<Article> {
+        const article = await prisma.article.update({
+            where: id,
+            data: {
+                title,
+                subTitle,
+                content,
+                editedByUserId,
+                isHighlight,
+                url,
+            },
+        });
+
+        return article;
+    }
+
+    async delete(id: string): Promise<void> {
+        await prisma.article.delete({
+            where: { id },
+        });
+    }
+
+    async findById(id: string): Promise<Article | null> {
+        const article = await prisma.article.findUnique({
+            where: {
+                id,
+            },
+            include: {
+                TagsOnArticles: { include: { tag: true } },
+                AuthorsOnArticles: { include: { author: true } },
+                CoursesOnArticles: { include: { course: true } },
+                ClassOnArticles: { include: { class: true } },
+                CategoryOnArticles: { include: { category: true } },
+                images: true,
+            },
+        });
+
+        return article;
+    }
+
     async list(
         { page, perPage }: IPaginationRequestDTO,
         name?: string
@@ -47,6 +97,8 @@ export class ArticleRepository implements IArticleRepository {
                     AuthorsOnArticles: { include: { author: true } },
                     CoursesOnArticles: { include: { course: true } },
                     ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+
                     images: true,
                 },
             });
@@ -62,6 +114,8 @@ export class ArticleRepository implements IArticleRepository {
                     AuthorsOnArticles: { include: { author: true } },
                     CoursesOnArticles: { include: { course: true } },
                     ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+
                     images: true,
                 },
             });
@@ -76,11 +130,13 @@ export class ArticleRepository implements IArticleRepository {
         authors: string[],
         courses: string[],
         classes: string[],
+        categories: string[],
         images: string[]
     ): IArticleResponseDTO {
         const articleDTO = ArticleMap.toDTO(
             article,
             tags,
+            categories,
             authors,
             courses,
             classes,
