@@ -98,6 +98,7 @@ export class ArticleRepository implements IArticleRepository {
                     CoursesOnArticles: { include: { course: true } },
                     ClassOnArticles: { include: { class: true } },
                     CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
 
                     images: true,
                 },
@@ -115,6 +116,7 @@ export class ArticleRepository implements IArticleRepository {
                     CoursesOnArticles: { include: { course: true } },
                     ClassOnArticles: { include: { class: true } },
                     CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
 
                     images: true,
                 },
@@ -131,12 +133,14 @@ export class ArticleRepository implements IArticleRepository {
         courses: string[],
         classes: string[],
         categories: string[],
+        textualGenres: string[],
         images: string[]
     ): IArticleResponseDTO {
         const articleDTO = ArticleMap.toDTO(
             article,
             tags,
             categories,
+            textualGenres,
             authors,
             courses,
             classes,

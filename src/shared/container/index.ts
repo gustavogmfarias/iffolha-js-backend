@@ -18,6 +18,8 @@ import { IClassesRepository } from "@modules/articles/repositories/IClassesRepos
 import { ClassesRepository } from "@modules/articles/repositories/infra/ClassesRepository";
 import { ICategoriesRepository } from "@modules/articles/repositories/ICategoriesRepository";
 import { CategoriesRepository } from "@modules/articles/repositories/infra/CategoriesRepository";
+import { ITextualGenreRepository } from "@modules/articles/repositories/ITextualGenreRepository";
+import { TextualGenreRepository } from "@modules/articles/repositories/infra/TextualGenreRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -55,7 +57,13 @@ container.registerSingleton<IClassesRepository>(
 );
 
 container.registerSingleton<ITagsRepository>("TagsRepository", TagsRepository);
+
 container.registerSingleton<ICategoriesRepository>(
     "CategoriesRepository",
     CategoriesRepository
+);
+
+container.registerSingleton<ITextualGenreRepository>(
+    "TextualGenreRepository",
+    TextualGenreRepository
 );

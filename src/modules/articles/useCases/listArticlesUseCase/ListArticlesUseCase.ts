@@ -33,6 +33,7 @@ class ListArticlesUseCase {
             const CoursesOnArticle: string[] = [];
             const ClassesOnArticle: string[] = [];
             const CategoriesOnArticle: string[] = [];
+            const TextualGenresOnArticle: string[] = [];
             const images: string[] = [];
 
             article.TagsOnArticles.map((data) => {
@@ -45,6 +46,12 @@ class ListArticlesUseCase {
                 const categoryName = data.category.name;
 
                 CategoriesOnArticle.push(categoryName);
+            });
+
+            article.TextualGenreOnArticles.map((data) => {
+                const textualGenreName = data.textualGenre.name;
+
+                TextualGenresOnArticle.push(textualGenreName);
             });
 
             article.AuthorsOnArticles.map((data) => {
@@ -78,6 +85,7 @@ class ListArticlesUseCase {
                 CoursesOnArticle,
                 ClassesOnArticle,
                 CategoriesOnArticle,
+                TextualGenresOnArticle,
                 images
             );
 

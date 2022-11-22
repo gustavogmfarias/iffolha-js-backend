@@ -1,4 +1,4 @@
-import { Article } from "@prisma/client";
+import { Article, TextualGenreOnArticles } from "@prisma/client";
 import { instanceToInstance } from "class-transformer";
 import { IArticleResponseDTO } from "../dtos/IArticleResponseDTO";
 
@@ -15,6 +15,7 @@ class ArticleMap {
         }: Article,
         tags: string[],
         categories: string[],
+        textualGenres: string[],
         authors: string[],
         courses: string[],
         classes: string[],
@@ -33,6 +34,7 @@ class ArticleMap {
             AuthorsOnArticles: authors,
             CoursesOnArticles: courses,
             ClassesOnArticles: classes,
+            TextualGenreOnArticles: textualGenres,
             images,
         });
         return article;

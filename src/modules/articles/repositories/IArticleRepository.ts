@@ -20,6 +20,7 @@ export interface IArticleRepository {
         courses: string[],
         classes: string[],
         categories: string[],
+        textualGenres: string[],
         images: string[]
     ): IArticleResponseDTO;
 

@@ -17,6 +17,7 @@ class CreateArticleController {
             courses,
             classes,
             categories,
+            textualGenres,
         } = request.body;
         const createArticleUseCase = container.resolve(CreateArticleUseCase);
 
@@ -32,6 +33,7 @@ class CreateArticleController {
             categories,
             tags,
             classes,
+            textualGenres,
         });
 
         return response.status(201).send(article);

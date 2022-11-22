@@ -10,6 +10,7 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
 import { ICategoriesRepository } from "@modules/articles/repositories/ICategoriesRepository";
+import { ITextualGenreRepository } from "@modules/articles/repositories/ITextualGenreRepository";
 
 interface IRequest {
     title: string;
@@ -20,6 +21,7 @@ interface IRequest {
     authors?: string[];
     tags?: string[];
     categories?: string[];
+    textualGenres?: string[];
     images?: string[];
     courses?: string[];
     classes?: string[];
@@ -44,7 +46,9 @@ class CreateArticleUseCase {
         @inject("ClassesRepository")
         private classesRepository: IClassesRepository,
         @inject("CategoriesRepository")
-        private categoriesRepository: ICategoriesRepository
+        private categoriesRepository: ICategoriesRepository,
+        @inject("TextualGenreRepository")
+        private textualGenreRepository: ITextualGenreRepository
     ) {}
 
     async execute({
@@ -56,6 +60,7 @@ class CreateArticleUseCase {
         authors,
         courses,
         categories,
+        textualGenres,
         images,
         tags,
         userAdminId,
@@ -106,6 +111,13 @@ class CreateArticleUseCase {
                 await this.categoriesRepository.addCategoriesToArticle(
                     article.id,
                     categories
+                );
+            }
+
+            if (textualGenres) {
+                await this.textualGenreRepository.addTextualGenresToArticle(
+                    article.id,
+                    textualGenres
                 );
             }
 

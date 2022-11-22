@@ -99,6 +99,18 @@ async function main() {
     //     },
     // });
 
+    const genre1 = await prisma.textualGenre.create({
+        data: {
+            name: "Narrativa",
+        },
+    });
+
+    const genre2 = await prisma.textualGenre.create({
+        data: {
+            name: "Notícia",
+        },
+    });
+
     console.log(`Seeding finished.`);
 }
 
