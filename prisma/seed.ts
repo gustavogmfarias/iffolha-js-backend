@@ -26,78 +26,78 @@ async function main() {
     console.log(`Start seeding ...`);
 
     // eslint-disable-next-line no-restricted-syntax
-    // for (const u of userData) {
-    //     // eslint-disable-next-line no-await-in-loop
-    //     const user = await prisma.user.create({
-    //         data: u,
-    //     });
+    for (const u of userData) {
+        //   eslint-disable-next-line no-await-in-loop
+        const user = await prisma.user.create({
+            data: u,
+        });
 
-    //     console.log(`Created user with id: ${user.id}`);
-    // }
+        console.log(`Created user with id: ${user.id}`);
+    }
 
-    // const tag1 = await prisma.tag.create({
-    //     data: {
-    //         name: "serie a",
-    //     },
-    // });
+    const tag1 = await prisma.tag.create({
+        data: {
+            name: "serie a",
+        },
+    });
 
-    // const tag2 = await prisma.tag.create({
-    //     data: {
-    //         name: "serie b",
-    //     },
-    // });
+    const tag2 = await prisma.tag.create({
+        data: {
+            name: "serie b",
+        },
+    });
 
-    // const tag3 = await prisma.tag.create({
-    //     data: {
-    //         name: "serie C",
-    //     },
-    // });
+    const tag3 = await prisma.tag.create({
+        data: {
+            name: "serie C",
+        },
+    });
 
-    // const course1 = await prisma.course.create({
-    //     data: {
-    //         name: "Sistemas de Informação",
-    //         level: "Superior",
-    //     },
-    // });
+    const course1 = await prisma.course.create({
+        data: {
+            name: "Sistemas de Informação",
+            level: "Superior",
+        },
+    });
 
-    // const course2 = await prisma.course.create({
-    //     data: {
-    //         name: "Informática",
-    //         level: "Ensino Médico",
-    //     },
-    // });
+    const course2 = await prisma.course.create({
+        data: {
+            name: "Informática",
+            level: "Ensino Médico",
+        },
+    });
 
-    // const class1 = await prisma.class.create({
-    //     data: {
-    //         name: "1º Período",
-    //         courseId: course1.id,
-    //     },
-    // });
+    const class1 = await prisma.class.create({
+        data: {
+            name: "1º Período",
+            courseId: course1.id,
+        },
+    });
 
-    // const class2 = await prisma.class.create({
-    //     data: {
-    //         name: "1ª Série",
-    //         courseId: course2.id,
-    //     },
-    // });
+    const class2 = await prisma.class.create({
+        data: {
+            name: "1ª Série",
+            courseId: course2.id,
+        },
+    });
 
-    // const category1 = await prisma.category.create({
-    //     data: {
-    //         name: "Texto dos alunos",
-    //     },
-    // });
+    const category1 = await prisma.category.create({
+        data: {
+            name: "Texto dos alunos",
+        },
+    });
 
-    // const category2 = await prisma.category.create({
-    //     data: {
-    //         name: "Texto dos professores",
-    //     },
-    // });
+    const category2 = await prisma.category.create({
+        data: {
+            name: "Texto dos professores",
+        },
+    });
 
-    // const category3 = await prisma.category.create({
-    //     data: {
-    //         name: "Texto identidade",
-    //     },
-    // });
+    const category3 = await prisma.category.create({
+        data: {
+            name: "Texto identidade",
+        },
+    });
 
     const genre1 = await prisma.textualGenre.create({
         data: {
