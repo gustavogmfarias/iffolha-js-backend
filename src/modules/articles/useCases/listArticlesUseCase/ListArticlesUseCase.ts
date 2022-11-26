@@ -5,7 +5,7 @@ import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequest
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
 import { Article, TagsOnArticles } from "@prisma/client";
 import { IArticleResponseDTO } from "@modules/articles/dtos/IArticleResponseDTO";
-import { ITagsRepository } from "@modules/articles/repositories/ITagsRepository";
+import { ITagsRepository } from "@modules/tags/repositories/ITagsRepository";
 
 @injectable()
 class ListArticlesUseCase {

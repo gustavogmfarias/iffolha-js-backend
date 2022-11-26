@@ -63,6 +63,11 @@ model Log {
 }
 
 enum LogRepository {
+    TAG
+    CURSO
+    CLASS
+    CATEGORY
+    TEXTUALGENRE
     USER
     USERTOKEN
     LOG
