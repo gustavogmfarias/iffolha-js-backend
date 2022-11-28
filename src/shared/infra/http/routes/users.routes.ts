@@ -11,6 +11,7 @@ import { ChangeOwnPasswordController } from "@modules/accounts/useCases/changeOw
 import { FindUserByNameController } from "@modules/accounts/useCases/findUserByName/FindUserByNameController";
 import { FindUserByEmailController } from "@modules/accounts/useCases/findUserByEmail/FindUserByEmailController";
 import { FindUserByIdController } from "@modules/accounts/useCases/findUserById/FindUserByIdController";
+import { UploadUserAvatarController } from "@modules/accounts/useCases/uploadUserAvatar/UploadUserAvatarController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -21,6 +22,7 @@ const uploadAvatar = multer(uploadConfig);
 
 const createUserController = new CreateUserController();
 const updateUserAvatarController = new UpdateUserAvatarController();
+const uploadUserAvatarController = new UploadUserAvatarController();
 const listUsersController = new ListUsersController();
 const deleteUserController = new DeleteUserController();
 const updateUserController = new UpdateUserController();
@@ -41,6 +43,13 @@ usersRoutes.patch(
     ensureAuthenticated,
     uploadAvatar.single("avatar"),
     updateUserAvatarController.handle
+);
+
+usersRoutes.patch(
+    "/avatar/:id",
+    ensureAuthenticated,
+    uploadAvatar.single("avatar"),
+    uploadUserAvatarController.handle
 );
 
 usersRoutes.patch(

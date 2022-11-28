@@ -2,7 +2,7 @@
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
 import { IAuthorsRepository } from "@modules/articles/repositories/IAuthorsRepository";
-import { ITagsRepository } from "@modules/articles/repositories/ITagsRepository";
+import { ITagsRepository } from "@modules/tags/repositories/ITagsRepository";
 import { ICoursesRepository } from "@modules/articles/repositories/ICoursesRepository";
 import { Article, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
