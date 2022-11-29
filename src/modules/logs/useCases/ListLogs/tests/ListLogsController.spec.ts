@@ -4,7 +4,7 @@
 
 import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
 import { prisma } from "@shared/database/prismaClient";
-import { app } from "@shared/infra/http/app";
+import { app } from "../../../../../shared/infra/http/app";
 import request from "supertest";
 
 /* eslint-disable prefer-destructuring */

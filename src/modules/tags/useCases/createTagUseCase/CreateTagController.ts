@@ -10,7 +10,7 @@ class CreateTagController {
 
         const createTagUseCase = container.resolve(CreateTagUseCase);
 
-        const tag = createTagUseCase.execute(name, userAdminId);
+        const tag = await createTagUseCase.execute(name, userAdminId);
 
         return response.status(201).send(tag);
     }

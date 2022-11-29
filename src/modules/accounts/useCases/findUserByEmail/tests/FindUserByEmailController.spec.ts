@@ -2,7 +2,7 @@
  * @jest-environment ./prisma/prisma-environment-jest
  */
 
-import { app } from "@shared/infra/http/app";
+import { app } from "../../../../../shared/infra/http/app";
 import request from "supertest";
 
 describe("USER - Find by Email Controller", () => {

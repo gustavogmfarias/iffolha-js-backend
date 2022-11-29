@@ -3,8 +3,8 @@
  */
 
 import { prisma } from "@shared/database/prismaClient";
-import { AppError } from "@shared/errors/AppError";
-import { app } from "@shared/infra/http/app";
+import { AppError } from "../../../../../shared/errors/AppError";
+import { app } from "../../../../../shared/infra/http/app";
 import request from "supertest";
 
 describe("Delete User Controller", () => {

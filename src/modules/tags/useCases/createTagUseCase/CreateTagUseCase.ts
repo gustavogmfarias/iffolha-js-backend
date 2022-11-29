@@ -12,7 +12,7 @@ interface IResponse {
 @injectable()
 class CreateTagUseCase {
     constructor(
-        @inject("TagRepository") private tagsRepository: ITagsRepository,
+        @inject("TagsRepository") private tagsRepository: ITagsRepository,
         @inject("LogProvider") private logProvider: ILogProvider
     ) {}
 
@@ -23,7 +23,11 @@ class CreateTagUseCase {
             throw new AppError("Tag already exists", 400);
         }
 
-        tag = await this.tagsRepository.createTag(name);
+        try {
+            tag = await this.tagsRepository.createTag(name);
+        } catch (err) {
+            throw new AppError(err.message, 400);
+        }
 
         const log = await this.logProvider.create({
             logRepository: "TAG",

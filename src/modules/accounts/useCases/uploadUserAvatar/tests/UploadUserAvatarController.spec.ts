@@ -2,15 +2,15 @@
  * @jest-environment ./prisma/prisma-environment-jest
  */
 
-import { app } from "@shared/infra/http/app";
 import request from "supertest";
 import fs from "mz/fs";
-import { AppError } from "@shared/errors/AppError";
+import { app } from "../../../../../shared/infra/http/app";
+import { AppError } from "../../../../../shared/errors/AppError";
 
 let testFilePath = null;
 
-describe("USER - Update Avatar User Controller", () => {
-    it("Should be able to update a User's avatar", async () => {
+describe("USER - Upload Avatar User Controller", () => {
+    it("Should be able to upload a User's avatar", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
@@ -71,7 +71,7 @@ describe("USER - Update Avatar User Controller", () => {
         );
     });
 
-    it("Should not be able to update a User's avatar if not logged in", async () => {
+    it("Should not be able to upload a User's avatar if not logged in", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
@@ -126,7 +126,7 @@ describe("USER - Update Avatar User Controller", () => {
         );
     });
 
-    it("Should not be able to update a User's avatar  if the token is invalid or expired", async () => {
+    it("Should not be able to upload a User's avatar  if the token is invalid or expired", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });

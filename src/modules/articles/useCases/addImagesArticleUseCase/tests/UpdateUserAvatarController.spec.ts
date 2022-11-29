@@ -2,10 +2,10 @@
  * @jest-environment ./prisma/prisma-environment-jest
  */
 
-import { app } from "@shared/infra/http/app";
+import { app } from "../../../../../shared/infra/http/app";
 import request from "supertest";
 import fs from "mz/fs";
-import { AppError } from "@shared/errors/AppError";
+import { AppError } from "../../../../../shared/errors/AppError";
 
 let testFilePath = null;
 
