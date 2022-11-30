@@ -15,8 +15,8 @@ class ListUsersController {
         });
 
         return response
-            .setHeader("x-total-count", String(all.length))
-            .json(all);
+            .setHeader("x-total-count", String(all.totalCount))
+            .json(all.usersDTO);
     }
 }
 

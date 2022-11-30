@@ -170,6 +170,16 @@ export class UsersRepository implements IUsersRepository {
         return users;
     }
 
+    async totalUsers(): Promise<number> {
+        const users = await prisma.user.findMany({
+            orderBy: {
+                name: "asc",
+            },
+        });
+
+        return users.length;
+    }
+
     async delete(id: string): Promise<void> {
         await prisma.user.delete({
             where: { id },

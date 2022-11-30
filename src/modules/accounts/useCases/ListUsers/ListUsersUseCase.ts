@@ -3,6 +3,10 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
 
+interface IResponse {
+    usersDTO: IUserResponseDTO[];
+    totalCount: number;
+}
 @injectable()
 class ListUsersUseCase {
     constructor(
@@ -13,7 +17,8 @@ class ListUsersUseCase {
     async execute(
         name: string,
         { page, perPage }: IPaginationRequestDTO
-    ): Promise<IUserResponseDTO[]> {
+    ): Promise<IResponse> {
+        const totalCount = await this.usersRepository.totalUsers();
         const users = await this.usersRepository.listUsers(
             {
                 page,
@@ -27,7 +32,7 @@ class ListUsersUseCase {
             return usersDTO.push(this.usersRepository.convertDTO(user));
         });
 
-        return usersDTO;
+        return { usersDTO, totalCount };
     }
 }
 export { ListUsersUseCase };
