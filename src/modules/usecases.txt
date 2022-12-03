@@ -1,0 +1,86 @@
+1-  article
+a) criar
+[x] adicionar tags
+[x] adicionar autores
+[x] adicionar cursos
+[x] adicionar imagens
+[x] adicionar categoria
+[x] adicionar genero
+[ ] teste
+[] adicionar imagens JUNTO com a criação de articles
+[ ] fazer documentação
+[ ] fazer test
+
+b) listar
+[x] listar artigos
+[ ] fazer documentação
+[ ] fazer test
+
+c) deletar
+[x] deletar artigos
+[ ] fazer documentação
+[ ] fazer test
+
+e) editar artigos
+[] deletar tags de um artigo
+[] deletar curso de um artigo
+[] deletar autor de um artigo
+[] deletar imagens de um artigo
+[] deletar genero
+[] deletar categoria
+[ ] fazer documentação
+[ ] fazer test
+
+2- Tags
+[x] adicionar tags a um artigo
+[x] adicionar tags
+[x] listar tags
+[] deletar tags 
+[] deletar todas as tags de um artigo
+[ ] fazer documentação
+[ ] fazer test
+
+3- cursos
+[ ] adicionar curso
+[x] Adicionar curso a um artigo
+[] deletar curso de um artigo
+[] deletar curso
+[] listar cursos
+[ ] fazer documentação
+[ ] fazer test
+
+4- autores
+
+[x] Adicionar autor a um artigo
+[] deletar autor de um artigo
+[] listar autores
+
+5- Imagens
+[x] adicionar imagens a um artigo
+[] adicionar imgens junto a um artigo
+[] deletar imagens de um artigo
+[] deletar imagens
+[ ] fazer documentação
+[ ] fazer test
+
+6- Categorias
+[ ] criar categoria
+[ ] listar categoria
+[x] adicionar Categorias a um artigo
+[] deletar Categorias de um artigo
+[] deletar Categorias 
+[ ] fazer documentação
+[ ] fazer test
+
+7- Generos
+[ ] criar genero
+[ ] listar
+[] adicionar Generos a um artigo
+[] deletar Generos de um artigo
+[] deletar Generos 
+[ ] fazer documentação
+[ ] fazer test
+
+8- UploadAvatar
+[ ] fazer test
+[ ] apagar avatar quando exclui usuário 
