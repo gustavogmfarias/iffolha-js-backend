@@ -4,6 +4,7 @@ import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 export interface ITagsRepository {
     createTag(name: string): Promise<Tag>;
     deleteTag(name: string): Promise<void>;
+    deleteAllTagsFromArticle(articleId: string): Promise<void>;
     findTagByName(name: string): Promise<Tag>;
     findTagById(id: string): Promise<Tag>;
     findTagsByIds(id: string[]): Promise<Tag[]>;

@@ -24,6 +24,10 @@ export class TagsRepository implements ITagsRepository {
         });
     }
 
+    async deleteAllTagsFromArticle(articleId: string): Promise<void> {
+        await prisma.tagsOnArticles.deleteMany({ where: { articleId } });
+    }
+
     async findTagsByIds(id: string[]): Promise<Tag[]> {
         const tags = await prisma.tag.findMany({ where: { id: { in: id } } });
 
