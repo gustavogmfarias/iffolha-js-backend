@@ -6,7 +6,10 @@ import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
 import { ArticleMap } from "@modules/articles/mapper/ArticleMap";
 import { Article, Tag } from "@prisma/client";
 import { prisma } from "@shared/database/prismaClient";
-import { IArticleRepository } from "../IArticleRepository";
+import {
+    ArticleWithRelations,
+    IArticleRepository,
+} from "../IArticleRepository";
 
 export class ArticleRepository implements IArticleRepository {
     async create({
@@ -84,8 +87,8 @@ export class ArticleRepository implements IArticleRepository {
     async list(
         { page, perPage }: IPaginationRequestDTO,
         name?: string
-    ): Promise<Article[]> {
-        let articles: Article[];
+    ): Promise<ArticleWithRelations[]> {
+        let articles: ArticleWithRelations[];
 
         if (!page || !perPage) {
             articles = await prisma.article.findMany({

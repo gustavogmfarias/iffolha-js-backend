@@ -20,7 +20,7 @@ class ListArticlesUseCase {
         page,
         perPage,
     }: IPaginationRequestDTO): Promise<IArticleResponseDTO[]> {
-        const articles: Article[] = await this.articleRepository.list({
+        const articles = await this.articleRepository.list({
             page,
             perPage,
         });
