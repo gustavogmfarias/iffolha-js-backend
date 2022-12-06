@@ -1,3 +1,4 @@
+import { ArticleWithRelations } from "@modules/articles/repositories/IArticleRepository";
 import { Tag, TagsOnArticles } from "@prisma/client";
 import { prisma } from "@shared/database/prismaClient";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
@@ -62,6 +63,61 @@ export class TagsRepository implements ITagsRepository {
         tagsOnArticles = await prisma.tagsOnArticles.findMany();
 
         return tagsOnArticles;
+    }
+
+    async listArticlesByTag(
+        { page, perPage }: IPaginationRequestDTO,
+        tagName: string,
+        articleTitle?: string
+    ): Promise<ArticleWithRelations[]> {
+        let articles: ArticleWithRelations[];
+        const tag = await this.findTagByName(tagName);
+
+        const articlesWithTag = await prisma.tagsOnArticles.findMany({
+            where: { tagId: tag.id },
+        });
+
+        if (!page || !perPage) {
+            articles = await prisma.article.findMany({
+                where: {
+                    title: articleTitle,
+                     id: { in: articlesWithTag.articleId }  },
+                },
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: { include: { tag: true } },
+                    AuthorsOnArticles: { include: { author: true } },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+
+                    images: true,
+                },
+            });
+        } else {
+            articles = await prisma.article.findMany({
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: { include: { tag: true } },
+                    AuthorsOnArticles: { include: { author: true } },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+
+                    images: true,
+                },
+            });
+        }
+
+        return articles;
     }
 
     async listTags(

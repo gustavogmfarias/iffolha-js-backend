@@ -36,7 +36,10 @@ e) editar artigos
 [x] adicionar tags
 [x] listar tags
 [x] deletar tags 
-[] deletar todas as tags de um artigo
+[x] deletar todas as tags de um artigo
+[] listar articles by tag
+[] listar repositorio de texto by tag
+
 [ ] fazer documentação
 [ ] fazer test
 
