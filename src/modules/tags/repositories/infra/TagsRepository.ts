@@ -80,8 +80,8 @@ export class TagsRepository implements ITagsRepository {
         if (!page || !perPage) {
             articles = await prisma.article.findMany({
                 where: {
-                    title: articleTitle,
-                     id: { in: articlesWithTag.articleId }  },
+                    title: { contains: articleTitle },
+                    TagsOnArticles: { every: { tagId: tag.id } },
                 },
                 orderBy: {
                     publishedDate: "desc",
@@ -99,6 +99,10 @@ export class TagsRepository implements ITagsRepository {
             });
         } else {
             articles = await prisma.article.findMany({
+                where: {
+                    title: { contains: articleTitle },
+                    TagsOnArticles: { every: { tagId: tag.id } },
+                },
                 take: Number(perPage),
                 skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {
