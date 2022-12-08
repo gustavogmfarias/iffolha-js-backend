@@ -33,7 +33,7 @@ e) editar artigos
 
 2- Tags
 [x] adicionar tags a um artigo
-[x] adicionar tags
+[x] criar tags
 [x] listar tags
 [x] deletar tags 
 [x] deletar todas as tags de um artigo

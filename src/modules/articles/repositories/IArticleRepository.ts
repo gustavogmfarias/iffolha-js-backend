@@ -20,7 +20,7 @@ export interface IArticleRepository {
 
     delete(id: string): Promise<void>;
 
-    findById(id: string): Promise<Article | null>;
+    findById(id: string): Promise<ArticleWithRelations | null>;
 
     list({
         page,

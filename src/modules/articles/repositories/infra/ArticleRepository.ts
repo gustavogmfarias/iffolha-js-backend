@@ -66,7 +66,7 @@ export class ArticleRepository implements IArticleRepository {
         });
     }
 
-    async findById(id: string): Promise<Article | null> {
+    async findById(id: string): Promise<ArticleWithRelations | null> {
         const article = await prisma.article.findUnique({
             where: {
                 id,
@@ -77,6 +77,7 @@ export class ArticleRepository implements IArticleRepository {
                 CoursesOnArticles: { include: { course: true } },
                 ClassOnArticles: { include: { class: true } },
                 CategoryOnArticles: { include: { category: true } },
+                TextualGenreOnArticles: { include: { textualGenre: true } },
                 images: true,
             },
         });
@@ -102,7 +103,6 @@ export class ArticleRepository implements IArticleRepository {
                     ClassOnArticles: { include: { class: true } },
                     CategoryOnArticles: { include: { category: true } },
                     TextualGenreOnArticles: { include: { textualGenre: true } },
-
                     images: true,
                 },
             });

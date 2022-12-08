@@ -2,9 +2,9 @@
  * @jest-environment ./prisma/prisma-environment-jest
  */
 
+import request from "supertest";
 import { AppError } from "../../../../../shared/errors/AppError";
 import { app } from "../../../../../shared/infra/http/app";
-import request from "supertest";
 
 describe("Create Tag Controller", () => {
     it("Should be able to create a new tag", async () => {
@@ -18,11 +18,13 @@ describe("Create Tag Controller", () => {
             .post("/tags")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "test ",
+                name: "test",
             });
 
-        expect(response.body[0].name).toBe("test");
-        expect(response.body[1].description).toBe("Tag created successfully!");
+        console.log(response);
+
+        expect(response.body.tag.name).toBe("test");
+        expect(response.body.log.description).toBe("Tag created successfully!");
 
         expect(response.status).toBe(201);
     });

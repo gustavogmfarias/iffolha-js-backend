@@ -57,7 +57,7 @@ class UpdateArticleUseCase {
         classes,
     }: IRequest): Promise<(Article | Log)[]> {
         let log;
-        let article = await this.articleRepository.findById(id);
+        const article = await this.articleRepository.findById(id);
 
         if (!article) {
             throw new AppError("Article doesn't exist", 404);
@@ -69,42 +69,42 @@ class UpdateArticleUseCase {
         const previousClassesOnArticle: string[] = [];
         const previousImages: string[] = [];
 
-        article.TagsOnArticles.map((data) => {
-            const tagName = data.tag.name;
+        // article.TagsOnArticles.map((data) => {
+        //     const tagName = data.tag.name;
 
-            previousTagsOnArticle.push(data.tag.name);
-        });
+        //     previousTagsOnArticle.push(data.tag.name);
+        // });
 
-        article.CoursesOnArticles.map((data) => {
-            const courseName = data.course.name;
-            previousCoursesOnArticle.push(courseName);
-        });
+        // article.CoursesOnArticles.map((data) => {
+        //     const courseName = data.course.name;
+        //     previousCoursesOnArticle.push(courseName);
+        // });
 
-        article.ClassOnArticles.map((data) => {
-            const className = data.class.name;
-            previousClassesOnArticle.push(className);
-        });
+        // article.ClassOnArticles.map((data) => {
+        //     const className = data.class.name;
+        //     previousClassesOnArticle.push(className);
+        // });
 
-        article.images.map((data) => {
-            const imagesLinkName = this.articleRepository.imageUrl(data.image);
+        // article.images.map((data) => {
+        //     const imagesLinkName = this.articleRepository.imageUrl(data.image);
 
-            previousImages.push(imagesLinkName);
-        });
+        //     previousImages.push(imagesLinkName);
+        // });
 
-        article.AuthorsOnArticles.map((data) => {
-            const authorId = data.author.id;
+        // article.AuthorsOnArticles.map((data) => {
+        //     const authorId = data.author.id;
 
-            previousAuthorsOnArticle.push(data.author.id);
-        });
+        //     previousAuthorsOnArticle.push(data.author.id);
+        // });
 
-        article = await this.articleRepository.update(id, {
-            title,
-            subTitle,
-            content,
-            editedByUserId,
-            isHighlight,
-            url: this.articleRepository.generateUrl(title),
-        });
+        // article = await this.articleRepository.update(id, {
+        //     title,
+        //     subTitle,
+        //     content,
+        //     editedByUserId,
+        //     isHighlight,
+        //     url: this.articleRepository.generateUrl(title),
+        // });
 
         if (article) {
             if (authors) {
