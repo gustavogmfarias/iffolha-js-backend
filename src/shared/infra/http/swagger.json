@@ -640,21 +640,21 @@
                         "name": "page",
                         "in": "query",
                         "description": "Number of the page of view",
-                        "required": true,
+                        "required": false,
                         "Schema": { "type": "string" }
                     },
                     {
                         "name": "perPage",
                         "in": "query",
                         "description": "Number of objects in the page of view",
-                        "required": true,
+                        "required": false,
                         "Schema": { "type": "string" }
                     },
                     {
                         "name": "name",
                         "in": "query",
                         "description": "Initial or part of the name",
-                        "required": true,
+                        "required": false,
                         "Schema": { "type": "string" }
                     }
                 ],
