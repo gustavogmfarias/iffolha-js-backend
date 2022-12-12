@@ -102,7 +102,7 @@ model Article {
 model AuthorsOnArticles {
     Article   Article @relation(fields: [ArticleId], references: [id], onDelete: Cascade)
     ArticleId String
-    author    User    @relation(fields: [authorId], references: [id])
+    author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId  String
 
     @@id([ArticleId, authorId])
