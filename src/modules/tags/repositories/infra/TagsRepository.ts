@@ -72,7 +72,7 @@ export class TagsRepository implements ITagsRepository {
     ): Promise<ArticleWithRelations[]> {
         let articles: ArticleWithRelations[];
 
-        if (!page || !perPage) {
+        if (!page || !perPage || !articleTitle) {
             articles = await prisma.article.findMany({
                 where: {
                     title: { contains: articleTitle },
@@ -129,14 +129,8 @@ export class TagsRepository implements ITagsRepository {
     ): Promise<Tag[]> {
         let tags: Tag[];
 
-        if (!page || !perPage) {
+        if (!page || !perPage || !name) {
             tags = await prisma.tag.findMany({
-                where: {
-                    name: {
-                        contains: name,
-                        mode: "insensitive",
-                    },
-                },
                 orderBy: {
                     name: "asc",
                 },
