@@ -173,6 +173,35 @@
                         }
                     }
                 }
+            },
+
+            "delete": {
+                "tags": ["Users"],
+                "summary": "Delete a user",
+                "description": "Delete a user",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "User Deleted Successfully"
+                    },
+                    "404": {
+                        "description": "User doesn't exists"
+                    }
+                }
             }
         },
         "/users/findbyemail": {
@@ -560,36 +589,6 @@
                 }
             }
         },
-        "/users/delete/{id}": {
-            "delete": {
-                "tags": ["Users"],
-                "summary": "Delete a user",
-                "description": "Delete a user",
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User id",
-                        "required": true,
-                        "Schema": { "type": "string" }
-                    }
-                ],
-
-                "responses": {
-                    "200": {
-                        "description": "User Deleted Successfully"
-                    },
-                    "404": {
-                        "description": "User doesn't exists"
-                    }
-                }
-            }
-        },
         "/tags": {
             "post": {
                 "tags": ["Tags"],
@@ -678,9 +677,127 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": ["Tags"],
+                "summary": "Delete a Tag",
+                "description": "Delete a Tag",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "Tag name",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Tag successfully deleted!"
+                    },
+                    "404": {
+                        "description": "Tag doesn't exists"
+                    }
+                }
             }
         },
-
+        "/tags/articlesbytag": {
+            "get": {
+                "tags": ["Tags"],
+                "summary": "List all Articles with a specifc Tag",
+                "description": "List all Articles with a specifc Tag",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "articleTitle",
+                        "in": "query",
+                        "description": "Initial or part of the Article Title",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "tagName",
+                        "in": "query",
+                        "description": "Full name of the Tag Name",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tags/deletealltags/{id}": {
+            "patch": {
+                "tags": ["Tags"],
+                "summary": "Delete all tags of an Article",
+                "description": "Delete all tags of an Article",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "description": "Article id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tags successfully deleted!"
+                    },
+                    "404 A": {
+                        "description": "Article doesn't exists"
+                    }
+                }
+            }
+        },
         "/categories/import": {
             "post": {
                 "tags": ["Category"],
