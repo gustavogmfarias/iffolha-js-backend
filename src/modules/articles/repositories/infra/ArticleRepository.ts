@@ -4,7 +4,7 @@ import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequest
 import { IArticleResponseDTO } from "@modules/articles/dtos/IArticleResponseDTO";
 import { ICreateArticleDTO } from "@modules/articles/dtos/ICreateArticleDTO";
 import { ArticleMap } from "@modules/articles/mapper/ArticleMap";
-import { Article, Tag } from "@prisma/client";
+import { Article, Tag, TagsOnArticles } from "@prisma/client";
 import { prisma } from "@shared/database/prismaClient";
 import {
     ArticleWithRelations,
@@ -19,7 +19,7 @@ export class ArticleRepository implements IArticleRepository {
         publishedByUserId,
         isHighlight,
         url,
-    }: ICreateArticleDTO): Promise<Article> {
+    }: ICreateArticleDTO): Promise<ArticleWithRelations> {
         const article = await prisma.article.create({
             data: {
                 title,
@@ -31,7 +31,22 @@ export class ArticleRepository implements IArticleRepository {
             },
         });
 
-        return article;
+        const articleWithRelations = await prisma.article.findUnique({
+            where: {
+                id: article.id,
+            },
+            include: {
+                TagsOnArticles: { include: { tag: true } },
+                AuthorsOnArticles: { include: { author: true } },
+                CoursesOnArticles: { include: { course: true } },
+                ClassOnArticles: { include: { class: true } },
+                CategoryOnArticles: { include: { category: true } },
+                TextualGenreOnArticles: { include: { textualGenre: true } },
+                images: true,
+            },
+        });
+
+        return articleWithRelations;
     }
 
     async update(

@@ -15,18 +15,14 @@ export type ArticleWithRelations = Prisma.ArticleGetPayload<{
     };
 }>;
 export interface IArticleRepository {
-    create(data: ICreateArticleDTO): Promise<Article>;
+    create(data: ICreateArticleDTO): Promise<ArticleWithRelations>;
     update(id: string, data: ICreateArticleDTO): Promise<Article>;
-
     delete(id: string): Promise<void>;
-
     findById(id: string): Promise<ArticleWithRelations | null>;
-
     list({
         page,
         perPage,
     }: IPaginationRequestDTO): Promise<ArticleWithRelations[]>;
-
     convertDTO(
         article: Article,
         tags: string[],
@@ -37,16 +33,12 @@ export interface IArticleRepository {
         textualGenres: string[],
         images: string[]
     ): IArticleResponseDTO;
-
     generateUrl(title: string): string;
-
     generateContentSummary(content: string): string;
-
     saveImageOnArticle(
         articleId: string,
         image: string,
         isMain: boolean
     ): Promise<void>;
-
     imageUrl(image: string): string;
 }

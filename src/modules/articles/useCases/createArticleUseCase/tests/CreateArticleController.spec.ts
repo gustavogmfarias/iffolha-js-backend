@@ -2,39 +2,46 @@
  * @jest-environment ./prisma/prisma-environment-jest
  */
 
+import request from "supertest";
 import { AppError } from "../../../../../shared/errors/AppError";
 import { app } from "../../../../../shared/infra/http/app";
-import request from "supertest";
 
-describe("Create User Controller", () => {
-    it("Should be able to create a new user and add a log with default role", async () => {
-        const responseToken = await request(app)
+describe("Create Article Controller", () => {
+    let token;
+    beforeAll(async () => {
+        const loginAdmin = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
 
-        const { token } = responseToken.body;
+        token = loginAdmin.body.token;
+    });
 
-        const response = await request(app)
-            .post("/users")
+    it("Should be able to create a new article with one or more tag", async () => {
+        const novaNoticia = await request(app)
+            .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                email: "testIntegration@test.com.br",
-                name: "Test ",
-                lastName: "Integration",
-                password: "test",
+                title: "Primeira notícia",
+                subTitle: "Essa é a primeira notícia criada",
+                content: "conteúdo da prmeira notícia é",
+                isHighlight: true,
+                authors: [],
+                tags: ["notícia1", "segundaTagNotícia1"],
             });
 
-        const novoUserLogin = await request(app)
-            .post("/sessions")
-            .send({ email: "testIntegration@test.com.br", password: "test" });
+        const novaNoticiaBody = novaNoticia.body[0];
+        const novaNoticiaLog = novaNoticia.body[1];
 
-        const log = response.body[1];
+        expect(novaNoticiaBody).toHaveProperty("id");
+        expect(novaNoticiaBody.title).toBe("Primeira notícia");
+        expect(novaNoticiaBody.subTitle).toBe(
+            "Essa é a primeira notícia criada"
+        );
+        expect(novaNoticiaBody.content).toBe("conteúdo da prmeira notícia é");
+        expect(novaNoticiaBody.isHighlight).toBe(true);
+        expect(novaNoticiaLog).toBe("Article created successfully!");
 
-        expect(response.body[0].role).toBe("USER");
-        expect(novoUserLogin.body).toHaveProperty("token");
-        expect(log.description).toBe("User created successfully!");
-
-        expect(response.status).toBe(201);
+        expect(novaNoticia.status).toBe(201);
     });
 
     //     Must be able to create an article with Tags, Authors, Courses, Classes, Categories and Textual Generos, and as a highlight.

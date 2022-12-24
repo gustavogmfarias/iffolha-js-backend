@@ -1,3 +1,5 @@
+import { Tag } from "@prisma/client";
+
 export interface ICreateArticleDTO {
     title: string;
     subTitle: string;
@@ -6,4 +8,5 @@ export interface ICreateArticleDTO {
     editedByUserId?: string;
     isHighlight: boolean;
     url: string;
+    tags?: Tag[];
 }
