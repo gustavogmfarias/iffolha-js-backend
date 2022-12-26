@@ -21,28 +21,6 @@ export class ArticleRepository implements IArticleRepository {
         url,
         tags,
     }: ICreateArticleDTO): Promise<ArticleWithRelations> {
-        await prisma.tagsOnArticles.create({
-            data: {
-                tag: {
-                    create: {
-                        duration: 200,
-                        name: "Curso de NodeJS",
-                        description: "Curso completo de NodeJS",
-                    },
-                },
-                Article: {
-                    create: {
-                        title,
-                        subTitle,
-                        content,
-                        publishedByUserId,
-                        isHighlight,
-                        url,
-                    },
-                },
-            },
-        });
-
         const article = await prisma.article.create({
             data: {
                 title,

@@ -16,10 +16,10 @@ import { ICoursesRepository } from "@modules/articles/repositories/ICoursesRepos
 import { CoursesRepository } from "@modules/articles/repositories/infra/CoursesRepository";
 import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
 import { ClassesRepository } from "@modules/articles/repositories/infra/ClassesRepository";
-import { ICategoriesRepository } from "@modules/articles/repositories/ICategoriesRepository";
-import { CategoriesRepository } from "@modules/articles/repositories/infra/CategoriesRepository";
 import { ITextualGenreRepository } from "@modules/articles/repositories/ITextualGenreRepository";
 import { TextualGenreRepository } from "@modules/articles/repositories/infra/TextualGenreRepository";
+import { CategoriesRepository } from "@modules/category/repositories/infra/CategoriesRepository";
+import { ICategoriesRepository } from "@modules/category/repositories/ICategoriesRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",

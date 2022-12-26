@@ -67,7 +67,7 @@ e) editar artigos
 [ ] fazer test
 
 6- Categorias
-[ ] criar categoria
+[ x ] criar categoria test ok
 [ ] listar categoria
 [x] adicionar Categorias a um artigo
 [] deletar Categorias de um artigo
