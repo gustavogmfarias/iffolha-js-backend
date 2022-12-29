@@ -1,4 +1,5 @@
 import { Category, CategoryOnArticles } from "@prisma/client";
+import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 
 export interface ICategoriesRepository {
     createCategory(name: string): Promise<Category>;
@@ -12,4 +13,9 @@ export interface ICategoriesRepository {
         articleId: string,
         categoriesId: string[]
     ): Promise<void>;
+    totalCategories(): Promise<number>;
+    listCategories(
+        { page, perPage }: IPaginationRequestDTO,
+        name?: string
+    ): Promise<Category>;
 }
