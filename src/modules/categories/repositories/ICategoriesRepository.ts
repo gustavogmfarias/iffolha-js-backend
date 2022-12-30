@@ -17,5 +17,5 @@ export interface ICategoriesRepository {
     listCategories(
         { page, perPage }: IPaginationRequestDTO,
         name?: string
-    ): Promise<Category>;
+    ): Promise<Category[]>;
 }

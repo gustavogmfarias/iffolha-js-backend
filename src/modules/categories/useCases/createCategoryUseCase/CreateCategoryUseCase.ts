@@ -1,4 +1,4 @@
-import { ICategoriesRepository } from "@modules/category/repositories/ICategoriesRepository";
+import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
 import { Category, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";

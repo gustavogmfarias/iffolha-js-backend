@@ -18,8 +18,8 @@ import { IClassesRepository } from "@modules/articles/repositories/IClassesRepos
 import { ClassesRepository } from "@modules/articles/repositories/infra/ClassesRepository";
 import { ITextualGenreRepository } from "@modules/articles/repositories/ITextualGenreRepository";
 import { TextualGenreRepository } from "@modules/articles/repositories/infra/TextualGenreRepository";
-import { CategoriesRepository } from "@modules/category/repositories/infra/CategoriesRepository";
-import { ICategoriesRepository } from "@modules/category/repositories/ICategoriesRepository";
+import { CategoriesRepository } from "@modules/categories/repositories/infra/CategoriesRepository";
+import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",

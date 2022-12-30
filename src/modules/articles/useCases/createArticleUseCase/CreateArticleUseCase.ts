@@ -12,7 +12,7 @@ import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvid
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
-import { ICategoriesRepository } from "@modules/category/repositories/ICategoriesRepository";
+import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
 import { ITextualGenreRepository } from "@modules/articles/repositories/ITextualGenreRepository";
 
 interface IRequest {
