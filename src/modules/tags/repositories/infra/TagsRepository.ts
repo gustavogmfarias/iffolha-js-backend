@@ -129,8 +129,29 @@ export class TagsRepository implements ITagsRepository {
     ): Promise<Tag[]> {
         let tags: Tag[];
 
-        if (!page || !perPage || !name) {
+        // se não tiver os 3
+        if (!page && !perPage && !name) {
             tags = await prisma.tag.findMany({
+                orderBy: {
+                    name: "asc",
+                },
+            });
+        } else if (page && perPage && !name) {
+            tags = await prisma.tag.findMany({
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
+                orderBy: {
+                    name: "asc",
+                },
+            });
+        } else if (!page && !page && name) {
+            tags = await prisma.tag.findMany({
+                where: {
+                    name: {
+                        contains: name,
+                        mode: "insensitive",
+                    },
+                },
                 orderBy: {
                     name: "asc",
                 },

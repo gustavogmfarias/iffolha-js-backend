@@ -68,7 +68,7 @@ describe("CATEGORIES - List Tags Controller", () => {
 
         expect(searchA.status).toBe(200);
         expect(searchA.body).toHaveLength(1);
-        expect(searchA.body[0].name).toBe("serie a");
+        expect(searchA.body[0].name).toBe("test");
     });
 
     it("Should be able to list the categories searching by name", async () => {
@@ -87,7 +87,26 @@ describe("CATEGORIES - List Tags Controller", () => {
 
         expect(searchA.status).toBe(200);
         expect(searchA.body).toHaveLength(4);
-        expect(searchA2.body).toHaveLength(3);
+        expect(searchA2.body).toHaveLength(0);
+    });
+
+    it("Should be able to list the categories searching by name and pagination", async () => {
+        const responseToken = await request(app)
+            .post("/sessions")
+            .send({ email: "admin@admin.com", password: "admin" });
+        const { token } = responseToken.body;
+
+        const searchA = await request(app)
+            .get(`/categories?name=test&page=1&perPage=1`)
+            .set({ Authorization: `Bearer ${token}` });
+
+        const searchA2 = await request(app)
+            .get(`/categories?name=test&page=2&perPage=2`)
+            .set({ Authorization: `Bearer ${token}` });
+
+        expect(searchA.status).toBe(200);
+        expect(searchA.body).toHaveLength(1);
+        expect(searchA2.body).toHaveLength(2);
     });
 
     it("Should not be able to list all categories if you was not logged", async () => {
