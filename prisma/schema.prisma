@@ -183,7 +183,7 @@ model Category {
 model CategoryOnArticles {
     Article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
     articleId  String
-    category   Category @relation(fields: [categoryId], references: [id])
+    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     categoryId String
 
     @@id([categoryId, articleId])

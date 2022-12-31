@@ -3,6 +3,7 @@ import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 
 export interface ICategoriesRepository {
     createCategory(name: string): Promise<Category>;
+    deleteCategory(id: string): Promise<void>;
     findCategoryByName(name: string): Promise<Category>;
     findCategoryById(id: string): Promise<Category>;
     findCategoriesByIds(id: string[]): Promise<Category[]>;

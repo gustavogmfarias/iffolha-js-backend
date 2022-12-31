@@ -888,6 +888,36 @@
                 }
             }
         },
+        "/categories/{id}": {
+            "delete": {
+                "tags": ["Category"],
+                "summary": "Delete a Category",
+                "description": "Delete a Category",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Category successfully deleted!"
+                    },
+                    "404": {
+                        "description": "Category doesn't exists"
+                    }
+                }
+            }
+        },
         "/categories/import": {
             "post": {
                 "tags": ["Category"],
