@@ -70,10 +70,11 @@ e) editar artigos
 [ x ] criar categoria test ok
 [x ] listar categoria test ok
 [x] adicionar Categorias a um artigo
-[] deletar Categorias 
+[x] deletar Categorias 
 [] deletar Categorias de um artigo
-[ ] fazer documentação
-[ ] fazer test
+[ x] listar articles de uma categoria.
+[x ] fazer documentação
+[ x] fazer test
 
 7- Generos
 [ ] criar genero

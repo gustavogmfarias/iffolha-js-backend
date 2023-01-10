@@ -888,6 +888,68 @@
                 }
             }
         },
+        "/categories/articlesbycategory": {
+            "get": {
+                "tags": ["Category"],
+                "summary": "List all Articles with a specifc Category",
+                "description": "List all Articles with a specifc Category",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "articleTitle",
+                        "in": "query",
+                        "description": "Initial or part of the Article Title",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "categoryName",
+                        "in": "query",
+                        "description": "Full name of the Category Name",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/categories/{id}": {
             "delete": {
                 "tags": ["Category"],

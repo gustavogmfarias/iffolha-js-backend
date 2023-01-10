@@ -5,7 +5,7 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("TAGS - List Articles by Tags Controller", () => {
+describe("CATEGORIES - List Articles by Categories Controller", () => {
     let token: string;
 
     beforeAll(async () => {
@@ -14,6 +14,20 @@ describe("TAGS - List Articles by Tags Controller", () => {
             .send({ email: "admin@admin.com", password: "admin" });
 
         token = loginAdmin.body.token;
+
+        const aaa = await request(app)
+            .post("/categories")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "aaa",
+            });
+
+        const bbb = await request(app)
+            .post("/categories")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "bbb",
+            });
 
         const article1 = await request(app)
             .post("/articles")
@@ -25,6 +39,7 @@ describe("TAGS - List Articles by Tags Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["aaa"],
+                categories: [aaa.body.category.id],
             });
 
         const article2 = await request(app)
@@ -37,6 +52,7 @@ describe("TAGS - List Articles by Tags Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["bbb"],
+                categories: [bbb.body.category.id],
             });
 
         const article3 = await request(app)
@@ -49,16 +65,21 @@ describe("TAGS - List Articles by Tags Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["bbb"],
+                categories: [bbb.body.category.id],
             });
     });
 
-    it("Should be able to list articles by tags", async () => {
+    it("Should be able to list articles by categories", async () => {
         const searchA = await request(app)
-            .get(`/tags/articlesbytag?articleTitle&page&perPage&tagName=aaa`)
+            .get(
+                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName=aaa`
+            )
             .set({ Authorization: `Bearer ${token}` });
 
         const searchB = await request(app)
-            .get(`/tags/articlesbytag?articleTitle&page&perPage&tagName=bbb`)
+            .get(
+                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName=bbb`
+            )
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
@@ -67,10 +88,10 @@ describe("TAGS - List Articles by Tags Controller", () => {
         expect(searchB.body).toHaveLength(2);
     });
 
-    it("Should be able to list articles by tags & titleName", async () => {
+    it("Should be able to list articles by categories & titleName", async () => {
         const searchA = await request(app)
             .get(
-                `/tags/articlesbytag?articleTitle=aqui&page&perPage&tagName=bbb`
+                `/categories/articlesbycategory?articleTitle=aqui&page&perPage&categoryName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -78,16 +99,16 @@ describe("TAGS - List Articles by Tags Controller", () => {
         expect(searchA.body).toHaveLength(1);
     });
 
-    it("Should be able to list articles by tags with pagination", async () => {
+    it("Should be able to list articles by categories with pagination", async () => {
         const searchA = await request(app)
             .get(
-                `/tags/articlesbytag?articleTitle&page=1&perPage=1&tagName=bbb`
+                `/categories/articlesbycategory?articleTitle&page=1&perPage=1&categoryName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
         const searchB = await request(app)
             .get(
-                `/tags/articlesbytag?articleTitle&page=2&perPage=1&tagName=bbb`
+                `/categories/articlesbycategory?articleTitle&page=2&perPage=1&categoryName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -97,17 +118,19 @@ describe("TAGS - List Articles by Tags Controller", () => {
         expect(searchB.body).toHaveLength(1);
     });
 
-    it("Should not be able to list all tags if you was not logged", async () => {
+    it("Should not be able to list all categories if you was not logged", async () => {
         const response = await request(app).get(
-            `/tags/articlesbytag?articleTitle&page&perPage&tagName`
+            `/categories/articlesbycategory?articleTitle&page&perPage&categoryName`
         );
 
         expect(response.body.message).toBe("Token missing");
     });
 
-    it("Should not be able to list all tags if token was expired or invalid", async () => {
+    it("Should not be able to list all categories if token was expired or invalid", async () => {
         const response = await request(app)
-            .get(`/tags/articlesbytag?articleTitle&page&perPage&tagName`)
+            .get(
+                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName`
+            )
             .set({ Authorization: `Bearer 111` });
 
         expect(response.body.message).toBe("Invalid Token");

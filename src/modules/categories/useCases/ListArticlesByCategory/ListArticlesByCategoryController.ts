@@ -1,22 +1,22 @@
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { ListArticlesByTagUseCase } from "./ListArticlesByTagUseCase";
+import { ListArticlesByCategoryUseCase } from "./ListArticlesByCategoryUseCase";
 
-class ListArticlesByTagController {
+class ListArticlesByCategoryController {
     async handle(request: Request, response: Response): Promise<Response> {
-        const listArticlesByTagUseCase = container.resolve(
-            ListArticlesByTagUseCase
+        const listArticlesByCategoryUseCase = container.resolve(
+            ListArticlesByCategoryUseCase
         );
-        const { articleTitle, tagName } = request.query;
+        const { articleTitle, categoryName } = request.query;
         const { perPage, page }: IPaginationRequestDTO = request.query;
 
-        const all = await listArticlesByTagUseCase.execute(
+        const all = await listArticlesByCategoryUseCase.execute(
             {
                 page,
                 perPage,
             },
-            String(tagName),
+            String(categoryName),
             String(articleTitle)
         );
 
@@ -27,4 +27,4 @@ class ListArticlesByTagController {
     }
 }
 
-export { ListArticlesByTagController };
+export { ListArticlesByCategoryController };

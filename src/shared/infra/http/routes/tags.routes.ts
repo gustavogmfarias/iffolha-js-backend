@@ -3,7 +3,8 @@ import { CreateTagController } from "@modules/tags/useCases/createTagUseCase/Cre
 import { ListTagsController } from "@modules/tags/useCases/ListTags/ListTagsController";
 import { DeleteTagController } from "@modules/tags/useCases/deleteTagUseCase/DeleteTagController";
 import { DeleteTagFromArticleController } from "@modules/tags/useCases/deleteTagFromArticleUseCase/DeleteTagFromArticleController";
-import { ListArticlesByTagController } from "@modules/tags/useCases/ListArticlesByTag/ListArticlesByTagController";
+
+import { ListArticlesByTagController } from "@modules/tags/useCases/ListArticlesByCategory/ListArticlesByTagController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 

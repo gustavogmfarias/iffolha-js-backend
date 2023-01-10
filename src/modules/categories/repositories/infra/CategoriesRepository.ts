@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-syntax */
+import { ArticleWithRelations } from "@modules/articles/repositories/IArticleRepository";
 import { Category, CategoryOnArticles } from "@prisma/client";
 import { prisma } from "@shared/database/prismaClient";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
@@ -37,28 +38,6 @@ export class CategoriesRepository implements ICategoriesRepository {
         const category = await prisma.category.findUnique({ where: { name } });
 
         return category;
-    }
-
-    async listAllCategoriesOnArticle(
-        articleId: string
-    ): Promise<CategoryOnArticles[]> {
-        let categoriesOnArticles;
-
-        if (articleId) {
-            categoriesOnArticles = await prisma.categoryOnArticles.findMany({
-                where: { articleId },
-            });
-        }
-
-        categoriesOnArticles = await prisma.categoryOnArticles.findMany();
-
-        return categoriesOnArticles;
-    }
-
-    async totalCategories(): Promise<number> {
-        const categories = await prisma.category.findMany({});
-
-        return categories.length;
     }
 
     async listCategories(
@@ -111,6 +90,141 @@ export class CategoriesRepository implements ICategoriesRepository {
         }
 
         return categories;
+    }
+
+    async listAllCategoriesOnArticle(
+        articleId: string
+    ): Promise<CategoryOnArticles[]> {
+        let categoriesOnArticles;
+
+        if (articleId) {
+            categoriesOnArticles = await prisma.categoryOnArticles.findMany({
+                where: { articleId },
+            });
+        }
+
+        categoriesOnArticles = await prisma.categoryOnArticles.findMany();
+
+        return categoriesOnArticles;
+    }
+
+    async listArticlesByCategory(
+        { page, perPage }: IPaginationRequestDTO,
+        categoryName: string,
+        articleTitle?: string
+    ): Promise<ArticleWithRelations[]> {
+        let articles: ArticleWithRelations[];
+
+        //
+        // page && perPage && articleTitle && categoryName
+
+        if (!page && !perPage && articleTitle && categoryName) {
+            articles = await prisma.article.findMany({
+                where: {
+                    title: { contains: articleTitle },
+                    CategoryOnArticles: {
+                        some: {
+                            category: { name: { contains: categoryName } },
+                        },
+                    },
+                },
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: { include: { tag: true } },
+                    AuthorsOnArticles: { include: { author: true } },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+
+                    images: true,
+                },
+            });
+        } else if (!page && !perPage && !articleTitle && categoryName) {
+            articles = await prisma.article.findMany({
+                where: {
+                    CategoryOnArticles: {
+                        some: {
+                            category: { name: { contains: categoryName } },
+                        },
+                    },
+                },
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: { include: { tag: true } },
+                    AuthorsOnArticles: { include: { author: true } },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+
+                    images: true,
+                },
+            });
+        } else if (page && perPage && !articleTitle && categoryName) {
+            articles = await prisma.article.findMany({
+                where: {
+                    CategoryOnArticles: {
+                        some: {
+                            category: { name: { contains: categoryName } },
+                        },
+                    },
+                },
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: { include: { tag: true } },
+                    AuthorsOnArticles: { include: { author: true } },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+
+                    images: true,
+                },
+            });
+        } else {
+            articles = await prisma.article.findMany({
+                where: {
+                    title: { contains: articleTitle },
+                    CategoryOnArticles: {
+                        some: {
+                            category: { name: { contains: categoryName } },
+                        },
+                    },
+                },
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: { include: { tag: true } },
+                    AuthorsOnArticles: { include: { author: true } },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+
+                    images: true,
+                },
+            });
+        }
+
+        return articles;
+    }
+
+    async totalCategories(): Promise<number> {
+        const categories = await prisma.category.findMany({});
+
+        return categories.length;
     }
 
     async addCategoriesToArticle(
