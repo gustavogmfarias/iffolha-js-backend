@@ -5,8 +5,26 @@ import { ICreateArticleDTO } from "../dtos/ICreateArticleDTO";
 
 export type ArticleWithRelations = Prisma.ArticleGetPayload<{
     include: {
-        TagsOnArticles: { include: { tag: true } };
-        AuthorsOnArticles: { include: { author: true } };
+        TagsOnArticles: {
+            include: {
+                tag: {
+                    select: {
+                        name: true;
+                    };
+                };
+            };
+        };
+        AuthorsOnArticles: {
+            include: {
+                author: {
+                    select: {
+                        name: true;
+                        lastName: true;
+                        id: true;
+                    };
+                };
+            };
+        };
         CoursesOnArticles: { include: { course: true } };
         ClassOnArticles: { include: { class: true } };
         CategoryOnArticles: { include: { category: true } };

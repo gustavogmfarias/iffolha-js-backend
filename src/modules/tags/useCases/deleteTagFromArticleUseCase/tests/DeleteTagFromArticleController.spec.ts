@@ -9,29 +9,31 @@ import { app } from "../../../../../shared/infra/http/app";
 describe("Delete Tags of Article Controller", () => {
     let token;
     let admin;
+    let tag1;
+    let tag2;
     beforeAll(async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
         admin = responseToken.body.user.id;
         token = responseToken.body.token;
-    });
 
-    it("Should be able to delete all tags of an article", async () => {
-        const tag1 = await request(app)
+        tag1 = await request(app)
             .post("/tags")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test",
             });
 
-        const tag2 = await request(app)
+        tag2 = await request(app)
             .post("/tags")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test 2",
             });
+    });
 
+    it("Should be able to delete all tags of an article", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -48,18 +50,18 @@ describe("Delete Tags of Article Controller", () => {
                 textualGenres: [],
             });
 
+        const articleFoundById = await request(app)
+            .get(`/articles/${article.body.articleWithRelations.id}`)
+            .set({ Authorization: `Bearer ${token}` });
+
         const tagsDeleted = await request(app)
             .patch("/tags/deletealltags")
             .set({ Authorization: `Bearer ${token}` })
-            .send({ articleId: article.body[0].id });
+            .send({ articleId: article.body.articleWithRelations.id });
 
-        setTimeout(
-            () =>
-                expect(tagsDeleted.body.articleEdited.TagsOnArticles).toBe(
-                    null
-                ),
-            20000
-        );
+        expect(articleFoundById.body.TagsOnArticles).toHaveLength(2);
+
+        expect(tagsDeleted.body.articleEdited.TagsOnArticles).toHaveLength(0);
     });
 
     it("Should not able to delete all tags of an article if the token is invalid", async () => {
@@ -82,7 +84,7 @@ describe("Delete Tags of Article Controller", () => {
         const tagsDeleted = await request(app)
             .patch("/tags/deletealltags")
             .set({ Authorization: `1111` })
-            .send({ articleId: article.body[0].id });
+            .send({ articleId: article.body.articleWithRelations.id });
 
         expect(tagsDeleted.body.message).toBe("Invalid Token");
     });
@@ -106,7 +108,7 @@ describe("Delete Tags of Article Controller", () => {
 
         const tagsDeleted = await request(app)
             .patch("/tags/deletealltags")
-            .send({ articleId: article.body[0].id });
+            .send({ articleId: article.body.articleWithRelations.id });
 
         expect(tagsDeleted.body.message).toBe("Token missing");
     });

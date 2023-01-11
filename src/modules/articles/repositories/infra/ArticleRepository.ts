@@ -37,8 +37,26 @@ export class ArticleRepository implements IArticleRepository {
                 id: article.id,
             },
             include: {
-                TagsOnArticles: { include: { tag: true } },
-                AuthorsOnArticles: { include: { author: true } },
+                TagsOnArticles: {
+                    include: {
+                        tag: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+                AuthorsOnArticles: {
+                    include: {
+                        author: {
+                            select: {
+                                name: true,
+                                lastName: true,
+                                id: true,
+                            },
+                        },
+                    },
+                },
                 CoursesOnArticles: { include: { course: true } },
                 ClassOnArticles: { include: { class: true } },
                 CategoryOnArticles: { include: { category: true } },
@@ -83,13 +101,31 @@ export class ArticleRepository implements IArticleRepository {
     }
 
     async findById(id: string): Promise<ArticleWithRelations | null> {
-        const article = await prisma.article.findUnique({
+        const articleWithRelations = await prisma.article.findUnique({
             where: {
                 id,
             },
             include: {
-                TagsOnArticles: { include: { tag: true } },
-                AuthorsOnArticles: { include: { author: true } },
+                TagsOnArticles: {
+                    include: {
+                        tag: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+                AuthorsOnArticles: {
+                    include: {
+                        author: {
+                            select: {
+                                name: true,
+                                lastName: true,
+                                id: true,
+                            },
+                        },
+                    },
+                },
                 CoursesOnArticles: { include: { course: true } },
                 ClassOnArticles: { include: { class: true } },
                 CategoryOnArticles: { include: { category: true } },
@@ -98,7 +134,7 @@ export class ArticleRepository implements IArticleRepository {
             },
         });
 
-        return article;
+        return articleWithRelations;
     }
 
     async list(

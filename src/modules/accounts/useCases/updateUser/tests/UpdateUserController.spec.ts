@@ -2,8 +2,8 @@
  * @jest-environment ./prisma/prisma-environment-jest
  */
 
-import { app } from "../../../../../shared/infra/http/app";
 import request from "supertest";
+import { app } from "../../../../../shared/infra/http/app";
 
 jest.setTimeout(200000);
 

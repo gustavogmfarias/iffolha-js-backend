@@ -1,8 +1,8 @@
 import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
 import { UserMap } from "@modules/accounts/mapper/UserMap";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { ITagsRepository } from "@modules/tags/repositories/ITagsRepository";
-import { Article, Log, Tag, User } from "@prisma/client";
+import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
+import { Article, Log, Category, User } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
@@ -15,9 +15,10 @@ interface IResponse {
 }
 
 @injectable()
-class DeleteTagFromArticleUseCase {
+class DeleteCategoriesFromArticleUseCase {
     constructor(
-        @inject("TagsRepository") private tagsRepository: ITagsRepository,
+        @inject("CategoriesRepository")
+        private categoriesRepository: ICategoriesRepository,
         @inject("ArticleRepository")
         private articleRepository: IArticleRepository,
         @inject("LogProvider")
@@ -31,20 +32,22 @@ class DeleteTagFromArticleUseCase {
             throw new AppError("Article doesn't exists", 404);
         }
 
-        let tagsDeleted;
+        let categoriesDeleted;
         let articleEdited;
 
         try {
-            tagsDeleted =
-                this.tagsRepository.deleteAllTagsFromArticle(articleId);
+            categoriesDeleted =
+                this.categoriesRepository.deleteAllCategoriesFromArticle(
+                    articleId
+                );
             articleEdited = await this.articleRepository.findById(articleId);
         } catch (err) {
-            throw new AppError("Tags weren't deleted", 401);
+            throw new AppError("Categories weren't deleted", 401);
         }
 
         const log = await this.logProvider.create({
             logRepository: "ARTICLE",
-            description: `Tags successfully deleted!`,
+            description: `Categories successfully deleted!`,
             previousContent: JSON.stringify(article),
             contentEdited: JSON.stringify(articleEdited),
             editedByUserId: userAdminId,
@@ -55,4 +58,4 @@ class DeleteTagFromArticleUseCase {
     }
 }
 
-export { DeleteTagFromArticleUseCase };
+export { DeleteCategoriesFromArticleUseCase };

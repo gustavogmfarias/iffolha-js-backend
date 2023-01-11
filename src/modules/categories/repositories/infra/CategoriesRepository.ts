@@ -20,6 +20,10 @@ export class CategoriesRepository implements ICategoriesRepository {
         });
     }
 
+    async deleteAllCategoriesFromArticle(articleId: string): Promise<void> {
+        await prisma.categoryOnArticles.deleteMany({ where: { articleId } });
+    }
+
     async findCategoryById(id: string): Promise<Category> {
         const category = await prisma.category.findUnique({ where: { id } });
 

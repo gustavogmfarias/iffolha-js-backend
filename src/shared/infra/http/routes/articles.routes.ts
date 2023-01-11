@@ -6,6 +6,7 @@ import { AddImagesArticleController } from "@modules/articles/useCases/addImages
 import multer from "multer";
 import { DeleteArticleController } from "@modules/articles/useCases/deleteArticleUseCase/DeleteArticleController";
 import { UpdateArticleController } from "@modules/articles/useCases/updateArticleUseCase/UpdateArticleController";
+import { FindArticleByIdController } from "@modules/articles/useCases/findArticleById/FindArticleByIdController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -17,6 +18,7 @@ const listArticlesController = new ListArticlesController();
 const addImagesArticleController = new AddImagesArticleController();
 const deleteArticleController = new DeleteArticleController();
 const updateArticleController = new UpdateArticleController();
+const findArticleByIdController = new FindArticleByIdController();
 
 articlesRoutes.post(
     "/",
@@ -37,6 +39,13 @@ articlesRoutes.get(
     ensureAuthenticated,
     ensureAdmin,
     listArticlesController.handle
+);
+
+articlesRoutes.get(
+    "/:id",
+    ensureAuthenticated,
+    ensureAdmin,
+    findArticleByIdController.handle
 );
 
 articlesRoutes.delete(
