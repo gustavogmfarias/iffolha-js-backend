@@ -769,7 +769,7 @@
                 }
             }
         },
-        "/tags/deletealltags/{id}": {
+        "/tags/deletealltags": {
             "patch": {
                 "tags": ["Tags"],
                 "summary": "Delete all tags of an Article",
@@ -779,15 +779,23 @@
                         "bearerAuth": []
                     }
                 ],
-                "parameters": [
-                    {
-                        "name": "articleId",
-                        "in": "path",
-                        "description": "Article id",
-                        "required": true,
-                        "Schema": { "type": "string" }
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "articleId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "articleId": "86e85c1f-cdfd-4772-81f5-92ef7ddae97f"
+                                }
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Tags successfully deleted!"
@@ -976,6 +984,43 @@
                     },
                     "404": {
                         "description": "Category doesn't exists"
+                    }
+                }
+            }
+        },
+        "/categories/deleteallcategories": {
+            "patch": {
+                "tags": ["Category"],
+                "summary": "Delete all categories of an Article",
+                "description": "Delete all categories of an Article",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "articleId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "articleId": "86e85c1f-cdfd-4772-81f5-92ef7ddae97f"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Categories successfully deleted!"
+                    },
+                    "404 A": {
+                        "description": "Article doesn't exists"
                     }
                 }
             }

@@ -35,8 +35,9 @@ class DeleteTagFromArticleUseCase {
         let articleEdited;
 
         try {
-            tagsDeleted =
-                this.tagsRepository.deleteAllTagsFromArticle(articleId);
+            tagsDeleted = await this.tagsRepository.deleteAllTagsFromArticle(
+                articleId
+            );
             articleEdited = await this.articleRepository.findById(articleId);
         } catch (err) {
             throw new AppError("Tags weren't deleted", 401);

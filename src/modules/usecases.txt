@@ -40,8 +40,8 @@ e) editar artigos
 [x] listar articles by tag
 [] listar repositorio de texto by tag
 
-[ ] fazer documentação (falta delete all)
-[ ] fazer test (falta delete all)
+[ x] fazer documentação (falta delete all)
+[ x] fazer test (falta delete all)
 
 3- cursos
 [ ] adicionar curso
@@ -74,7 +74,8 @@ e) editar artigos
 [x] deletar Categorias 
 [ x] listar articles de uma categoria.
 [x ] fazer test
-[ ] fazer documentação (falta delete all)
+[x ] fazer documentação (falta delete all)
+
 7- Generos
 [ ] criar genero
 [ ] listar

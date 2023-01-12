@@ -37,7 +37,7 @@ class DeleteCategoriesFromArticleUseCase {
 
         try {
             categoriesDeleted =
-                this.categoriesRepository.deleteAllCategoriesFromArticle(
+                await this.categoriesRepository.deleteAllCategoriesFromArticle(
                     articleId
                 );
             articleEdited = await this.articleRepository.findById(articleId);
