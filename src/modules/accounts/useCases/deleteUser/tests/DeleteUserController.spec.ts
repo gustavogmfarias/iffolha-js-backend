@@ -3,9 +3,9 @@
  */
 
 import { prisma } from "@shared/database/prismaClient";
+import request from "supertest";
 import { AppError } from "../../../../../shared/errors/AppError";
 import { app } from "../../../../../shared/infra/http/app";
-import request from "supertest";
 
 describe("Delete User Controller", () => {
     it("Should be able to delete a user and add a log", async () => {
