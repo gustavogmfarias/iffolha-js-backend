@@ -4,7 +4,7 @@ import { ListTagsController } from "@modules/tags/useCases/ListTags/ListTagsCont
 import { DeleteTagController } from "@modules/tags/useCases/deleteTagUseCase/DeleteTagController";
 import { DeleteTagFromArticleController } from "@modules/tags/useCases/deleteTagFromArticleUseCase/DeleteTagFromArticleController";
 
-import { ListArticlesByTagController } from "@modules/tags/useCases/ListArticlesByCategory/ListArticlesByTagController";
+import { ListArticlesByTagController } from "@modules/tags/useCases/ListArticlesByTag/ListArticlesByTagController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 

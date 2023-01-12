@@ -72,20 +72,124 @@ export class TagsRepository implements ITagsRepository {
     ): Promise<ArticleWithRelations[]> {
         let articles: ArticleWithRelations[];
 
-        if (!page || !perPage || !articleTitle) {
+        if (!page && !perPage && articleTitle && tagName) {
             articles = await prisma.article.findMany({
                 where: {
                     title: { contains: articleTitle },
                     TagsOnArticles: {
-                        some: { tag: { name: { contains: tagName } } },
+                        some: {
+                            tag: { name: { contains: tagName } },
+                        },
                     },
                 },
                 orderBy: {
                     publishedDate: "desc",
                 },
                 include: {
-                    TagsOnArticles: { include: { tag: true } },
-                    AuthorsOnArticles: { include: { author: true } },
+                    TagsOnArticles: {
+                        include: {
+                            tag: {
+                                select: {
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                    AuthorsOnArticles: {
+                        include: {
+                            author: {
+                                select: {
+                                    name: true,
+                                    lastName: true,
+                                    id: true,
+                                },
+                            },
+                        },
+                    },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+
+                    images: true,
+                },
+            });
+        } else if (!page && !perPage && !articleTitle && tagName) {
+            articles = await prisma.article.findMany({
+                where: {
+                    TagsOnArticles: {
+                        some: {
+                            tag: { name: { contains: tagName } },
+                        },
+                    },
+                },
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: {
+                        include: {
+                            tag: {
+                                select: {
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                    AuthorsOnArticles: {
+                        include: {
+                            author: {
+                                select: {
+                                    name: true,
+                                    lastName: true,
+                                    id: true,
+                                },
+                            },
+                        },
+                    },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+
+                    images: true,
+                },
+            });
+        } else if (page && perPage && !articleTitle && tagName) {
+            articles = await prisma.article.findMany({
+                where: {
+                    TagsOnArticles: {
+                        some: {
+                            tag: { name: { contains: tagName } },
+                        },
+                    },
+                },
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: {
+                        include: {
+                            tag: {
+                                select: {
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                    AuthorsOnArticles: {
+                        include: {
+                            author: {
+                                select: {
+                                    name: true,
+                                    lastName: true,
+                                    id: true,
+                                },
+                            },
+                        },
+                    },
                     CoursesOnArticles: { include: { course: true } },
                     ClassOnArticles: { include: { class: true } },
                     CategoryOnArticles: { include: { category: true } },
@@ -99,7 +203,9 @@ export class TagsRepository implements ITagsRepository {
                 where: {
                     title: { contains: articleTitle },
                     TagsOnArticles: {
-                        some: { tag: { name: { contains: tagName } } },
+                        some: {
+                            tag: { name: { contains: tagName } },
+                        },
                     },
                 },
                 take: Number(perPage),
@@ -108,8 +214,26 @@ export class TagsRepository implements ITagsRepository {
                     publishedDate: "desc",
                 },
                 include: {
-                    TagsOnArticles: { include: { tag: true } },
-                    AuthorsOnArticles: { include: { author: true } },
+                    TagsOnArticles: {
+                        include: {
+                            tag: {
+                                select: {
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                    AuthorsOnArticles: {
+                        include: {
+                            author: {
+                                select: {
+                                    name: true,
+                                    lastName: true,
+                                    id: true,
+                                },
+                            },
+                        },
+                    },
                     CoursesOnArticles: { include: { course: true } },
                     ClassOnArticles: { include: { class: true } },
                     CategoryOnArticles: { include: { category: true } },
