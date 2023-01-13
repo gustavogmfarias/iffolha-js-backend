@@ -13,7 +13,7 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
 import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
-import { ITextualGenreRepository } from "@modules/articles/repositories/ITextualGenreRepository";
+import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
 
 interface IRequest {
     title: string;

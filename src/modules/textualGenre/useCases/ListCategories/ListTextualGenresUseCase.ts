@@ -1,27 +1,29 @@
 /* eslint-disable no-param-reassign */
 import { inject, injectable } from "tsyringe";
-import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
+
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
-import { Category } from "@prisma/client";
+import { TextualGenre } from "@prisma/client";
+import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
 
 interface IResponse {
-    categories: Category[];
+    textualGenres: TextualGenre[];
     totalCount: number;
 }
 
 @injectable()
-class ListCategoriesUseCase {
+class ListTextualGenresUseCase {
     constructor(
-        @inject("CategoriesRepository")
-        private categoriesRepository: ICategoriesRepository
+        @inject("TextualGenreRepository")
+        private textualGenreRepository: ITextualGenreRepository
     ) {}
 
     async execute(
         { page, perPage }: IPaginationRequestDTO,
         name?: string
     ): Promise<IResponse> {
-        const totalCount = await this.categoriesRepository.totalCategories();
-        let categories: Category[];
+        const totalCount =
+            await this.textualGenreRepository.totalTextualGenres();
+        let textualGenres: TextualGenre[];
 
         if (name === undefined || name === "undefined") {
             name = null;
@@ -36,14 +38,16 @@ class ListCategoriesUseCase {
         }
 
         if (page && perPage) {
-            categories = await this.categoriesRepository.listCategories({
-                page,
-                perPage,
-            });
+            textualGenres = await this.textualGenreRepository.listTextualGenres(
+                {
+                    page,
+                    perPage,
+                }
+            );
         }
 
         if (page && perPage && name) {
-            categories = await this.categoriesRepository.listCategories(
+            textualGenres = await this.textualGenreRepository.listTextualGenres(
                 {
                     page,
                     perPage,
@@ -53,20 +57,20 @@ class ListCategoriesUseCase {
         }
 
         if (!page && !perPage && name) {
-            categories = await this.categoriesRepository.listCategories(
+            textualGenres = await this.textualGenreRepository.listTextualGenres(
                 {},
                 name
             );
         }
 
         if (!page && !perPage && !name) {
-            categories = await this.categoriesRepository.listCategories(
+            textualGenres = await this.textualGenreRepository.listTextualGenres(
                 {},
                 name
             );
         }
 
-        return { categories, totalCount };
+        return { textualGenres, totalCount };
     }
 }
-export { ListCategoriesUseCase };
+export { ListTextualGenresUseCase };

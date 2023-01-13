@@ -5,7 +5,7 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("CATEGORIES - List Tags Controller", () => {
+describe("TEXTUAL GENRES - List Tags Controller", () => {
     beforeAll(async () => {
         const loginAdmin = await request(app)
             .post("/sessions")
@@ -13,76 +13,76 @@ describe("CATEGORIES - List Tags Controller", () => {
 
         const { token } = loginAdmin.body;
 
-        const category1 = await request(app)
-            .post("/categories")
+        const textualGenre1 = await request(app)
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test",
             });
 
-        const category2 = await request(app)
-            .post("/categories")
+        const textualGenre2 = await request(app)
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test2",
             });
 
-        const category3 = await request(app)
-            .post("/categories")
+        const textualGenre3 = await request(app)
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test 3",
             });
 
-        const category4 = await request(app)
-            .post("/categories")
+        const textualGenre4 = await request(app)
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test 4",
             });
     });
 
-    it("Should be able to list all categories", async () => {
+    it("Should be able to list all textualGenres", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
         const { token } = responseToken.body;
 
         const searchA = await request(app)
-            .get(`/categories?page&perPage&name`)
+            .get(`/textualgenre?page&perPage&name`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
-        expect(searchA.body).toHaveLength(7);
+        expect(searchA.body).toHaveLength(6);
     });
 
-    it("Should be able to list all categories with pagination", async () => {
+    it("Should be able to list all textualGenres with pagination", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
         const { token } = responseToken.body;
 
         const searchA = await request(app)
-            .get(`/categories?page=1&perPage=1&name`)
+            .get(`/textualgenre?page=1&perPage=1&name`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
         expect(searchA.body).toHaveLength(1);
-        expect(searchA.body[0].name).toBe("test");
+        expect(searchA.body[0].name).toBe("Narrativa");
     });
 
-    it("Should be able to list the categories searching by name", async () => {
+    it("Should be able to list the textualGenres searching by name", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
         const { token } = responseToken.body;
 
         const searchA = await request(app)
-            .get(`/categories?name=test`)
+            .get(`/textualgenre?name=test`)
             .set({ Authorization: `Bearer ${token}` });
 
         const searchA2 = await request(app)
-            .get(`/categories?name=serie`)
+            .get(`/textualgenre?name=serie`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
@@ -90,18 +90,18 @@ describe("CATEGORIES - List Tags Controller", () => {
         expect(searchA2.body).toHaveLength(0);
     });
 
-    it("Should be able to list the categories searching by name and pagination", async () => {
+    it("Should be able to list the textualGenres searching by name and pagination", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
         const { token } = responseToken.body;
 
         const searchA = await request(app)
-            .get(`/categories?name=test&page=1&perPage=1`)
+            .get(`/textualgenre?name=test&page=1&perPage=1`)
             .set({ Authorization: `Bearer ${token}` });
 
         const searchA2 = await request(app)
-            .get(`/categories?name=test&page=2&perPage=2`)
+            .get(`/textualgenre?name=test&page=2&perPage=2`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
@@ -109,15 +109,15 @@ describe("CATEGORIES - List Tags Controller", () => {
         expect(searchA2.body).toHaveLength(2);
     });
 
-    it("Should not be able to list all categories if you was not logged", async () => {
-        const response = await request(app).get(`/categories`);
+    it("Should not be able to list all textualGenres if you was not logged", async () => {
+        const response = await request(app).get(`/textualgenre`);
 
         expect(response.body.message).toBe("Token missing");
     });
 
-    it("Should not be able to list all categories if token was expired or invalid", async () => {
+    it("Should not be able to list all textualGenres if token was expired or invalid", async () => {
         const response = await request(app)
-            .get(`/categories`)
+            .get(`/textualgenre`)
             .set({ Authorization: `Bearer 111` });
 
         expect(response.body.message).toBe("Invalid Token");

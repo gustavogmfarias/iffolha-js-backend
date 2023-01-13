@@ -1,13 +1,14 @@
 import { Router } from "express";
 
 import { CreateTextualGenreController } from "@modules/textualGenre/useCases/createTextualGenreUseCase/CreateTextualGenreController";
+import { ListTextualGenresController } from "@modules/textualGenre/useCases/ListCategories/ListTextualGenresController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
 const textualGenreRoutes = Router();
 
 const createTextualGenreController = new CreateTextualGenreController();
-// const listTextualGenresController = new ListTextualGenresController();
+const listTextualGenresController = new ListTextualGenresController();
 // const deleteTextualGenreController = new DeleteTextualGenreController();
 // const listArticlesByTextualGenreController =
 //     new ListArticlesByTextualGenreController();
@@ -20,12 +21,12 @@ textualGenreRoutes.post(
     ensureAdmin,
     createTextualGenreController.handle
 );
-// textualGenreRoutes.get(
-//     "/",
-//     ensureAuthenticated,
-//     ensureAdmin,
-//     listTextualGenresController.handle
-// );
+textualGenreRoutes.get(
+    "/",
+    ensureAuthenticated,
+    ensureAdmin,
+    listTextualGenresController.handle
+);
 
 // textualGenreRoutes.get(
 //     "/articlesbytextualgenre",
