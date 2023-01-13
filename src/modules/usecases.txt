@@ -2,10 +2,10 @@
 a) criar
 [x] adicionar tags
 [x] adicionar autores
-[x] adicionar cursos
-[x] adicionar imagens
 [x] adicionar categoria
-[x] adicionar genero
+[] adicionar cursos
+[] adicionar imagens
+[] adicionar genero
 [ ] teste
 [] adicionar imagens JUNTO com a criação de articles
 [ ] fazer documentação
