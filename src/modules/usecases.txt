@@ -3,10 +3,10 @@ a) criar
 [x] adicionar tags
 [x] adicionar autores
 [x] adicionar categoria
+[x] adicionar genero
 [] adicionar cursos
+[] adicionar turmas
 [] adicionar imagens
-[] adicionar genero
-[ ] teste
 [] adicionar imagens JUNTO com a criação de articles
 [ ] fazer documentação
 [ ] fazer test
@@ -38,14 +38,13 @@ e) editar artigos
 [x] deletar tags 
 [x] deletar todas as tags de um artigo
 [x] listar articles by tag
-[] listar repositorio de texto by tag
 
 [ x] fazer documentação (falta delete all)
 [ x] fazer test (falta delete all)
 
 3- cursos
 [ ] adicionar curso
-[x] Adicionar curso a um artigo
+[ ] Adicionar curso a um artigo
 [] deletar curso de um artigo
 [] deletar curso
 [] listar cursos
@@ -77,11 +76,11 @@ e) editar artigos
 [x ] fazer documentação (falta delete all)
 
 7- Generos
-[ ] criar genero
-[ ] listar
-[] adicionar Generos a um artigo
-[] deletar Generos de um artigo
+[ x] criar genero
+[x ] listar
+[x] adicionar Generos a um artigo
 [] deletar Generos 
+[] deletar Generos de um artigo
 [ ] fazer documentação
 [ ] fazer test
 

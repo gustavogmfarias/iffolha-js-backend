@@ -10,6 +10,8 @@ describe("Create Article Controller", () => {
     let token;
     let category1;
     let category2;
+    let textualGenre1;
+    let textualGenre2;
 
     beforeAll(async () => {
         const loginAdmin = await request(app)
@@ -27,6 +29,20 @@ describe("Create Article Controller", () => {
 
         category2 = await request(app)
             .post("/categories")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "test 2",
+            });
+
+        textualGenre1 = await request(app)
+            .post("/textualgenre")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "test",
+            });
+
+        textualGenre2 = await request(app)
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test 2",
@@ -249,6 +265,102 @@ describe("Create Article Controller", () => {
         );
 
         expect(novaNoticiaComDuasCategorias.status).toBe(201);
+    });
+
+    it("Should be able to create a new article with one textual genre", async () => {
+        const novaNoticiaComUmTextualGenre = await request(app)
+            .post("/articles")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                title: "Primeira notícia",
+                subTitle: "Essa é a primeira notícia criada",
+                content: "conteúdo da prmeira notícia é",
+                isHighlight: false,
+                authors: [],
+                tags: ["notícia1"],
+                categories: [category1.body.category.id],
+                textualGenres: [textualGenre1.body.textualGenre.id],
+            });
+
+        const articleFoundById = await request(app)
+            .get(
+                `/articles/${novaNoticiaComUmTextualGenre.body.articleWithRelations.id}`
+            )
+            .set({ Authorization: `Bearer ${token}` });
+
+        const novaNoticiaComUmTextualGenreBody = articleFoundById.body;
+        const novaNoticiaComUmTextualGenreLog =
+            novaNoticiaComUmTextualGenre.body.log;
+
+        expect(novaNoticiaComUmTextualGenreBody).toHaveProperty("id");
+        expect(novaNoticiaComUmTextualGenreBody.title).toBe("Primeira notícia");
+        expect(novaNoticiaComUmTextualGenreBody.subTitle).toBe(
+            "Essa é a primeira notícia criada"
+        );
+        expect(novaNoticiaComUmTextualGenreBody.content).toBe(
+            "conteúdo da prmeira notícia é"
+        );
+        expect(novaNoticiaComUmTextualGenreBody.isHighlight).toBe(false);
+        expect(
+            novaNoticiaComUmTextualGenreBody.TextualGenreOnArticles
+        ).toHaveLength(1);
+        expect(articleFoundById.body.TextualGenreOnArticles[0]).toBe("test");
+
+        expect(novaNoticiaComUmTextualGenreLog.description).toBe(
+            "Article created successfully!"
+        );
+
+        expect(novaNoticiaComUmTextualGenre.status).toBe(201);
+    });
+
+    it("Should be able to create a new article with two textual genre", async () => {
+        const novaNoticiaComUmTextualGenre = await request(app)
+            .post("/articles")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                title: "Primeira notícia",
+                subTitle: "Essa é a primeira notícia criada",
+                content: "conteúdo da prmeira notícia é",
+                isHighlight: true,
+                authors: [],
+                tags: ["notícia1"],
+                categories: [category1.body.category.id],
+                textualGenres: [
+                    textualGenre1.body.textualGenre.id,
+                    textualGenre2.body.textualGenre.id,
+                ],
+            });
+
+        const articleFoundById = await request(app)
+            .get(
+                `/articles/${novaNoticiaComUmTextualGenre.body.articleWithRelations.id}`
+            )
+            .set({ Authorization: `Bearer ${token}` });
+
+        const novaNoticiaComUmTextualGenreBody = articleFoundById.body;
+        const novaNoticiaComUmTextualGenreLog =
+            novaNoticiaComUmTextualGenre.body.log;
+
+        expect(novaNoticiaComUmTextualGenreBody).toHaveProperty("id");
+        expect(novaNoticiaComUmTextualGenreBody.title).toBe("Primeira notícia");
+        expect(novaNoticiaComUmTextualGenreBody.subTitle).toBe(
+            "Essa é a primeira notícia criada"
+        );
+        expect(novaNoticiaComUmTextualGenreBody.content).toBe(
+            "conteúdo da prmeira notícia é"
+        );
+        expect(novaNoticiaComUmTextualGenreBody.isHighlight).toBe(true);
+        expect(
+            novaNoticiaComUmTextualGenreBody.TextualGenreOnArticles
+        ).toHaveLength(2);
+        expect(articleFoundById.body.TextualGenreOnArticles[0]).toBe("test");
+        expect(articleFoundById.body.TextualGenreOnArticles[1]).toBe("test 2");
+
+        expect(novaNoticiaComUmTextualGenreLog.description).toBe(
+            "Article created successfully!"
+        );
+
+        expect(novaNoticiaComUmTextualGenre.status).toBe(201);
     });
 
     //     Must be able to create an article with Tags, Authors, Courses, Classes, Categories and Textual Generos, and as a highlight.
