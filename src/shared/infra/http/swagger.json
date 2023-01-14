@@ -1025,6 +1025,124 @@
                 }
             }
         },
+        "/textualgenre": {
+            "post": {
+                "tags": ["Textual Genre"],
+                "summary": "Create Textual Genres",
+                "description": "Create a new textual genre",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "narrativa"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Textual Genre already exists"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Textual Genre"],
+                "summary": "List all Textual Genres",
+                "description": "List all Textual Genres",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Initial or part of the name",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Tags"],
+                "summary": "Delete a Textual Genre",
+                "description": "Delete a Textual Genre",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "Textual Genre name",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Textual Genre successfully deleted!"
+                    },
+                    "404": {
+                        "description": "Textual Genre doesn't exists"
+                    }
+                }
+            }
+        },
         "/categories/import": {
             "post": {
                 "tags": ["Category"],
