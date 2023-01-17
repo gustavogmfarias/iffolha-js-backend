@@ -66,6 +66,6 @@ container.registerSingleton<ITextualGenreRepository>(
 );
 
 container.registerSingleton<ICoursesRepository>(
-    "ICoursesRepository",
+    "CoursesRepository",
     CoursesRepository
 );
