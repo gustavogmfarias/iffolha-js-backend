@@ -1,57 +1,60 @@
 import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
 import { UserMap } from "@modules/accounts/mapper/UserMap";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
-import { Log, Category, User } from "@prisma/client";
+import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
+import { Log, TextualGenre, User } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 interface IResponse {
-    category: Category;
+    textualGenre: TextualGenre;
     log: Log;
 }
 
 @injectable()
-class DeleteCategoryUseCase {
+class DeleteTextualGenreUseCase {
     constructor(
-        @inject("CategoriesRepository")
-        private categoriesRepository: ICategoriesRepository,
+        @inject("TextualGenreRepository")
+        private textualGenreRepository: ITextualGenreRepository,
         @inject("LogProvider")
         private logProvider: ILogProvider
     ) {}
 
     async execute(
         userAdminId: string,
-        categoryToDeleteId: string
+        textualGenreToDeleteId: string
     ): Promise<IResponse> {
-        const category = await this.categoriesRepository.findCategoryById(
-            categoryToDeleteId
-        );
+        const textualGenre =
+            await this.textualGenreRepository.findTextualGenreById(
+                textualGenreToDeleteId
+            );
 
-        if (!category) {
-            throw new AppError("Category doesn't exists", 404);
+        if (!textualGenre) {
+            throw new AppError("TextualGenre doesn't exists", 404);
         }
-        let categoryDeleted;
+        let textualGenreDeleted;
 
         try {
-            categoryDeleted =
-                this.categoriesRepository.deleteCategory(categoryToDeleteId);
+            textualGenreDeleted =
+                this.textualGenreRepository.deleteTextualGenre(
+                    textualGenreToDeleteId
+                );
         } catch (err) {
-            throw new AppError("Category wasn't deleted", 401);
+            throw new AppError("TextualGenre wasn't deleted", 401);
         }
 
         const log = await this.logProvider.create({
-            logRepository: "CATEGORY",
-            description: `Category successfully deleted!`,
-            previousContent: JSON.stringify(category),
-            contentEdited: JSON.stringify(category),
+            logRepository: "TEXTUALGENRE",
+            description: `TextualGenre successfully deleted!`,
+            previousContent: JSON.stringify(textualGenre),
+            contentEdited: JSON.stringify(textualGenre),
             editedByUserId: userAdminId,
-            modelEditedId: category.id,
+            modelEditedId: textualGenre.id,
         });
 
-        return { category, log };
+        return { textualGenre, log };
     }
 }
 
-export { DeleteCategoryUseCase };
+export { DeleteTextualGenreUseCase };

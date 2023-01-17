@@ -80,9 +80,9 @@ e) editar artigos
 [x ] listar
 [x] adicionar Generos a um artigo
 [x] deletar Generos de um artigo
-[] deletar Generos 
-[ ] fazer documentação
-[ ] fazer test
+[x] deletar Generos 
+[ x] fazer documentação
+[x ] fazer test
 
 8- UploadAvatar
 [ ] fazer test

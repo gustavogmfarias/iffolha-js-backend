@@ -1115,7 +1115,7 @@
                 }
             },
             "delete": {
-                "tags": ["Tags"],
+                "tags": ["Textual Genre"],
                 "summary": "Delete a Textual Genre",
                 "description": "Delete a Textual Genre",
                 "security": [
