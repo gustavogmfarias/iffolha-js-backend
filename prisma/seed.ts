@@ -56,14 +56,14 @@ async function main() {
     const course1 = await prisma.course.create({
         data: {
             name: "Sistemas de Informação",
-            level: "Superior",
+            schoolLevel: "SUPERIOR",
         },
     });
 
     const course2 = await prisma.course.create({
         data: {
             name: "Informática",
-            level: "Ensino Médico",
+            schoolLevel: "ENSINO_MEDIO",
         },
     });
 
