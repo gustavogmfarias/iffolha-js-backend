@@ -3,7 +3,7 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
 import { IAuthorsRepository } from "@modules/articles/repositories/IAuthorsRepository";
 import { ITagsRepository } from "@modules/tags/repositories/ITagsRepository";
-import { ICoursesRepository } from "@modules/articles/repositories/ICoursesRepository";
+import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
 import { Article, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";

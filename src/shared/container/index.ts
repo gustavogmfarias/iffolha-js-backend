@@ -12,8 +12,6 @@ import { IAuthorsRepository } from "@modules/articles/repositories/IAuthorsRepos
 import { AuthorsRepository } from "@modules/articles/repositories/infra/AuthorsRepository";
 import { ITagsRepository } from "@modules/tags/repositories/ITagsRepository";
 import { TagsRepository } from "@modules/tags/repositories/infra/TagsRepository";
-import { ICoursesRepository } from "@modules/articles/repositories/ICoursesRepository";
-import { CoursesRepository } from "@modules/articles/repositories/infra/CoursesRepository";
 import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
 import { ClassesRepository } from "@modules/articles/repositories/infra/ClassesRepository";
 
@@ -21,6 +19,9 @@ import { CategoriesRepository } from "@modules/categories/repositories/infra/Cat
 import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
 import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
 import { TextualGenreRepository } from "@modules/textualGenre/repositories/infra/TextualGenreRepository.ts";
+
+import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
+import { CoursesRepository } from "@modules/courses/repositories/infra/CoursesRepository.ts";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -47,11 +48,6 @@ container.registerSingleton<IAuthorsRepository>(
     AuthorsRepository
 );
 
-container.registerSingleton<ICoursesRepository>(
-    "CoursesRepository",
-    CoursesRepository
-);
-
 container.registerSingleton<IClassesRepository>(
     "ClassesRepository",
     ClassesRepository
@@ -67,4 +63,9 @@ container.registerSingleton<ICategoriesRepository>(
 container.registerSingleton<ITextualGenreRepository>(
     "TextualGenreRepository",
     TextualGenreRepository
+);
+
+container.registerSingleton<ICoursesRepository>(
+    "ICoursesRepository",
+    CoursesRepository
 );

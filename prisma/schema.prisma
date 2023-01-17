@@ -64,7 +64,7 @@ model Log {
 
 enum LogRepository {
     TAG
-    CURSO
+    COURSE
     CLASS
     CATEGORY
     TEXTUALGENRE
