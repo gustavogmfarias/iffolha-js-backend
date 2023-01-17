@@ -5,11 +5,11 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("Delete Categories of Article Controller", () => {
+describe("TEXTUAL GENRE - Delete TextualGenres of Article Controller", () => {
     let token;
     let admin;
-    let category1;
-    let category2;
+    let textualGenre1;
+    let textualGenre2;
 
     beforeAll(async () => {
         const responseToken = await request(app)
@@ -18,22 +18,22 @@ describe("Delete Categories of Article Controller", () => {
         admin = responseToken.body.user.id;
         token = responseToken.body.token;
 
-        category1 = await request(app)
-            .post("/categories")
+        textualGenre1 = await request(app)
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test",
             });
 
-        category2 = await request(app)
-            .post("/categories")
+        textualGenre2 = await request(app)
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test 2",
             });
     });
 
-    it("Should be able to delete all categories of an article", async () => {
+    it("Should be able to delete all textualGenres of an article", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -45,37 +45,31 @@ describe("Delete Categories of Article Controller", () => {
                 authors: [admin],
                 courses: [],
                 classes: [],
-                categories: [
-                    category1.body.category.id,
-                    category2.body.category.id,
+                textualGenres: [
+                    textualGenre1.body.textualGenre.id,
+                    textualGenre2.body.textualGenre.id,
                 ],
-                textualGenres: [],
             });
 
-        const categoriesDeleted = await request(app)
-            .patch("/categories/deleteallcategories")
+        const textualGenresDeleted = await request(app)
+            .patch("/textualgenre/deletealltextualgenres")
             .set({ Authorization: `Bearer ${token}` })
             .send({ articleId: article.body.articleWithRelations.id });
 
-        const articleWithCategoryDeleted = await request(app)
+        const articleWithTextualGenreDeleted = await request(app)
             .get(`/articles/${article.body.articleWithRelations.id}`)
             .set({ Authorization: `Bearer ${token}` });
 
-        console.log(
-            "articleWithCategoryDeleted: ",
-            articleWithCategoryDeleted.body
-        );
-
         expect(
-            article.body.articleWithRelations.CategoryOnArticles
+            article.body.articleWithRelations.TextualGenreOnArticles
         ).toHaveLength(2);
 
-        expect(articleWithCategoryDeleted.body.CategoryOnArticles).toHaveLength(
-            0
-        );
+        expect(
+            articleWithTextualGenreDeleted.body.TextualGenreOnArticles
+        ).toHaveLength(0);
     });
 
-    it("Should not able to delete all categories of an article if the token is invalid", async () => {
+    it("Should not able to delete all textualGenres of an article if the token is invalid", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -87,22 +81,21 @@ describe("Delete Categories of Article Controller", () => {
                 authors: [admin],
                 courses: [],
                 classes: [],
-                categories: [
-                    category1.body.category.id,
-                    category2.body.category.id,
+                textualGenres: [
+                    textualGenre1.body.textualGenre.id,
+                    textualGenre2.body.textualGenre.id,
                 ],
-                textualGenres: [],
             });
 
-        const categoriesDeleted = await request(app)
-            .patch("/categories/deleteallcategories")
+        const textualGenresDeleted = await request(app)
+            .patch("/textualgenre/deletealltextualGenres")
             .set({ Authorization: `1111` })
             .send({ articleId: article.body.articleWithRelations.id });
 
-        expect(categoriesDeleted.body.message).toBe("Invalid Token");
+        expect(textualGenresDeleted.body.message).toBe("Invalid Token");
     });
 
-    it("Should not able to delete all categories of an article if user is not logged", async () => {
+    it("Should not able to delete all textualGenres of an article if user is not logged", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -114,17 +107,16 @@ describe("Delete Categories of Article Controller", () => {
                 authors: [admin],
                 courses: [],
                 classes: [],
-                categories: [
-                    category1.body.category.id,
-                    category2.body.category.id,
+                textualGenres: [
+                    textualGenre1.body.textualGenre.id,
+                    textualGenre2.body.textualGenre.id,
                 ],
-                textualGenres: [],
             });
 
-        const categoriesDeleted = await request(app)
-            .patch("/categories/deleteallcategories")
+        const textualGenresDeleted = await request(app)
+            .patch("/textualgenre/deletealltextualgenres")
             .send({ articleId: article.body.articleWithRelations.id });
 
-        expect(categoriesDeleted.body.message).toBe("Token missing");
+        expect(textualGenresDeleted.body.message).toBe("Token missing");
     });
 });

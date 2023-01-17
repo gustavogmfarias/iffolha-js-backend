@@ -1,13 +1,9 @@
-import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
-import { UserMap } from "@modules/accounts/mapper/UserMap";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
-import { Article, Log, Category, User } from "@prisma/client";
+import { Article, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
-import { ArticleRepository } from "@modules/articles/repositories/infra/ArticleRepository";
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
+import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
 
 interface IResponse {
     articleEdited: Article;
@@ -15,10 +11,10 @@ interface IResponse {
 }
 
 @injectable()
-class DeleteCategoriesFromArticleUseCase {
+class DeleteTextualGenresFromArticleUseCase {
     constructor(
-        @inject("CategoriesRepository")
-        private categoriesRepository: ICategoriesRepository,
+        @inject("TextualGenreRepository")
+        private textualGenreRepository: ITextualGenreRepository,
         @inject("ArticleRepository")
         private articleRepository: IArticleRepository,
         @inject("LogProvider")
@@ -32,22 +28,22 @@ class DeleteCategoriesFromArticleUseCase {
             throw new AppError("Article doesn't exists", 404);
         }
 
-        let categoriesDeleted;
+        let textualGenresDeleted;
         let articleEdited;
 
         try {
-            categoriesDeleted =
-                await this.categoriesRepository.deleteAllCategoriesFromArticle(
+            textualGenresDeleted =
+                await this.textualGenreRepository.deleteAllTextualGenresFromArticle(
                     articleId
                 );
             articleEdited = await this.articleRepository.findById(articleId);
         } catch (err) {
-            throw new AppError("Categories weren't deleted", 401);
+            throw new AppError("TextualGenres weren't deleted", 401);
         }
 
         const log = await this.logProvider.create({
-            logRepository: "ARTICLE",
-            description: `Categories successfully deleted!`,
+            logRepository: "TEXTUALGENRE",
+            description: `TextualGenres successfully deleted!`,
             previousContent: JSON.stringify(article),
             contentEdited: JSON.stringify(articleEdited),
             editedByUserId: userAdminId,
@@ -58,4 +54,4 @@ class DeleteCategoriesFromArticleUseCase {
     }
 }
 
-export { DeleteCategoriesFromArticleUseCase };
+export { DeleteTextualGenresFromArticleUseCase };

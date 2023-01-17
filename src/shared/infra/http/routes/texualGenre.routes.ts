@@ -1,7 +1,9 @@
 import { Router } from "express";
 
 import { CreateTextualGenreController } from "@modules/textualGenre/useCases/createTextualGenreUseCase/CreateTextualGenreController";
-import { ListTextualGenresController } from "@modules/textualGenre/useCases/ListCategories/ListTextualGenresController";
+
+import { ListTextualGenresController } from "@modules/textualGenre/useCases/ListTextualGenres/ListTextualGenresController";
+import { DeleteTextualGenresFromArticleController } from "@modules/textualGenre/useCases/deleteTextualGenresFromArticleUseCase/DeleteTextualGenreFromArticleController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -12,8 +14,8 @@ const listTextualGenresController = new ListTextualGenresController();
 // const deleteTextualGenreController = new DeleteTextualGenreController();
 // const listArticlesByTextualGenreController =
 //     new ListArticlesByTextualGenreController();
-// const deleteTextualGenresFromArticleController =
-//     new DeleteTextualGenresFromArticleController();
+const deleteTextualGenresFromArticleController =
+    new DeleteTextualGenresFromArticleController();
 
 textualGenreRoutes.post(
     "/",
@@ -42,11 +44,11 @@ textualGenreRoutes.get(
 //     deleteTextualGenreController.handle
 // );
 
-// textualGenreRoutes.patch(
-//     "/deletealltextualgenres",
-//     ensureAuthenticated,
-//     ensureAdmin,
-//     deleteTextualGenresFromArticleController.handle
-// );
+textualGenreRoutes.patch(
+    "/deletealltextualgenres",
+    ensureAuthenticated,
+    ensureAdmin,
+    deleteTextualGenresFromArticleController.handle
+);
 
 export { textualGenreRoutes };
