@@ -79,8 +79,8 @@ e) editar artigos
 [ x] criar genero
 [x ] listar
 [x] adicionar Generos a um artigo
+[x] deletar Generos de um artigo
 [] deletar Generos 
-[] deletar Generos de um artigo
 [ ] fazer documentação
 [ ] fazer test
 
