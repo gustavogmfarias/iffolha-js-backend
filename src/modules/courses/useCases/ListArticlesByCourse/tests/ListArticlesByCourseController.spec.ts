@@ -5,7 +5,7 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("CATEGORIES - List Articles by Categories Controller", () => {
+describe("COURSES - List Articles by Courses Controller", () => {
     let token: string;
 
     beforeAll(async () => {
@@ -16,17 +16,19 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
         token = loginAdmin.body.token;
 
         const aaa = await request(app)
-            .post("/categories")
+            .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "aaa",
+                schoolLevel: "SUPERIOR",
             });
 
         const bbb = await request(app)
-            .post("/categories")
+            .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "bbb",
+                schoolLevel: "SUPERIOR",
             });
 
         const article1 = await request(app)
@@ -39,7 +41,7 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["aaa"],
-                categories: [aaa.body.category.id],
+                courses: [aaa.body.course.id],
             });
 
         const article2 = await request(app)
@@ -52,7 +54,7 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["bbb"],
-                categories: [bbb.body.category.id],
+                courses: [bbb.body.course.id],
             });
 
         const article3 = await request(app)
@@ -65,20 +67,20 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["bbb"],
-                categories: [bbb.body.category.id],
+                courses: [bbb.body.course.id],
             });
     });
 
-    it("Should be able to list articles by categories", async () => {
+    it("Should be able to list articles by courses", async () => {
         const searchA = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName=aaa`
+                `/courses/articlesbycourse?articleTitle&page&perPage&courseName=aaa`
             )
             .set({ Authorization: `Bearer ${token}` });
 
         const searchB = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName=bbb`
+                `/courses/articlesbycourse?articleTitle&page&perPage&courseName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -88,10 +90,10 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
         expect(searchB.body).toHaveLength(2);
     });
 
-    it("Should be able to list articles by categories & titleName", async () => {
+    it("Should be able to list articles by courses & titleName", async () => {
         const searchA = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle=aqui&page&perPage&categoryName=bbb`
+                `/courses/articlesbycourse?articleTitle=aqui&page&perPage&courseName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -99,16 +101,16 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
         expect(searchA.body).toHaveLength(1);
     });
 
-    it("Should be able to list articles by categories with pagination", async () => {
+    it("Should be able to list articles by courses with pagination", async () => {
         const searchA = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page=1&perPage=1&categoryName=bbb`
+                `/courses/articlesbycourse?articleTitle&page=1&perPage=1&courseName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
         const searchB = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page=2&perPage=1&categoryName=bbb`
+                `/courses/articlesbycourse?articleTitle&page=2&perPage=1&courseName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -118,18 +120,18 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
         expect(searchB.body).toHaveLength(1);
     });
 
-    it("Should not be able to list all categories if you was not logged", async () => {
+    it("Should not be able to list all courses if you was not logged", async () => {
         const response = await request(app).get(
-            `/categories/articlesbycategory?articleTitle&page&perPage&categoryName`
+            `/courses/articlesbycourse?articleTitle&page&perPage&courseName`
         );
 
         expect(response.body.message).toBe("Token missing");
     });
 
-    it("Should not be able to list all categories if token was expired or invalid", async () => {
+    it("Should not be able to list all courses if token was expired or invalid", async () => {
         const response = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName`
+                `/courses/articlesbycourse?articleTitle&page&perPage&courseName`
             )
             .set({ Authorization: `Bearer 111` });
 
