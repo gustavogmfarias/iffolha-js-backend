@@ -1180,6 +1180,165 @@
                 }
             }
         },
+        "/courses": {
+            "post": {
+                "tags": ["Courses"],
+                "summary": "Create Courses",
+                "description": "Create a new Course",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "schoolLevel": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Informática",
+                                    "schoolLevel": "SUPERIOR"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Course already exists"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Courses"],
+                "summary": "List all Courses",
+                "description": "List all Courses",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Initial or part of the name",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Courses"],
+                "summary": "Delete a Course",
+                "description": "Delete a Course",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Couse id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Course successfully deleted!"
+                    },
+                    "404": {
+                        "description": "Course doesn't exists"
+                    }
+                }
+            }
+        },
+        "/courses/deleteallcourses": {
+            "patch": {
+                "tags": ["Courses"],
+                "summary": "Delete all courses of an Article",
+                "description": "Delete all courses of an Article",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "articleId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "articleId": "86e85c1f-cdfd-4772-81f5-92ef7ddae97f"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Courses successfully deleted!"
+                    },
+                    "404 A": {
+                        "description": "Article doesn't exists"
+                    }
+                }
+            }
+        },
         "/categories/import": {
             "post": {
                 "tags": ["Category"],
