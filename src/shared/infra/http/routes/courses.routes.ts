@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { CreateCourseController } from "@modules/courses/useCases/createCourseUseCase/CreateCourseController";
+import { DeleteCoursesFromArticleController } from "@modules/courses/useCases/deleteCoursesFromArticleUseCase/DeleteCoursesFromArticleController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -8,8 +9,8 @@ const coursesRoutes = Router();
 const createCourseController = new CreateCourseController();
 // const listCoursesController = new ListCoursesController();
 // const deleteCourseController = new DeleteCourseController();
-// const deleteCourseFromArticleController =
-//     new DeleteCourseFromArticleController();
+const deleteCoursesFromArticleController =
+    new DeleteCoursesFromArticleController();
 // const listArticlesByCourseController = new ListArticlesByCourseController();
 
 coursesRoutes.post(
@@ -40,11 +41,11 @@ coursesRoutes.post(
 //     deleteCourseController.handle
 // );
 
-// coursesRoutes.patch(
-//     "/deleteallcourses",
-//     ensureAuthenticated,
-//     ensureAdmin,
-//     deleteCourseFromArticleController.handle
-// );
+coursesRoutes.patch(
+    "/deleteallcourses",
+    ensureAuthenticated,
+    ensureAdmin,
+    deleteCoursesFromArticleController.handle
+);
 
 export { coursesRoutes };

@@ -1,23 +1,22 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { DeleteTextualGenresFromArticleUseCase } from "./DeleteTextualGenreFromArticleUseCase";
+import { DeleteCoursesFromArticleUseCase } from "./DeleteCoursesFromArticleUseCase";
 
-class DeleteTextualGenresFromArticleController {
+class DeleteCoursesFromArticleController {
     async handle(request: Request, response: Response): Promise<Response> {
         const { articleId } = request.body;
         const { id: userAdminId } = request.user;
-        const deleteTextualGenresFromArticleUseCase = container.resolve(
-            DeleteTextualGenresFromArticleUseCase
+        const deleteCoursesFromArticleUseCase = container.resolve(
+            DeleteCoursesFromArticleUseCase
         );
 
-        const textualGenresDeleted =
-            await deleteTextualGenresFromArticleUseCase.execute(
-                userAdminId,
-                articleId
-            );
+        const coursessDeleted = await deleteCoursesFromArticleUseCase.execute(
+            userAdminId,
+            articleId
+        );
 
-        return response.status(200).json(textualGenresDeleted).send();
+        return response.status(200).json(coursessDeleted).send();
     }
 }
 
-export { DeleteTextualGenresFromArticleController };
+export { DeleteCoursesFromArticleController };

@@ -3,7 +3,7 @@ import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvid
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
-import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
+import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
 
 interface IResponse {
     articleEdited: Article;
@@ -11,10 +11,10 @@ interface IResponse {
 }
 
 @injectable()
-class DeleteTextualGenresFromArticleUseCase {
+class DeleteCoursesFromArticleUseCase {
     constructor(
-        @inject("TextualGenreRepository")
-        private textualGenreRepository: ITextualGenreRepository,
+        @inject("CoursesRepository")
+        private coursesRepository: ICoursesRepository,
         @inject("ArticleRepository")
         private articleRepository: IArticleRepository,
         @inject("LogProvider")
@@ -28,22 +28,22 @@ class DeleteTextualGenresFromArticleUseCase {
             throw new AppError("Article doesn't exists", 404);
         }
 
-        let textualGenresDeleted;
+        let coursesDeleted;
         let articleEdited;
 
         try {
-            textualGenresDeleted =
-                await this.textualGenreRepository.deleteAllTextualGenresFromArticle(
+            coursesDeleted =
+                await this.coursesRepository.deleteAllCoursesFromArticle(
                     articleId
                 );
             articleEdited = await this.articleRepository.findById(articleId);
         } catch (err) {
-            throw new AppError("TextualGenres weren't deleted", 401);
+            throw new AppError("Courses weren't deleted", 401);
         }
 
         const log = await this.logProvider.create({
-            logRepository: "TEXTUALGENRE",
-            description: `TextualGenres successfully deleted!`,
+            logRepository: "COURSE",
+            description: `Courses successfully deleted!`,
             previousContent: JSON.stringify(article),
             contentEdited: JSON.stringify(articleEdited),
             editedByUserId: userAdminId,
@@ -54,4 +54,4 @@ class DeleteTextualGenresFromArticleUseCase {
     }
 }
 
-export { DeleteTextualGenresFromArticleUseCase };
+export { DeleteCoursesFromArticleUseCase };

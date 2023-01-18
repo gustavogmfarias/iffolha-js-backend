@@ -5,11 +5,11 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("TEXTUAL GENRE - Delete TextualGenres of Article Controller", () => {
+describe("COURSES - Delete Courses of Article Controller", () => {
     let token;
     let admin;
-    let textualGenre1;
-    let textualGenre2;
+    let course1;
+    let course2;
 
     beforeAll(async () => {
         const responseToken = await request(app)
@@ -18,22 +18,24 @@ describe("TEXTUAL GENRE - Delete TextualGenres of Article Controller", () => {
         admin = responseToken.body.user.id;
         token = responseToken.body.token;
 
-        textualGenre1 = await request(app)
-            .post("/textualgenre")
+        course1 = await request(app)
+            .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test",
+                schoolLevel: "SUPERIOR",
             });
 
-        textualGenre2 = await request(app)
-            .post("/textualgenre")
+        course2 = await request(app)
+            .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test 2",
+                schoolLevel: "SUPERIOR",
             });
     });
 
-    it("Should be able to delete all textualGenres of an article", async () => {
+    it("Should be able to delete all courses of an article", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -43,33 +45,27 @@ describe("TEXTUAL GENRE - Delete TextualGenres of Article Controller", () => {
                 content: "tu tens o nome do heroico portugues",
                 isHighlight: false,
                 authors: [admin],
-                courses: [],
                 classes: [],
-                textualGenres: [
-                    textualGenre1.body.textualGenre.id,
-                    textualGenre2.body.textualGenre.id,
-                ],
+                courses: [course1.body.course.id, course2.body.course.id],
             });
 
-        const textualGenresDeleted = await request(app)
-            .patch("/textualgenre/deletealltextualgenres")
+        const coursesDeleted = await request(app)
+            .patch("/courses/deleteallcourses")
             .set({ Authorization: `Bearer ${token}` })
             .send({ articleId: article.body.articleWithRelations.id });
 
-        const articleWithTextualGenreDeleted = await request(app)
+        const articleWithCourseDeleted = await request(app)
             .get(`/articles/${article.body.articleWithRelations.id}`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(
-            article.body.articleWithRelations.TextualGenreOnArticles
+            article.body.articleWithRelations.CoursesOnArticles
         ).toHaveLength(2);
 
-        expect(
-            articleWithTextualGenreDeleted.body.TextualGenreOnArticles
-        ).toHaveLength(0);
+        expect(articleWithCourseDeleted.body.CoursesOnArticles).toHaveLength(0);
     });
 
-    it("Should not able to delete all textualGenres of an article if the token is invalid", async () => {
+    it("Should not able to delete all courses of an article if the token is invalid", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -79,23 +75,19 @@ describe("TEXTUAL GENRE - Delete TextualGenres of Article Controller", () => {
                 content: "tu tens o nome do heroico portugues",
                 isHighlight: false,
                 authors: [admin],
-                courses: [],
                 classes: [],
-                textualGenres: [
-                    textualGenre1.body.textualGenre.id,
-                    textualGenre2.body.textualGenre.id,
-                ],
+                courses: [course1.body.course.id, course2.body.course.id],
             });
 
-        const textualGenresDeleted = await request(app)
-            .patch("/textualgenre/deletealltextualGenres")
+        const coursesDeleted = await request(app)
+            .patch("/courses/deleteallcourses")
             .set({ Authorization: `1111` })
             .send({ articleId: article.body.articleWithRelations.id });
 
-        expect(textualGenresDeleted.body.message).toBe("Invalid Token");
+        expect(coursesDeleted.body.message).toBe("Invalid Token");
     });
 
-    it("Should not able to delete all textualGenres of an article if user is not logged", async () => {
+    it("Should not able to delete all courses of an article if user is not logged", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -105,18 +97,14 @@ describe("TEXTUAL GENRE - Delete TextualGenres of Article Controller", () => {
                 content: "tu tens o nome do heroico portugues",
                 isHighlight: false,
                 authors: [admin],
-                courses: [],
                 classes: [],
-                textualGenres: [
-                    textualGenre1.body.textualGenre.id,
-                    textualGenre2.body.textualGenre.id,
-                ],
+                courses: [course1.body.course.id, course2.body.course.id],
             });
 
-        const textualGenresDeleted = await request(app)
-            .patch("/textualgenre/deletealltextualgenres")
+        const coursesDeleted = await request(app)
+            .patch("/courses/deleteallcourses")
             .send({ articleId: article.body.articleWithRelations.id });
 
-        expect(textualGenresDeleted.body.message).toBe("Token missing");
+        expect(coursesDeleted.body.message).toBe("Token missing");
     });
 });
