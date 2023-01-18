@@ -1,6 +1,7 @@
+import { Course, CoursesOnArticles, SchoolLevel } from "@prisma/client";
 /* eslint-disable no-restricted-syntax */
 import { ArticleWithRelations } from "@modules/articles/repositories/IArticleRepository";
-import { Course, CoursesOnArticles, SchoolLevel } from "@prisma/client";
+
 import { prisma } from "@shared/database/prismaClient";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 import { ICoursesRepository } from "../ICoursesRepository";
@@ -92,6 +93,56 @@ export class CoursesRepository implements ICoursesRepository {
                     name: {
                         contains: name,
                         mode: "insensitive",
+                    },
+                },
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
+                orderBy: {
+                    name: "asc",
+                },
+            });
+        }
+
+        return courses;
+    }
+
+    async listCoursesByLevel(
+        { page, perPage }: IPaginationRequestDTO,
+        level: string
+    ): Promise<Course[]> {
+        let courses: Course[];
+
+        // se não tiver os 3
+        if (!page && !perPage && !level) {
+            courses = await prisma.course.findMany({
+                orderBy: {
+                    name: "asc",
+                },
+            });
+        } else if (page && perPage && !level) {
+            courses = await prisma.course.findMany({
+                take: Number(perPage),
+                skip: (Number(page) - 1) * Number(perPage),
+                orderBy: {
+                    name: "asc",
+                },
+            });
+        } else if (!page && !page && level) {
+            courses = await prisma.course.findMany({
+                where: {
+                    schoolLevel: {
+                        equals: SchoolLevel[level],
+                    },
+                },
+                orderBy: {
+                    name: "asc",
+                },
+            });
+        } else {
+            courses = await prisma.course.findMany({
+                where: {
+                    schoolLevel: {
+                        equals: SchoolLevel[level],
                     },
                 },
                 take: Number(perPage),

@@ -4,6 +4,7 @@ import { DeleteCoursesFromArticleController } from "@modules/courses/useCases/de
 import { ListCoursesController } from "@modules/courses/useCases/ListCourses/ListCousersController";
 import { DeleteCourseController } from "@modules/courses/useCases/deleteCourseUseCase/DeleteCourseController";
 import { ListArticlesByCourseController } from "@modules/courses/useCases/ListArticlesByCourse/ListArticlesByCourseController";
+import { ListCoursesByLevelController } from "@modules/courses/useCases/ListCoursesByLevel/ListCoursesByLevelController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -15,6 +16,7 @@ const deleteCourseController = new DeleteCourseController();
 const deleteCoursesFromArticleController =
     new DeleteCoursesFromArticleController();
 const listArticlesByCourseController = new ListArticlesByCourseController();
+const listCoursesByLevelController = new ListCoursesByLevelController();
 
 coursesRoutes.post(
     "/",
@@ -35,6 +37,12 @@ coursesRoutes.get(
     ensureAuthenticated,
     ensureAdmin,
     listArticlesByCourseController.handle
+);
+coursesRoutes.get(
+    "/coursesbylevel",
+    ensureAuthenticated,
+    ensureAdmin,
+    listCoursesByLevelController.handle
 );
 
 coursesRoutes.delete(

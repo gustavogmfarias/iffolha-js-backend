@@ -17,6 +17,10 @@ export interface ICoursesRepository {
         courseName: string,
         articleTitle?: string
     ): Promise<ArticleWithRelations[]>;
+    listCoursesByLevel(
+        { page, perPage }: IPaginationRequestDTO,
+        level: string
+    ): Promise<Course[]>;
     addCoursesToArticle(articleId: string, coursesId: string[]): Promise<void>;
 
     listCourses(
