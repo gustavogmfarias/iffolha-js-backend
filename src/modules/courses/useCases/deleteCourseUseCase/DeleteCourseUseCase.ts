@@ -1,60 +1,54 @@
-import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
-import { UserMap } from "@modules/accounts/mapper/UserMap";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
-import { Log, TextualGenre, User } from "@prisma/client";
+import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
+import { Log, Course } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 interface IResponse {
-    textualGenre: TextualGenre;
+    course: Course;
     log: Log;
 }
 
 @injectable()
-class DeleteTextualGenreUseCase {
+class DeleteCourseUseCase {
     constructor(
-        @inject("TextualGenreRepository")
-        private textualGenreRepository: ITextualGenreRepository,
+        @inject("CoursesRepository")
+        private coursesRepository: ICoursesRepository,
         @inject("LogProvider")
         private logProvider: ILogProvider
     ) {}
 
     async execute(
         userAdminId: string,
-        textualGenreToDeleteId: string
+        courseToDeleteId: string
     ): Promise<IResponse> {
-        const textualGenre =
-            await this.textualGenreRepository.findTextualGenreById(
-                textualGenreToDeleteId
-            );
+        const course = await this.coursesRepository.findCourseById(
+            courseToDeleteId
+        );
 
-        if (!textualGenre) {
-            throw new AppError("TextualGenre doesn't exists", 404);
+        if (!course) {
+            throw new AppError("Course doesn't exists", 404);
         }
-        let textualGenreDeleted;
+        let courseDeleted;
 
         try {
-            textualGenreDeleted =
-                this.textualGenreRepository.deleteTextualGenre(
-                    textualGenreToDeleteId
-                );
+            courseDeleted =
+                this.coursesRepository.deleteCourse(courseToDeleteId);
         } catch (err) {
-            throw new AppError("TextualGenre wasn't deleted", 401);
+            throw new AppError("Course wasn't deleted", 401);
         }
 
         const log = await this.logProvider.create({
-            logRepository: "TEXTUALGENRE",
-            description: `TextualGenre successfully deleted!`,
-            previousContent: JSON.stringify(textualGenre),
-            contentEdited: JSON.stringify(textualGenre),
+            logRepository: "COURSE",
+            description: `Course successfully deleted!`,
+            previousContent: JSON.stringify(course),
+            contentEdited: JSON.stringify(course),
             editedByUserId: userAdminId,
-            modelEditedId: textualGenre.id,
+            modelEditedId: course.id,
         });
 
-        return { textualGenre, log };
+        return { course, log };
     }
 }
 
-export { DeleteTextualGenreUseCase };
+export { DeleteCourseUseCase };

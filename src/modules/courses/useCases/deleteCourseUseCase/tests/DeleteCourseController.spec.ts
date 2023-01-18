@@ -5,9 +5,9 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("TEXTUAL GENRE - Delete TextualGenre Controller", () => {
+describe("COURSE - Delete Course Controller", () => {
     let token: string;
-    let textualGenre;
+    let course;
 
     beforeAll(async () => {
         const loginAdmin = await request(app)
@@ -16,58 +16,61 @@ describe("TEXTUAL GENRE - Delete TextualGenre Controller", () => {
 
         token = loginAdmin.body.token;
 
-        textualGenre = await request(app)
-            .post("/textualgenre")
+        course = await request(app)
+            .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test",
+                schoolLevel: "SUPERIOR",
             });
     });
 
-    it("Should be able to delete a textualGenre", async () => {
+    it("Should be able to delete a course", async () => {
         const responseDelete = await request(app)
-            .delete(`/textualgenre/${textualGenre.body.textualGenre.id}`)
+            .delete(`/courses/${course.body.course.id}`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(responseDelete.body.log.description).toBe(
-            "TextualGenre successfully deleted!"
+            "Course successfully deleted!"
         );
         expect(responseDelete.status).toBe(200);
     });
 
-    it("Should not be able to delete a textualGenre if you was not logged", async () => {
+    it("Should not be able to delete a course if you was not logged", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
 
-        const textualGenre2 = await request(app)
-            .post("/textualgenre")
+        const course2 = await request(app)
+            .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test",
+                schoolLevel: "SUPERIOR",
             });
 
         const responseDelete = await request(app).delete(
-            `/textualgenre/${textualGenre2.body.textualGenre.id}`
+            `/courses/${course2.body.course.id}`
         );
 
         expect(responseDelete.body.message).toBe("Token missing");
     });
 
-    it("Should not be able to delete a textualGenre if token is invalid or expired", async () => {
+    it("Should not be able to delete a course if token is invalid or expired", async () => {
         const responseToken = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
 
-        const textualGenre3 = await request(app)
-            .post("/textualgenre")
+        const course3 = await request(app)
+            .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "test 2",
+                schoolLevel: "SUPERIOR",
             });
 
         const responseDelete = await request(app)
-            .delete(`/textualgenre/${textualGenre3.body.textualGenre.id}`)
+            .delete(`/courses/${course3.body.course.id}`)
             .set({ Authorization: `Bearer 1111` });
 
         expect(responseDelete.body.message).toBe("Invalid Token");
