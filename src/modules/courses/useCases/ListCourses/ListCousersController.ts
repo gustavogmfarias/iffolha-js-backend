@@ -1,17 +1,15 @@
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { ListTextualGenresUseCase } from "./ListTextualGenresUseCase";
+import { ListCoursesUseCase } from "./ListCoursesUseCase";
 
-class ListTextualGenresController {
+class ListCoursesController {
     async handle(request: Request, response: Response): Promise<Response> {
-        const listTextualGenresUseCase = container.resolve(
-            ListTextualGenresUseCase
-        );
+        const llistCoursesUseCase = container.resolve(ListCoursesUseCase);
         const { name } = request.query;
         const { perPage, page }: IPaginationRequestDTO = request.query;
 
-        const all = await listTextualGenresUseCase.execute(
+        const all = await llistCoursesUseCase.execute(
             {
                 page,
                 perPage,
@@ -21,9 +19,9 @@ class ListTextualGenresController {
 
         return response
             .setHeader("x-total-count", String(all.totalCount))
-            .json(all.textualGenres)
+            .json(all.courses)
             .send();
     }
 }
 
-export { ListTextualGenresController };
+export { ListCoursesController };

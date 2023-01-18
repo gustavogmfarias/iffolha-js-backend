@@ -2,28 +2,27 @@
 import { inject, injectable } from "tsyringe";
 
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
-import { TextualGenre } from "@prisma/client";
-import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
+import { Course } from "@prisma/client";
+import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
 
 interface IResponse {
-    textualGenres: TextualGenre[];
+    courses: Course[];
     totalCount: number;
 }
 
 @injectable()
-class ListTextualGenresUseCase {
+class ListCoursesUseCase {
     constructor(
-        @inject("TextualGenreRepository")
-        private textualGenreRepository: ITextualGenreRepository
+        @inject("CoursesRepository")
+        private courseRepository: ICoursesRepository
     ) {}
 
     async execute(
         { page, perPage }: IPaginationRequestDTO,
         name?: string
     ): Promise<IResponse> {
-        const totalCount =
-            await this.textualGenreRepository.totalTextualGenres();
-        let textualGenres: TextualGenre[];
+        const totalCount = await this.courseRepository.totalCourses();
+        let courses: Course[];
 
         if (name === undefined || name === "undefined") {
             name = null;
@@ -38,16 +37,14 @@ class ListTextualGenresUseCase {
         }
 
         if (page && perPage) {
-            textualGenres = await this.textualGenreRepository.listTextualGenres(
-                {
-                    page,
-                    perPage,
-                }
-            );
+            courses = await this.courseRepository.listCourses({
+                page,
+                perPage,
+            });
         }
 
         if (page && perPage && name) {
-            textualGenres = await this.textualGenreRepository.listTextualGenres(
+            courses = await this.courseRepository.listCourses(
                 {
                     page,
                     perPage,
@@ -57,20 +54,14 @@ class ListTextualGenresUseCase {
         }
 
         if (!page && !perPage && name) {
-            textualGenres = await this.textualGenreRepository.listTextualGenres(
-                {},
-                name
-            );
+            courses = await this.courseRepository.listCourses({}, name);
         }
 
         if (!page && !perPage && !name) {
-            textualGenres = await this.textualGenreRepository.listTextualGenres(
-                {},
-                name
-            );
+            courses = await this.courseRepository.listCourses({}, name);
         }
 
-        return { textualGenres, totalCount };
+        return { courses, totalCount };
     }
 }
-export { ListTextualGenresUseCase };
+export { ListCoursesUseCase };
