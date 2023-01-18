@@ -95,7 +95,7 @@ describe("COURSES - List Courses by Level Controller", () => {
         expect(searchD.body).toHaveLength(2);
     });
 
-    it("Should not be able to list the courses by if you was not logged", async () => {
+    it("Should not be able to list the courses by level if you was not logged", async () => {
         const response = await request(app).get(
             `/courses/coursesbylevel?page=1&perPage=2&level=SUPERIOR`
         );
@@ -103,7 +103,7 @@ describe("COURSES - List Courses by Level Controller", () => {
         expect(response.body.message).toBe("Token missing");
     });
 
-    it("Should not be able to list the courses bt if token was expired or invalid", async () => {
+    it("Should not be able to list the courses by level if token was expired or invalid", async () => {
         const response = await request(app)
             .get(`/courses/coursesbylevel?page=1&perPage=2&level=SUPERIOR`)
             .set({ Authorization: `Bearer 111` });
