@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { inject, injectable } from "tsyringe";
-import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
+import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITextualGenreRepository";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
-import { Article, Category } from "@prisma/client";
+import { Article, TextualGenre } from "@prisma/client";
 
 interface IResponse {
     articles: Article[];
@@ -10,19 +10,22 @@ interface IResponse {
 }
 
 @injectable()
-class ListArticlesByCategoryUseCase {
+class ListArticlesByTextualGenreUseCase {
     constructor(
-        @inject("CategoriesRepository")
-        private categoriesRepository: ICategoriesRepository
+        @inject("TextualGenreRepository")
+        private textualGenreRepository: ITextualGenreRepository
     ) {}
 
     async execute(
         { page, perPage }: IPaginationRequestDTO,
-        categoryName?: string,
+        textualGenreName?: string,
         articleTitle?: string
     ): Promise<IResponse> {
-        if (categoryName === undefined || categoryName === "undefined") {
-            categoryName = null;
+        if (
+            textualGenreName === undefined ||
+            textualGenreName === "undefined"
+        ) {
+            textualGenreName = null;
         }
         if (articleTitle === undefined || articleTitle === "undefined") {
             articleTitle = null;
@@ -37,21 +40,22 @@ class ListArticlesByCategoryUseCase {
         }
 
         const totalCountArr =
-            await this.categoriesRepository.listArticlesByCategory(
+            await this.textualGenreRepository.listArticlesByTextualGenre(
                 {},
-                categoryName,
+                textualGenreName,
                 articleTitle
             );
-        const articles = await this.categoriesRepository.listArticlesByCategory(
-            {
-                page,
-                perPage,
-            },
-            categoryName,
-            articleTitle
-        );
+        const articles =
+            await this.textualGenreRepository.listArticlesByTextualGenre(
+                {
+                    page,
+                    perPage,
+                },
+                textualGenreName,
+                articleTitle
+            );
 
         return { articles, totalCount: totalCountArr.length };
     }
 }
-export { ListArticlesByCategoryUseCase };
+export { ListArticlesByTextualGenreUseCase };

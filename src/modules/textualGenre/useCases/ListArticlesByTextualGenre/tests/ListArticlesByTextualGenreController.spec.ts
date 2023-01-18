@@ -5,7 +5,7 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("CATEGORIES - List Articles by Categories Controller", () => {
+describe("TEXTUAL GENRES - List Articles by TextualGenres Controller", () => {
     let token: string;
 
     beforeAll(async () => {
@@ -16,14 +16,14 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
         token = loginAdmin.body.token;
 
         const aaa = await request(app)
-            .post("/categories")
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "aaa",
             });
 
         const bbb = await request(app)
-            .post("/categories")
+            .post("/textualgenre")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "bbb",
@@ -39,7 +39,7 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["aaa"],
-                categories: [aaa.body.category.id],
+                textualGenres: [aaa.body.textualGenre.id],
             });
 
         const article2 = await request(app)
@@ -52,7 +52,7 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["bbb"],
-                categories: [bbb.body.category.id],
+                textualGenres: [bbb.body.textualGenre.id],
             });
 
         const article3 = await request(app)
@@ -65,20 +65,20 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["bbb"],
-                categories: [bbb.body.category.id],
+                textualGenres: [bbb.body.textualGenre.id],
             });
     });
 
-    it("Should be able to list articles by categories", async () => {
+    it("Should be able to list articles by textualGenres", async () => {
         const searchA = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName=aaa`
+                `/textualgenre/articlesbytextualgenre?articleTitle&page&perPage&textualGenreName=aaa`
             )
             .set({ Authorization: `Bearer ${token}` });
 
         const searchB = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName=bbb`
+                `/textualgenre/articlesbytextualgenre?articleTitle&page&perPage&textualGenreName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -88,10 +88,10 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
         expect(searchB.body).toHaveLength(2);
     });
 
-    it("Should be able to list articles by categories & titleName", async () => {
+    it("Should be able to list articles by textualGenres & titleName", async () => {
         const searchA = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle=aqui&page&perPage&categoryName=bbb`
+                `/textualgenre/articlesbytextualgenre?articleTitle=aqui&page&perPage&textualGenreName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -99,16 +99,16 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
         expect(searchA.body).toHaveLength(1);
     });
 
-    it("Should be able to list articles by categories with pagination", async () => {
+    it("Should be able to list articles by textualGenres with pagination", async () => {
         const searchA = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page=1&perPage=1&categoryName=bbb`
+                `/textualgenre/articlesbytextualgenre?articleTitle&page=1&perPage=1&textualGenreName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
         const searchB = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page=2&perPage=1&categoryName=bbb`
+                `/textualgenre/articlesbytextualgenre?articleTitle&page=2&perPage=1&textualGenreName=bbb`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -118,18 +118,18 @@ describe("CATEGORIES - List Articles by Categories Controller", () => {
         expect(searchB.body).toHaveLength(1);
     });
 
-    it("Should not be able to list all categories if you was not logged", async () => {
+    it("Should not be able to list all textualGenres if you was not logged", async () => {
         const response = await request(app).get(
-            `/categories/articlesbycategory?articleTitle&page&perPage&categoryName`
+            `/textualgenre/articlesbytextualgenre?articleTitle&page&perPage&textualGenreName`
         );
 
         expect(response.body.message).toBe("Token missing");
     });
 
-    it("Should not be able to list all categories if token was expired or invalid", async () => {
+    it("Should not be able to list all textualGenres if token was expired or invalid", async () => {
         const response = await request(app)
             .get(
-                `/categories/articlesbycategory?articleTitle&page&perPage&categoryName`
+                `/textualgenre/articlesbytextualgenre?articleTitle&page&perPage&textualGenreName`
             )
             .set({ Authorization: `Bearer 111` });
 
