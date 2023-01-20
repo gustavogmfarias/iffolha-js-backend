@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-finally */
 /* eslint-disable no-param-reassign */
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import {
@@ -76,7 +77,6 @@ class CreateArticleUseCase {
     }: IRequest): Promise<IResponse> {
         let log: Log;
         let articleWithRelations: ArticleWithRelations;
-
         let article;
 
         try {
@@ -95,75 +95,19 @@ class CreateArticleUseCase {
         if (article) {
             try {
                 if (authors) {
-                    try {
-                        await this.authorsRepository.addAuthorsToArticle(
-                            article.id,
-                            authors
-                        );
-                    } catch (error) {
-                        throw new AppError(error.message, 401);
-                    }
+                    this.addAuthorsToArticle(authors, article.id);
                 }
 
                 if (tags) {
-                    tags = tags.filter((este, i) => tags.indexOf(este) === i);
-                    tags.map(async (tag) => {
-                        let tagFound;
-                        try {
-                            tagFound = await this.tagsRepository.findTagByName(
-                                tag
-                            );
-                        } catch (error) {
-                            throw new AppError(error.message, 401);
-                        }
-
-                        if (tagFound) {
-                            try {
-                                await this.tagsRepository.addTagsToArticle(
-                                    article.id,
-                                    tagFound.id
-                                );
-                            } catch (error) {
-                                throw new AppError(error.message, 401);
-                            }
-                        } else {
-                            let newTag;
-
-                            try {
-                                newTag = await this.tagsRepository.createTag(
-                                    tag
-                                );
-                                await this.tagsRepository.addTagsToArticle(
-                                    article.id,
-                                    newTag.id
-                                );
-                            } catch (error) {
-                                throw new AppError(error.message, 401);
-                            }
-                        }
-                    });
+                    this.addTagsToArticle(tags, article.id);
                 }
 
                 if (categories) {
-                    try {
-                        await this.categoriesRepository.addCategoriesToArticle(
-                            article.id,
-                            categories
-                        );
-                    } catch (error) {
-                        throw new AppError(error.message, 401);
-                    }
+                    this.addCategoriesToArticle(categories, article.id);
                 }
 
                 if (textualGenres) {
-                    try {
-                        await this.textualGenreRepository.addTextualGenresToArticle(
-                            article.id,
-                            textualGenres
-                        );
-                    } catch (error) {
-                        throw new AppError(error.message, 401);
-                    }
+                    this.addTextualGenresToArticle(textualGenres, article.id);
                 }
 
                 if (courses) {
@@ -171,14 +115,7 @@ class CreateArticleUseCase {
                 }
 
                 if (classes) {
-                    try {
-                        await this.classesRepository.addClassesToArticle(
-                            article.id,
-                            classes
-                        );
-                    } catch (error) {
-                        throw new AppError(error.message, 401);
-                    }
+                    this.addClasssesToArticle(classes, article.id);
                 }
 
                 // this.articleRepository.updateImages(article.id, images);
@@ -189,18 +126,99 @@ class CreateArticleUseCase {
                     article.id
                 );
 
-                log = await this.logProvider.create({
-                    logRepository: "ARTICLE",
-                    description: `Article created successfully!`,
-                    previousContent: JSON.stringify(articleWithRelations),
-                    contentEdited: JSON.stringify(articleWithRelations),
-                    editedByUserId: userAdminId,
-                    modelEditedId: article.id,
-                });
+                try {
+                    log = await this.logProvider.create({
+                        logRepository: "ARTICLE",
+                        description: `Article created successfully!`,
+                        previousContent: JSON.stringify(articleWithRelations),
+                        contentEdited: JSON.stringify(articleWithRelations),
+                        editedByUserId: userAdminId,
+                        modelEditedId: article.id,
+                    });
+                } catch (err) {
+                    throw new AppError(err.message);
+                }
             }
         }
 
         return { articleWithRelations, log };
+    }
+
+    async addAuthorsToArticle(
+        authors: string[],
+        articleId: string
+    ): Promise<void> {
+        try {
+            await this.authorsRepository.addAuthorsToArticle(
+                articleId,
+                authors
+            );
+        } catch (error) {
+            throw new AppError(error.message, 401);
+        }
+    }
+
+    async addTagsToArticle(tags: string[], articleId: string): Promise<void> {
+        tags = tags.filter((este, i) => tags.indexOf(este) === i);
+        tags.map(async (tag) => {
+            let tagFound;
+            try {
+                tagFound = await this.tagsRepository.findTagByName(tag);
+            } catch (error) {
+                throw new AppError(error.message, 401);
+            }
+
+            if (tagFound) {
+                try {
+                    await this.tagsRepository.addTagsToArticle(
+                        articleId,
+                        tagFound.id
+                    );
+                } catch (error) {
+                    throw new AppError(error.message, 401);
+                }
+            } else {
+                let newTag;
+
+                try {
+                    newTag = await this.tagsRepository.createTag(tag);
+                    await this.tagsRepository.addTagsToArticle(
+                        articleId,
+                        newTag.id
+                    );
+                } catch (error) {
+                    throw new AppError(error.message, 401);
+                }
+            }
+        });
+    }
+
+    async addCategoriesToArticle(
+        categories: string[],
+        articleId: string
+    ): Promise<void> {
+        try {
+            await this.categoriesRepository.addCategoriesToArticle(
+                articleId,
+                categories
+            );
+        } catch (error) {
+            throw new AppError(error.message, 401);
+        }
+    }
+
+    async addTextualGenresToArticle(
+        textualGenres: string[],
+        articleId: string
+    ): Promise<void> {
+        try {
+            await this.textualGenreRepository.addTextualGenresToArticle(
+                articleId,
+                textualGenres
+            );
+        } catch (error) {
+            throw new AppError(error.message, 401);
+        }
     }
 
     async addCoursesToArticle(
@@ -216,6 +234,20 @@ class CreateArticleUseCase {
             } catch (error) {
                 throw new AppError(error.message, 401);
             }
+        }
+    }
+
+    async addClasssesToArticle(
+        classes: string[],
+        articleId: string
+    ): Promise<void> {
+        try {
+            await this.classesRepository.addClassesToArticle(
+                articleId,
+                classes
+            );
+        } catch (error) {
+            throw new AppError(error.message, 401);
         }
     }
 }
