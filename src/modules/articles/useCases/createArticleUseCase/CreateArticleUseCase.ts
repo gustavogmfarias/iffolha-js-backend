@@ -77,73 +77,108 @@ class CreateArticleUseCase {
         let log: Log;
         let articleWithRelations: ArticleWithRelations;
 
-        const article = await this.articleRepository.create({
-            title,
-            subTitle,
-            content,
-            publishedByUserId,
-            isHighlight,
-            url: this.articleRepository.generateUrl(title),
-        });
+        let article;
+
+        try {
+            article = await this.articleRepository.create({
+                title,
+                subTitle,
+                content,
+                publishedByUserId,
+                isHighlight,
+                url: this.articleRepository.generateUrl(title),
+            });
+        } catch (error) {
+            throw new AppError(error.message, 401);
+        }
 
         if (article) {
             try {
                 if (authors) {
-                    await this.authorsRepository.addAuthorsToArticle(
-                        article.id,
-                        authors
-                    );
+                    try {
+                        await this.authorsRepository.addAuthorsToArticle(
+                            article.id,
+                            authors
+                        );
+                    } catch (error) {
+                        throw new AppError(error.message, 401);
+                    }
                 }
 
                 if (tags) {
                     tags = tags.filter((este, i) => tags.indexOf(este) === i);
                     tags.map(async (tag) => {
-                        const tagFound =
-                            await this.tagsRepository.findTagByName(tag);
-
-                        if (tagFound) {
-                            await this.tagsRepository.addTagsToArticle(
-                                article.id,
-                                tagFound.id
-                            );
-                        } else {
-                            const newTag = await this.tagsRepository.createTag(
+                        let tagFound;
+                        try {
+                            tagFound = await this.tagsRepository.findTagByName(
                                 tag
                             );
-                            await this.tagsRepository.addTagsToArticle(
-                                article.id,
-                                newTag.id
-                            );
+                        } catch (error) {
+                            throw new AppError(error.message, 401);
+                        }
+
+                        if (tagFound) {
+                            try {
+                                await this.tagsRepository.addTagsToArticle(
+                                    article.id,
+                                    tagFound.id
+                                );
+                            } catch (error) {
+                                throw new AppError(error.message, 401);
+                            }
+                        } else {
+                            let newTag;
+
+                            try {
+                                newTag = await this.tagsRepository.createTag(
+                                    tag
+                                );
+                                await this.tagsRepository.addTagsToArticle(
+                                    article.id,
+                                    newTag.id
+                                );
+                            } catch (error) {
+                                throw new AppError(error.message, 401);
+                            }
                         }
                     });
                 }
 
                 if (categories) {
-                    await this.categoriesRepository.addCategoriesToArticle(
-                        article.id,
-                        categories
-                    );
+                    try {
+                        await this.categoriesRepository.addCategoriesToArticle(
+                            article.id,
+                            categories
+                        );
+                    } catch (error) {
+                        throw new AppError(error.message, 401);
+                    }
                 }
 
                 if (textualGenres) {
-                    await this.textualGenreRepository.addTextualGenresToArticle(
-                        article.id,
-                        textualGenres
-                    );
+                    try {
+                        await this.textualGenreRepository.addTextualGenresToArticle(
+                            article.id,
+                            textualGenres
+                        );
+                    } catch (error) {
+                        throw new AppError(error.message, 401);
+                    }
                 }
 
                 if (courses) {
-                    await this.coursesRepository.addCoursesToArticle(
-                        article.id,
-                        courses
-                    );
+                    this.addCoursesToArticle(courses, article.id);
                 }
 
                 if (classes) {
-                    await this.classesRepository.addClassesToArticle(
-                        article.id,
-                        classes
-                    );
+                    try {
+                        await this.classesRepository.addClassesToArticle(
+                            article.id,
+                            classes
+                        );
+                    } catch (error) {
+                        throw new AppError(error.message, 401);
+                    }
                 }
 
                 // this.articleRepository.updateImages(article.id, images);
@@ -166,6 +201,22 @@ class CreateArticleUseCase {
         }
 
         return { articleWithRelations, log };
+    }
+
+    async addCoursesToArticle(
+        courses: string[],
+        articleId: string
+    ): Promise<void> {
+        if (courses) {
+            try {
+                await this.coursesRepository.addCoursesToArticle(
+                    articleId,
+                    courses
+                );
+            } catch (error) {
+                throw new AppError(error.message, 401);
+            }
+        }
     }
 }
 
