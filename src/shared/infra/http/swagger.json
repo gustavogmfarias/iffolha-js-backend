@@ -1143,6 +1143,68 @@
                 }
             }
         },
+        "/textualgenre/articlesbytextualgenre": {
+            "get": {
+                "tags": ["Textual Genre"],
+                "summary": "List all Articles with a specifc Textual Genre",
+                "description": "List all Articles with a specifc Textual Genre",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "articleTitle",
+                        "in": "query",
+                        "description": "Initial or part of the Article Title",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "textualGenreNameName",
+                        "in": "query",
+                        "description": "Full name of the Textual Genre Name",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/textualgenre/deletealltextualgenres": {
             "patch": {
                 "tags": ["Textual Genre"],
@@ -1298,6 +1360,124 @@
                     },
                     "404": {
                         "description": "Course doesn't exists"
+                    }
+                }
+            }
+        },
+        "/courses/coursesbylevel": {
+            "get": {
+                "tags": ["Courses"],
+                "summary": "List all Courses with a specifc Level",
+                "description": "List all Courses with a specifc Level",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+
+                    {
+                        "name": "level",
+                        "in": "query",
+                        "description": "Full name of the level",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/courses/articlesbycourse": {
+            "get": {
+                "tags": ["Courses"],
+                "summary": "List all Articles with a specifc Course",
+                "description": "List all Articles with a specifc Course",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "articleTitle",
+                        "in": "query",
+                        "description": "Initial or part of the Article Title",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "courseName",
+                        "in": "query",
+                        "description": "Full name of the Course Name",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
