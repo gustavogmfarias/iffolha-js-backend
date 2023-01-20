@@ -144,7 +144,7 @@ class CreateArticleUseCase {
         return { articleWithRelations, log };
     }
 
-    async addAuthorsToArticle(
+    private async addAuthorsToArticle(
         authors: string[],
         articleId: string
     ): Promise<void> {
@@ -158,7 +158,10 @@ class CreateArticleUseCase {
         }
     }
 
-    async addTagsToArticle(tags: string[], articleId: string): Promise<void> {
+    private async addTagsToArticle(
+        tags: string[],
+        articleId: string
+    ): Promise<void> {
         tags = tags.filter((este, i) => tags.indexOf(este) === i);
         tags.map(async (tag) => {
             let tagFound;
@@ -193,7 +196,7 @@ class CreateArticleUseCase {
         });
     }
 
-    async addCategoriesToArticle(
+    private async addCategoriesToArticle(
         categories: string[],
         articleId: string
     ): Promise<void> {
@@ -207,7 +210,7 @@ class CreateArticleUseCase {
         }
     }
 
-    async addTextualGenresToArticle(
+    private async addTextualGenresToArticle(
         textualGenres: string[],
         articleId: string
     ): Promise<void> {
@@ -221,7 +224,7 @@ class CreateArticleUseCase {
         }
     }
 
-    async addCoursesToArticle(
+    private async addCoursesToArticle(
         courses: string[],
         articleId: string
     ): Promise<void> {
@@ -237,7 +240,7 @@ class CreateArticleUseCase {
         }
     }
 
-    async addClasssesToArticle(
+    private async addClasssesToArticle(
         classes: string[],
         articleId: string
     ): Promise<void> {
