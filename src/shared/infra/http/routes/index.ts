@@ -7,6 +7,7 @@ import { tagsRoutes } from "./tags.routes";
 import { usersRoutes } from "./users.routes";
 import { textualGenreRoutes } from "./texualGenre.routes";
 import { coursesRoutes } from "./courses.routes";
+import { classesRoutes } from "./classes.routes";
 
 const router = Router();
 router.use("/users", usersRoutes);
@@ -16,6 +17,7 @@ router.use("/categories", categoryRoutes);
 router.use("/articles", articlesRoutes);
 router.use("/textualgenre", textualGenreRoutes);
 router.use("/courses", coursesRoutes);
+router.use("/classes", classesRoutes);
 router.use(authenticateRoutes);
 
 export { router };
