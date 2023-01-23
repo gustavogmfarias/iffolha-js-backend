@@ -169,6 +169,7 @@ describe("Create Article Controller", () => {
             .set({ Authorization: `Bearer ${token}` });
 
         const novaNoticiaComDuasTagsBody = articleFoundById.body;
+        console.log(novaNoticiaComDuasTagsBody);
         const novaNoticiaComDuasTagsLog = novaNoticiaComDuasTags.body.log;
 
         expect(novaNoticiaComDuasTagsBody).toHaveProperty("id");
