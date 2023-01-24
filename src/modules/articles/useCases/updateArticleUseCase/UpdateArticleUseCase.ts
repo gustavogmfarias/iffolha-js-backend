@@ -8,7 +8,7 @@ import { Article, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
-import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
+import { IClassesRepository } from "@modules/classes/repositories/IClassesRepository";
 
 interface IRequest {
     id: string;
