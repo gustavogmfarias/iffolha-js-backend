@@ -1,32 +1,32 @@
 import { ArticleWithRelations } from "@modules/articles/repositories/IArticleRepository";
-import { Course, CoursesOnArticles, SchoolLevel } from "@prisma/client";
+import { Class, ClassOnArticles } from "@prisma/client";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 
-export interface ICoursesRepository {
-    createCourse(name: string, schoolLevel: SchoolLevel): Promise<Course>;
-    deleteCourse(id: string): Promise<void>;
-    deleteAllCoursesFromArticle(articleId: string): Promise<void>;
+export interface IClassesRepository {
+    createClass(name: string, courseId: string): Promise<Class>;
+    deleteClass(id: string): Promise<void>;
+    deleteAllClassesFromArticle(articleId: string): Promise<void>;
 
-    findCourseByName(name: string): Promise<Course>;
-    findCourseById(id: string): Promise<Course>;
-    findCoursesByIds(id: string[]): Promise<Course[]>;
+    findClassByName(name: string): Promise<Class>;
+    findClassById(id: string): Promise<Class>;
+    findClassesByIds(id: string[]): Promise<Class[]>;
 
-    listAllCoursesOnArticle(articleId?: string): Promise<CoursesOnArticles[]>;
-    listArticlesByCourse(
+    listAllClassesOnArticle(articleId?: string): Promise<ClassOnArticles[]>;
+    listArticlesByClass(
         { page, perPage }: IPaginationRequestDTO,
-        courseName: string,
+        className: string,
         articleTitle?: string
     ): Promise<ArticleWithRelations[]>;
-    listCoursesByLevel(
+    listClassesByLevel(
         { page, perPage }: IPaginationRequestDTO,
         level: string
-    ): Promise<Course[]>;
-    addCoursesToArticle(articleId: string, coursesId: string[]): Promise<void>;
+    ): Promise<Class[]>;
+    addClassesToArticle(articleId: string, classesId: string[]): Promise<void>;
 
-    listCourses(
+    listClasses(
         { page, perPage }: IPaginationRequestDTO,
         name?: string
-    ): Promise<Course[]>;
+    ): Promise<Class[]>;
 
-    totalCourses(): Promise<number>;
+    totalClasses(): Promise<number>;
 }

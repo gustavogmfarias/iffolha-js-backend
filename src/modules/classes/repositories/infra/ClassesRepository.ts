@@ -1,74 +1,71 @@
-import { Course, CoursesOnArticles, SchoolLevel } from "@prisma/client";
+import { Class, ClassOnArticles, SchoolLevel } from "@prisma/client";
 /* eslint-disable no-restricted-syntax */
 import { ArticleWithRelations } from "@modules/articles/repositories/IArticleRepository";
 
 import { prisma } from "@shared/database/prismaClient";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
-import { ICoursesRepository } from "../ICoursesRepository";
+import { IClassesRepository } from "../IClassesRepository";
 
-export class CoursesRepository implements ICoursesRepository {
-    async createCourse(
-        name: string,
-        schoolLevel: SchoolLevel
-    ): Promise<Course> {
-        const course = await prisma.course.create({
-            data: { name, schoolLevel },
+export class ClassesRepository implements IClassesRepository {
+    async createClass(name: string, courseId: string): Promise<Class> {
+        const className = await prisma.class.create({
+            data: { name, courseId },
         });
 
-        return course;
+        return className;
     }
 
-    async deleteCourse(id: string): Promise<void> {
-        await prisma.course.delete({
+    async deleteClass(id: string): Promise<void> {
+        await prisma.class.delete({
             where: { id },
         });
     }
 
-    async deleteAllCoursesFromArticle(articleId: string): Promise<void> {
-        await prisma.coursesOnArticles.deleteMany({
+    async deleteAllClassesFromArticle(articleId: string): Promise<void> {
+        await prisma.classOnArticles.deleteMany({
             where: { articleId },
         });
     }
 
-    async findCourseById(id: string): Promise<Course> {
-        const course = await prisma.course.findUnique({
+    async findClassById(id: string): Promise<Class> {
+        const className = await prisma.class.findUnique({
             where: { id },
         });
 
-        return course;
+        return className;
     }
 
-    async findCoursesByIds(id: string[]): Promise<Course[]> {
-        const courses = await prisma.course.findMany({
+    async findClassesByIds(id: string[]): Promise<Class[]> {
+        const classes = await prisma.class.findMany({
             where: { id: { in: id } },
         });
 
-        return courses;
+        return classes;
     }
 
-    async findCourseByName(name: string): Promise<Course> {
-        const course = await prisma.course.findUnique({
+    async findClassByName(name: string): Promise<Class> {
+        const className = await prisma.class.findUnique({
             where: { name },
         });
 
-        return course;
+        return className;
     }
 
-    async listCourses(
+    async listClasses(
         { page, perPage }: IPaginationRequestDTO,
         name?: string
-    ): Promise<Course[]> {
-        let courses: Course[];
+    ): Promise<Class[]> {
+        let classes: Class[];
 
         // se não tiver os 3
         if (!page && !perPage && !name) {
-            courses = await prisma.course.findMany({
+            classes = await prisma.class.findMany({
                 orderBy: {
                     name: "asc",
                 },
             });
         } else if (page && perPage && !name) {
-            courses = await prisma.course.findMany({
+            classes = await prisma.class.findMany({
                 take: Number(perPage),
                 skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {
@@ -76,7 +73,7 @@ export class CoursesRepository implements ICoursesRepository {
                 },
             });
         } else if (!page && !page && name) {
-            courses = await prisma.course.findMany({
+            classes = await prisma.class.findMany({
                 where: {
                     name: {
                         contains: name,
@@ -88,7 +85,7 @@ export class CoursesRepository implements ICoursesRepository {
                 },
             });
         } else {
-            courses = await prisma.course.findMany({
+            classes = await prisma.class.findMany({
                 where: {
                     name: {
                         contains: name,
@@ -103,35 +100,35 @@ export class CoursesRepository implements ICoursesRepository {
             });
         }
 
-        return courses;
+        return classes;
     }
 
-    async listCoursesByLevel(
+    async listClassesByLevel(
         { page, perPage }: IPaginationRequestDTO,
-        level: string
-    ): Promise<Course[]> {
-        let courses: Course[];
+        courseId: string
+    ): Promise<Class[]> {
+        let classes: Class[];
 
         // se não tiver os 3
-        if (!page && !perPage && !level) {
-            courses = await prisma.course.findMany({
+        if (!page && !perPage && !courseId) {
+            classes = await prisma.class.findMany({
                 orderBy: {
                     name: "asc",
                 },
             });
-        } else if (page && perPage && !level) {
-            courses = await prisma.course.findMany({
+        } else if (page && perPage && !courseId) {
+            classes = await prisma.class.findMany({
                 take: Number(perPage),
                 skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {
                     name: "asc",
                 },
             });
-        } else if (!page && !page && level) {
-            courses = await prisma.course.findMany({
+        } else if (!page && !page && courseId) {
+            classes = await prisma.class.findMany({
                 where: {
-                    schoolLevel: {
-                        equals: SchoolLevel[level],
+                    courseId: {
+                        equals: courseId,
                     },
                 },
                 orderBy: {
@@ -139,10 +136,10 @@ export class CoursesRepository implements ICoursesRepository {
                 },
             });
         } else {
-            courses = await prisma.course.findMany({
+            classes = await prisma.class.findMany({
                 where: {
-                    schoolLevel: {
-                        equals: SchoolLevel[level],
+                    courseId: {
+                        equals: courseId,
                     },
                 },
                 take: Number(perPage),
@@ -153,41 +150,84 @@ export class CoursesRepository implements ICoursesRepository {
             });
         }
 
-        return courses;
+        return classes;
     }
 
-    async listAllCoursesOnArticle(
+    async listAllClassesOnArticle(
         articleId: string
-    ): Promise<CoursesOnArticles[]> {
-        let coursesOnArticles;
+    ): Promise<ClassOnArticles[]> {
+        let classOnArticles;
 
         if (articleId) {
-            coursesOnArticles = await prisma.coursesOnArticles.findMany({
+            classOnArticles = await prisma.classOnArticles.findMany({
                 where: { articleId },
             });
-            return coursesOnArticles;
+            return classOnArticles;
         }
 
-        coursesOnArticles = await prisma.coursesOnArticles.findMany();
+        classOnArticles = await prisma.classOnArticles.findMany();
 
-        return coursesOnArticles;
+        return classOnArticles;
     }
 
-    async listArticlesByCourse(
+    async listArticlesByClass(
         { page, perPage }: IPaginationRequestDTO,
-        courseName: string,
+        className: string,
         articleTitle?: string
     ): Promise<ArticleWithRelations[]> {
         let articles: ArticleWithRelations[];
 
-        if (!page && !perPage && articleTitle && courseName) {
+        if (!page && !perPage && articleTitle && className) {
             articles = await prisma.article.findMany({
                 where: {
                     title: { contains: articleTitle },
-                    CoursesOnArticles: {
+                    ClassOnArticles: {
                         some: {
-                            course: {
-                                name: { contains: courseName },
+                            class: {
+                                name: { contains: className },
+                            },
+                        },
+                    },
+                },
+                orderBy: {
+                    publishedDate: "desc",
+                },
+                include: {
+                    TagsOnArticles: {
+                        include: {
+                            tag: {
+                                select: {
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                    AuthorsOnArticles: {
+                        include: {
+                            author: {
+                                select: {
+                                    name: true,
+                                    lastName: true,
+                                    id: true,
+                                },
+                            },
+                        },
+                    },
+                    ClassOnArticles: { include: { class: true } },
+                    CoursesOnArticles: { include: { course: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+                    CategoryOnArticles: { include: { category: true } },
+
+                    images: true,
+                },
+            });
+        } else if (!page && !perPage && !articleTitle && className) {
+            articles = await prisma.article.findMany({
+                where: {
+                    ClassOnArticles: {
+                        some: {
+                            class: {
+                                name: { contains: className },
                             },
                         },
                     },
@@ -224,56 +264,13 @@ export class CoursesRepository implements ICoursesRepository {
                     images: true,
                 },
             });
-        } else if (!page && !perPage && !articleTitle && courseName) {
+        } else if (page && perPage && !articleTitle && className) {
             articles = await prisma.article.findMany({
                 where: {
-                    CoursesOnArticles: {
+                    ClassOnArticles: {
                         some: {
-                            course: {
-                                name: { contains: courseName },
-                            },
-                        },
-                    },
-                },
-                orderBy: {
-                    publishedDate: "desc",
-                },
-                include: {
-                    TagsOnArticles: {
-                        include: {
-                            tag: {
-                                select: {
-                                    name: true,
-                                },
-                            },
-                        },
-                    },
-                    AuthorsOnArticles: {
-                        include: {
-                            author: {
-                                select: {
-                                    name: true,
-                                    lastName: true,
-                                    id: true,
-                                },
-                            },
-                        },
-                    },
-                    CoursesOnArticles: { include: { course: true } },
-                    ClassOnArticles: { include: { class: true } },
-                    TextualGenreOnArticles: { include: { textualGenre: true } },
-                    CategoryOnArticles: { include: { category: true } },
-
-                    images: true,
-                },
-            });
-        } else if (page && perPage && !articleTitle && courseName) {
-            articles = await prisma.article.findMany({
-                where: {
-                    CoursesOnArticles: {
-                        some: {
-                            course: {
-                                name: { contains: courseName },
+                            class: {
+                                name: { contains: className },
                             },
                         },
                     },
@@ -316,10 +313,10 @@ export class CoursesRepository implements ICoursesRepository {
             articles = await prisma.article.findMany({
                 where: {
                     title: { contains: articleTitle },
-                    CoursesOnArticles: {
+                    ClassOnArticles: {
                         some: {
-                            course: {
-                                name: { contains: courseName },
+                            class: {
+                                name: { contains: className },
                             },
                         },
                     },
@@ -363,30 +360,30 @@ export class CoursesRepository implements ICoursesRepository {
         return articles;
     }
 
-    async totalCourses(): Promise<number> {
-        const courses = await prisma.course.findMany({});
+    async totalClasses(): Promise<number> {
+        const classes = await prisma.class.findMany({});
 
-        return courses.length;
+        return classes.length;
     }
 
-    async addCoursesToArticle(
+    async addClassesToArticle(
         articleId: string,
-        coursesId: string[]
+        classesId: string[]
     ): Promise<void> {
-        const coursesData = [];
-        coursesId.map((classFound) => {
-            return coursesData.push({
+        const classesData = [];
+        classesId.map((classFound) => {
+            return classesData.push({
                 articleId,
                 classId: classFound,
             });
         });
 
-        for (const courseFound of coursesData) {
+        for (const classFound of classesData) {
             // eslint-disable-next-line no-await-in-loop
-            await prisma.coursesOnArticles.create({
+            await prisma.classOnArticles.create({
                 data: {
-                    articleId: courseFound.articleId,
-                    courseId: courseFound.classId,
+                    articleId: classFound.articleId,
+                    classId: classFound.classId,
                 },
             });
         }

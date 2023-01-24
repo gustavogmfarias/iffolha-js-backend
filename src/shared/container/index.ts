@@ -12,8 +12,8 @@ import { IAuthorsRepository } from "@modules/articles/repositories/IAuthorsRepos
 import { AuthorsRepository } from "@modules/articles/repositories/infra/AuthorsRepository";
 import { ITagsRepository } from "@modules/tags/repositories/ITagsRepository";
 import { TagsRepository } from "@modules/tags/repositories/infra/TagsRepository";
-import { IClassesRepository } from "@modules/articles/repositories/IClassesRepository";
-import { ClassesRepository } from "@modules/articles/repositories/infra/ClassesRepository";
+import { IClassesRepository } from "@modules/classes/repositories/IClassesRepository";
+import { ClassesRepository } from "@modules/classes/repositories/infra/ClassesRepository";
 
 import { CategoriesRepository } from "@modules/categories/repositories/infra/CategoriesRepository";
 import { ICategoriesRepository } from "@modules/categories/repositories/ICategoriesRepository";
