@@ -10,6 +10,13 @@ export class ClassesRepository implements IClassesRepository {
     async createClass(name: string, courseId: string): Promise<Class> {
         const className = await prisma.class.create({
             data: { name, courseId },
+            include: {
+                course: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
         });
 
         return className;
@@ -63,6 +70,13 @@ export class ClassesRepository implements IClassesRepository {
                 orderBy: {
                     name: "asc",
                 },
+                include: {
+                    course: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
             });
         } else if (page && perPage && !name) {
             classes = await prisma.class.findMany({
@@ -70,6 +84,13 @@ export class ClassesRepository implements IClassesRepository {
                 skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {
                     name: "asc",
+                },
+                include: {
+                    course: {
+                        select: {
+                            name: true,
+                        },
+                    },
                 },
             });
         } else if (!page && !page && name) {
@@ -82,6 +103,13 @@ export class ClassesRepository implements IClassesRepository {
                 },
                 orderBy: {
                     name: "asc",
+                },
+                include: {
+                    course: {
+                        select: {
+                            name: true,
+                        },
+                    },
                 },
             });
         } else {
@@ -96,6 +124,13 @@ export class ClassesRepository implements IClassesRepository {
                 skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {
                     name: "asc",
+                },
+                include: {
+                    course: {
+                        select: {
+                            name: true,
+                        },
+                    },
                 },
             });
         }

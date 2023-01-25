@@ -1,53 +1,50 @@
-import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
-import { Course, Log, SchoolLevel } from "@prisma/client";
+import { IClassesRepository } from "@modules/classes/repositories/IClassesRepository";
+import { Class, Log } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 interface IResponse {
-    course: Course;
+    newClass: Class;
     log: Log;
 }
 
 @injectable()
-class CreateCourseUseCase {
+class CreateClassUseCase {
     constructor(
-        @inject("CoursesRepository")
-        private coursesRepository: ICoursesRepository,
+        @inject("ClassesRepository")
+        private classesRepository: IClassesRepository,
         @inject("LogProvider") private logProvider: ILogProvider
     ) {}
 
     async execute(
         name: string,
         userAdminId: string,
-        schoolLevel: SchoolLevel
+        courseId: string
     ): Promise<IResponse> {
-        let course = await this.coursesRepository.findCourseByName(name);
+        let newClass = await this.classesRepository.findClassByName(name);
 
-        if (course) {
-            throw new AppError("Course already exists", 400);
+        if (newClass) {
+            throw new AppError("Class already exists", 400);
         }
 
         try {
-            course = await this.coursesRepository.createCourse(
-                name,
-                schoolLevel
-            );
+            newClass = await this.classesRepository.createClass(name, courseId);
         } catch (err) {
             throw new AppError(err.message, 400);
         }
 
         const log = await this.logProvider.create({
             logRepository: "COURSE",
-            description: `Course created successfully!`,
-            previousContent: JSON.stringify(course),
-            contentEdited: JSON.stringify(course),
+            description: `Class created successfully!`,
+            previousContent: JSON.stringify(newClass),
+            contentEdited: JSON.stringify(newClass),
             editedByUserId: userAdminId,
-            modelEditedId: course.id,
+            modelEditedId: newClass.id,
         });
 
-        return { course, log };
+        return { newClass, log };
     }
 }
 
-export { CreateCourseUseCase };
+export { CreateClassUseCase };

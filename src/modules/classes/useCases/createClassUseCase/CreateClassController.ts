@@ -1,23 +1,23 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { CreateCourseUseCase } from "./CreateCourseUseCase";
+import { CreateClassUseCase } from "./CreateClassUseCase";
 
-class CreateCourseController {
+class CreateClassController {
     async handle(request: Request, response: Response): Promise<Response> {
         const { id: userAdminId } = request.user;
 
-        const { name, schoolLevel } = request.body;
+        const { name, courseId } = request.body;
 
-        const createCourseUseCase = container.resolve(CreateCourseUseCase);
+        const createClassUseCase = container.resolve(CreateClassUseCase);
 
-        const course = await createCourseUseCase.execute(
+        const newClass = await createClassUseCase.execute(
             name,
             userAdminId,
-            schoolLevel
+            courseId
         );
 
-        return response.status(201).send(course);
+        return response.status(201).send(newClass);
     }
 }
 
-export { CreateCourseController };
+export { CreateClassController };

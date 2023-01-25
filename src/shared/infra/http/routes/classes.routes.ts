@@ -1,62 +1,59 @@
 import { Router } from "express";
-// import { CreateCourseController } from "@modules/classes/useCases/createCourseUseCase/CreateCourseController";
-// import { DeleteCoursesFromArticleController } from "@modules/classes/useCases/deleteCoursesFromArticleUseCase/DeleteCoursesFromArticleController";
-// import { ListCoursesController } from "@modules/classes/useCases/ListCourses/ListCousersController";
-// import { DeleteCourseController } from "@modules/classes/useCases/deleteCourseUseCase/DeleteCourseController";
-// import { ListArticlesByCourseController } from "@modules/classes/useCases/ListArticlesByCourse/ListArticlesByCourseController";
-// import { ListCoursesByLevelController } from "@modules/classes/useCases/ListCoursesByLevel/ListCoursesByLevelController";
+
+import { CreateClassController } from "@modules/classes/useCases/createClassUseCase/CreateClassController";
+import { ListClassesController } from "@modules/classes/useCases/ListClasses/ListClassesController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
 const classesRoutes = Router();
 
-// const createCourseController = new CreateCourseController();
-// const listCoursesController = new ListCoursesController();
-// const deleteCourseController = new DeleteCourseController();
-// const deleteCoursesFromArticleController =
-//     new DeleteCoursesFromArticleController();
-// const listArticlesByCourseController = new ListArticlesByCourseController();
-// const listCoursesByLevelController = new ListCoursesByLevelController();
+const createClassController = new CreateClassController();
+const listClassesController = new ListClassesController();
+// const deleteClassController = new DeleteClassController();
+// const deleteClassesFromArticleController =
+//     new DeleteClassesFromArticleController();
+// const listArticlesByClassController = new ListArticlesByClassController();
+// const listClassesByLevelController = new ListClassesByLevelController();
 
-// classesRoutes.post(
-//     "/",
-//     ensureAuthenticated,
-//     ensureAdmin,
-//     createCourseController.handle
-// );
+classesRoutes.post(
+    "/",
+    ensureAuthenticated,
+    ensureAdmin,
+    createClassController.handle
+);
+
+classesRoutes.get(
+    "/",
+    ensureAuthenticated,
+    ensureAdmin,
+    listClassesController.handle
+);
 
 // classesRoutes.get(
-//     "/",
+//     "/articlesbyclass",
 //     ensureAuthenticated,
 //     ensureAdmin,
-//     listCoursesController.handle
-// );
-
-// classesRoutes.get(
-//     "/articlesbycourse",
-//     ensureAuthenticated,
-//     ensureAdmin,
-//     listArticlesByCourseController.handle
+//     listArticlesByClassController.handle
 // );
 // classesRoutes.get(
 //     "/classesbylevel",
 //     ensureAuthenticated,
 //     ensureAdmin,
-//     listCoursesByLevelController.handle
+//     listClassesByLevelController.handle
 // );
 
 // classesRoutes.delete(
 //     "/:id",
 //     ensureAuthenticated,
 //     ensureAdmin,
-//     deleteCourseController.handle
+//     deleteClassController.handle
 // );
 
 // classesRoutes.patch(
 //     "/deleteallclasses",
 //     ensureAuthenticated,
 //     ensureAdmin,
-//     deleteCoursesFromArticleController.handle
+//     deleteClassesFromArticleController.handle
 // );
 
 export { classesRoutes };

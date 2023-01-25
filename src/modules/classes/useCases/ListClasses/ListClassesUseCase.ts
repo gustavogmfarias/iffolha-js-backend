@@ -2,27 +2,27 @@
 import { inject, injectable } from "tsyringe";
 
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
-import { Course } from "@prisma/client";
-import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
+import { Class } from "@prisma/client";
+import { IClassesRepository } from "@modules/classes/repositories/IClassesRepository";
 
 interface IResponse {
-    courses: Course[];
+    classes: Class[];
     totalCount: number;
 }
 
 @injectable()
-class ListCoursesUseCase {
+class ListClassesUseCase {
     constructor(
-        @inject("CoursesRepository")
-        private courseRepository: ICoursesRepository
+        @inject("ClassesRepository")
+        private classRepository: IClassesRepository
     ) {}
 
     async execute(
         { page, perPage }: IPaginationRequestDTO,
         name?: string
     ): Promise<IResponse> {
-        const totalCount = await this.courseRepository.totalCourses();
-        let courses: Course[];
+        const totalCount = await this.classRepository.totalClasses();
+        let classes: Class[];
 
         if (name === undefined || name === "undefined") {
             name = null;
@@ -37,14 +37,14 @@ class ListCoursesUseCase {
         }
 
         if (page && perPage) {
-            courses = await this.courseRepository.listCourses({
+            classes = await this.classRepository.listClasses({
                 page,
                 perPage,
             });
         }
 
         if (page && perPage && name) {
-            courses = await this.courseRepository.listCourses(
+            classes = await this.classRepository.listClasses(
                 {
                     page,
                     perPage,
@@ -54,14 +54,14 @@ class ListCoursesUseCase {
         }
 
         if (!page && !perPage && name) {
-            courses = await this.courseRepository.listCourses({}, name);
+            classes = await this.classRepository.listClasses({}, name);
         }
 
         if (!page && !perPage && !name) {
-            courses = await this.courseRepository.listCourses({}, name);
+            classes = await this.classRepository.listClasses({}, name);
         }
 
-        return { courses, totalCount };
+        return { classes, totalCount };
     }
 }
-export { ListCoursesUseCase };
+export { ListClassesUseCase };

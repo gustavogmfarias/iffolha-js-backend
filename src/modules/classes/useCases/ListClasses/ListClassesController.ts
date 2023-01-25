@@ -1,15 +1,15 @@
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { ListCoursesUseCase } from "./ListCoursesUseCase";
+import { ListClassesUseCase } from "./ListClassesUseCase";
 
-class ListCoursesController {
+class ListClassesController {
     async handle(request: Request, response: Response): Promise<Response> {
-        const llistCoursesUseCase = container.resolve(ListCoursesUseCase);
+        const listClassesUseCase = container.resolve(ListClassesUseCase);
         const { name } = request.query;
         const { perPage, page }: IPaginationRequestDTO = request.query;
 
-        const all = await llistCoursesUseCase.execute(
+        const all = await listClassesUseCase.execute(
             {
                 page,
                 perPage,
@@ -19,9 +19,9 @@ class ListCoursesController {
 
         return response
             .setHeader("x-total-count", String(all.totalCount))
-            .json(all.courses)
+            .json(all.classes)
             .send();
     }
 }
 
-export { ListCoursesController };
+export { ListClassesController };
