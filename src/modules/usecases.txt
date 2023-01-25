@@ -42,14 +42,7 @@ e) editar artigos
 [ x] fazer documentação (falta delete all)
 [ x] fazer test (falta delete all)
 
-3- cursos
-[ ] adicionar curso
-[ ] Adicionar curso a um artigo
-[] deletar curso de um artigo
-[] deletar curso
-[] listar cursos
-[ ] fazer documentação 
-[ ] fazer test
+
 
 4- autores
 
@@ -64,6 +57,16 @@ e) editar artigos
 [] deletar imagens
 [ ] fazer documentação
 [ ] fazer test
+
+3- classes
+[x ] adicionar class
+[ ] Adicionar class a um artigo
+[] deletar class de um artigo
+[] deletar class
+[] listar classs
+[ ] fazer documentação 
+[ ] fazer test
+
 
 6- Categorias
 [x] deletar Categorias de um artigo
@@ -83,6 +86,16 @@ e) editar artigos
 [x] deletar Generos 
 [ x] fazer documentação
 [x ] fazer test
+
+3- cursos
+[ x] adicionar curso
+[x ] Adicionar curso a um artigo
+[x] deletar curso de um artigo
+[x] deletar curso
+[x] listar cursos
+[x ] fazer documentação 
+[ x] fazer test
+
 
 8- UploadAvatar
 [ ] fazer test
