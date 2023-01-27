@@ -60,10 +60,10 @@ e) editar artigos
 
 3- classes
 [x ] adicionar class
+[] listar classs
 [ ] Adicionar class a um artigo
 [] deletar class de um artigo
 [] deletar class
-[] listar classs
 [ ] fazer documentação 
 [ ] fazer test
 

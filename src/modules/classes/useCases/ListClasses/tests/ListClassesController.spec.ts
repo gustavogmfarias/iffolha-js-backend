@@ -5,107 +5,122 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("COURSE - List Courses Controller", () => {
+describe("CLASS - List Classes Controller", () => {
+    let newCourse;
+    let token;
+    let newClass1;
+    let newClass2;
+    let newClass3;
+    let newClass4;
+
     beforeAll(async () => {
         const loginAdmin = await request(app)
             .post("/sessions")
             .send({ email: "admin@admin.com", password: "admin" });
 
-        const { token } = loginAdmin.body;
+        token = loginAdmin.body.token;
 
-        const course = await request(app)
+        newCourse = await request(app)
             .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "test",
+                name: "Teste De Course 1",
                 schoolLevel: "SUPERIOR",
             });
 
-        const course2 = await request(app)
-            .post("/courses")
+        newClass1 = await request(app)
+            .post("/classes")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "test2",
-                schoolLevel: "SUPERIOR",
+                name: "Teste De Class 1",
+                courseId: newCourse.body.course.id,
             });
 
-        const course3 = await request(app)
-            .post("/courses")
+        newClass2 = await request(app)
+            .post("/classes")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "test 3",
-                schoolLevel: "SUPERIOR",
+                name: "Teste De Class 2",
+                courseId: newCourse.body.course.id,
             });
 
-        const course4 = await request(app)
-            .post("/courses")
+        newClass3 = await request(app)
+            .post("/classes")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "test 4",
-                schoolLevel: "SUPERIOR",
+                name: "Teste De Class 3",
+                courseId: newCourse.body.course.id,
+            });
+        newClass4 = await request(app)
+            .post("/classes")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Teste De Class 4",
+                courseId: newCourse.body.course.id,
             });
     });
 
-    it("Should be able to list all courses", async () => {
-        const responseToken = await request(app)
-            .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
-        const { token } = responseToken.body;
-
+    it("Should be able to list all classes", async () => {
         const searchA = await request(app)
-            .get(`/courses?page&perPage&name`)
+            .get(`/classes`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
         expect(searchA.body).toHaveLength(6);
     });
 
-    it("Should be able to list all courses with pagination", async () => {
-        const responseToken = await request(app)
-            .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
-        const { token } = responseToken.body;
-
+    it("Should be able to list all classes with pagination", async () => {
         const searchA = await request(app)
-            .get(`/courses?page=1&perPage=1&name`)
+            .get(`/classes?page=1&perPage=1`)
+            .set({ Authorization: `Bearer ${token}` });
+
+        const searchB = await request(app)
+            .get(`/classes?page=2&perPage=1`)
+            .set({ Authorization: `Bearer ${token}` });
+
+        const searchC = await request(app)
+            .get(`/classes?page=2&perPage=2`)
+            .set({ Authorization: `Bearer ${token}` });
+
+        const searchD = await request(app)
+            .get(`/classes?page=3&perPage=2`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
         expect(searchA.body).toHaveLength(1);
-        expect(searchA.body[0].name).toBe("Informática");
+        expect(searchA.body[0].name).toBe("1ª Série");
+
+        expect(searchB.body[0].name).toBe("1º Período");
+
+        expect(searchC.body).toHaveLength(2);
+        expect(searchC.body[0].name).toBe("Teste De Class 1");
+        expect(searchC.body[1].name).toBe("Teste De Class 2");
+
+        expect(searchD.body[0].name).toBe("Teste De Class 3");
+        expect(searchD.body[1].name).toBe("Teste De Class 4");
     });
 
-    it("Should be able to list the courses searching by name", async () => {
-        const responseToken = await request(app)
-            .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
-        const { token } = responseToken.body;
-
+    it("Should be able to list the classes searching by name", async () => {
         const searchA = await request(app)
-            .get(`/courses?name=test`)
+            .get(`/classes?name=Class`)
             .set({ Authorization: `Bearer ${token}` });
 
         const searchA2 = await request(app)
-            .get(`/courses?name=serie`)
+            .get(`/classes?name=S%C3%A9rie`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
         expect(searchA.body).toHaveLength(4);
-        expect(searchA2.body).toHaveLength(0);
+        expect(searchA2.body).toHaveLength(1);
     });
 
-    it("Should be able to list the courses searching by name and pagination", async () => {
-        const responseToken = await request(app)
-            .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
-        const { token } = responseToken.body;
-
+    it("Should be able to list the classes searching by name and pagination", async () => {
         const searchA = await request(app)
-            .get(`/courses?name=test&page=1&perPage=1`)
+            .get(`/classes?name=Teste&page=1&perPage=1`)
             .set({ Authorization: `Bearer ${token}` });
 
         const searchA2 = await request(app)
-            .get(`/courses?name=test&page=2&perPage=2`)
+            .get(`/classes?name=Teste&page=2&perPage=2`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
@@ -113,15 +128,15 @@ describe("COURSE - List Courses Controller", () => {
         expect(searchA2.body).toHaveLength(2);
     });
 
-    it("Should not be able to list all courses if you was not logged", async () => {
-        const response = await request(app).get(`/courses`);
+    it("Should not be able to list all classes if you was not logged", async () => {
+        const response = await request(app).get(`/classes`);
 
         expect(response.body.message).toBe("Token missing");
     });
 
-    it("Should not be able to list all courses if token was expired or invalid", async () => {
+    it("Should not be able to list all classes if token was expired or invalid", async () => {
         const response = await request(app)
-            .get(`/courses`)
+            .get(`/classes`)
             .set({ Authorization: `Bearer 111` });
 
         expect(response.body.message).toBe("Invalid Token");
