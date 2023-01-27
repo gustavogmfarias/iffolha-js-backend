@@ -60,7 +60,7 @@ e) editar artigos
 
 3- classes
 [x ] adicionar class
-[] listar classs
+[x] listar classs
 [ ] Adicionar class a um artigo
 [] deletar class de um artigo
 [] deletar class
