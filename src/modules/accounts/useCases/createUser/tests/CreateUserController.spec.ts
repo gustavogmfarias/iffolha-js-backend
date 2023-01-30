@@ -2,9 +2,9 @@
  * @jest-environment ./prisma/prisma-environment-jest
  */
 
+import request from "supertest";
 import { AppError } from "../../../../../shared/errors/AppError";
 import { app } from "../../../../../shared/infra/http/app";
-import request from "supertest";
 
 describe("Create User Controller", () => {
     it("Should be able to create a new user and add a log with default role", async () => {
