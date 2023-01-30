@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { Class, ClassOnArticles, SchoolLevel } from "@prisma/client";
 /* eslint-disable no-restricted-syntax */
 import { ArticleWithRelations } from "@modules/articles/repositories/IArticleRepository";
@@ -415,12 +416,16 @@ export class ClassesRepository implements IClassesRepository {
 
         for (const classFound of classesData) {
             // eslint-disable-next-line no-await-in-loop
-            await prisma.classOnArticles.create({
-                data: {
-                    articleId: classFound.articleId,
-                    classId: classFound.classId,
-                },
-            });
+            try {
+                await prisma.classOnArticles.create({
+                    data: {
+                        articleId: classFound.articleId,
+                        classId: classFound.classId,
+                    },
+                });
+            } catch (err) {
+                console.log(err.message);
+            }
         }
     }
 }

@@ -169,9 +169,9 @@ model Class {
 }
 
 model ClassOnArticles {
-    Article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+    Article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     articleId String
-    class     Class   @relation(fields: [classId], references: [id])
+    class     Class   @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     classId   String
 
     @@id([classId, articleId])

@@ -115,7 +115,7 @@ class CreateArticleUseCase {
                 }
 
                 if (classes) {
-                    this.addClasssesToArticle(classes, article.id);
+                    this.addClassesToArticle(classes, article.id);
                 }
 
                 // this.articleRepository.updateImages(article.id, images);
@@ -240,7 +240,7 @@ class CreateArticleUseCase {
         }
     }
 
-    private async addClasssesToArticle(
+    private async addClassesToArticle(
         classes: string[],
         articleId: string
     ): Promise<void> {
