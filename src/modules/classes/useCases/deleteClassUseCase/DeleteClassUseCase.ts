@@ -1,54 +1,53 @@
-import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
-import { Log, Course } from "@prisma/client";
+import { IClassesRepository } from "@modules/classes/repositories/IClassesRepository";
+import { Log, Class } from "@prisma/client";
 import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvider";
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 interface IResponse {
-    course: Course;
+    class: Class;
     log: Log;
 }
 
 @injectable()
-class DeleteCourseUseCase {
+class DeleteClassUseCase {
     constructor(
-        @inject("CoursesRepository")
-        private coursesRepository: ICoursesRepository,
+        @inject("ClassesRepository")
+        private classesRepository: IClassesRepository,
         @inject("LogProvider")
         private logProvider: ILogProvider
     ) {}
 
     async execute(
         userAdminId: string,
-        courseToDeleteId: string
+        classToDeleteId: string
     ): Promise<IResponse> {
-        const course = await this.coursesRepository.findCourseById(
-            courseToDeleteId
+        const classToDelete = await this.classesRepository.findClassById(
+            classToDeleteId
         );
 
-        if (!course) {
-            throw new AppError("Course doesn't exists", 404);
+        if (!classToDelete) {
+            throw new AppError("Class doesn't exists", 404);
         }
-        let courseDeleted;
+        let classDeleted;
 
         try {
-            courseDeleted =
-                this.coursesRepository.deleteCourse(courseToDeleteId);
+            classDeleted = this.classesRepository.deleteClass(classToDeleteId);
         } catch (err) {
-            throw new AppError("Course wasn't deleted", 401);
+            throw new AppError("Class wasn't deleted", 401);
         }
 
         const log = await this.logProvider.create({
             logRepository: "COURSE",
-            description: `Course successfully deleted!`,
-            previousContent: JSON.stringify(course),
-            contentEdited: JSON.stringify(course),
+            description: `Class successfully deleted!`,
+            previousContent: JSON.stringify(classToDelete),
+            contentEdited: JSON.stringify(classToDelete),
             editedByUserId: userAdminId,
-            modelEditedId: course.id,
+            modelEditedId: classToDelete.id,
         });
 
-        return { course, log };
+        return { class: classToDelete, log };
     }
 }
 
-export { DeleteCourseUseCase };
+export { DeleteClassUseCase };

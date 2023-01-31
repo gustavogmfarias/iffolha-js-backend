@@ -3,7 +3,7 @@ import { ILogProvider } from "@shared/container/providers/LogProvider/ILogProvid
 import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import { IArticleRepository } from "@modules/articles/repositories/IArticleRepository";
-import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
+import { IClassesRepository } from "@modules/classes/repositories/IClassesRepository";
 
 interface IResponse {
     articleEdited: Article;
@@ -11,10 +11,10 @@ interface IResponse {
 }
 
 @injectable()
-class DeleteCoursesFromArticleUseCase {
+class DeleteClassesFromArticleUseCase {
     constructor(
-        @inject("CoursesRepository")
-        private coursesRepository: ICoursesRepository,
+        @inject("ClassesRepository")
+        private classesRepository: IClassesRepository,
         @inject("ArticleRepository")
         private articleRepository: IArticleRepository,
         @inject("LogProvider")
@@ -28,22 +28,22 @@ class DeleteCoursesFromArticleUseCase {
             throw new AppError("Article doesn't exists", 404);
         }
 
-        let coursesDeleted;
+        let classesDeleted;
         let articleEdited;
 
         try {
-            coursesDeleted =
-                await this.coursesRepository.deleteAllCoursesFromArticle(
+            classesDeleted =
+                await this.classesRepository.deleteAllClassesFromArticle(
                     articleId
                 );
             articleEdited = await this.articleRepository.findById(articleId);
         } catch (err) {
-            throw new AppError("Courses weren't deleted", 401);
+            throw new AppError("Classes weren't deleted", 401);
         }
 
         const log = await this.logProvider.create({
-            logRepository: "COURSE",
-            description: `Courses successfully deleted!`,
+            logRepository: "CLASS",
+            description: `Classes successfully deleted!`,
             previousContent: JSON.stringify(article),
             contentEdited: JSON.stringify(articleEdited),
             editedByUserId: userAdminId,
@@ -54,4 +54,4 @@ class DeleteCoursesFromArticleUseCase {
     }
 }
 
-export { DeleteCoursesFromArticleUseCase };
+export { DeleteClassesFromArticleUseCase };

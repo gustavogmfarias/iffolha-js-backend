@@ -4,8 +4,9 @@ a) criar
 [x] adicionar autores
 [x] adicionar categoria
 [x] adicionar genero
-[] adicionar cursos
-[] adicionar turmas
+[x] adicionar cursos
+[x] adicionar turmas
+[x] adicionar classes
 [] adicionar imagens
 [] adicionar imagens JUNTO com a criação de articles
 [ ] fazer documentação
@@ -59,11 +60,12 @@ e) editar artigos
 [ ] fazer test
 
 3- classes
-[x ] adicionar class
+[x ] criar class
 [x] listar classs
-[ ] Adicionar class a um artigo
-[] deletar class de um artigo
+[ x] Adicionar class a um artigo
+[x] deletar class de um artigo
 [] deletar class
+[] list articles by class
 [ ] fazer documentação 
 [ ] fazer test
 

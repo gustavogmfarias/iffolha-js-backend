@@ -8,6 +8,7 @@ import { app } from "../../../../../shared/infra/http/app";
 describe("COURSE - Delete Course Controller", () => {
     let token: string;
     let course;
+    let class1;
 
     beforeAll(async () => {
         const loginAdmin = await request(app)
@@ -23,54 +24,54 @@ describe("COURSE - Delete Course Controller", () => {
                 name: "test",
                 schoolLevel: "SUPERIOR",
             });
+
+        class1 = await request(app)
+            .post("/classes")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Teste De Class 1",
+                courseId: course.body.course.id,
+            });
     });
 
-    it("Should be able to delete a course", async () => {
+    it("Should be able to delete a class", async () => {
         const responseDelete = await request(app)
-            .delete(`/courses/${course.body.course.id}`)
+            .delete(`/classes/${class1.body.newClass.id}`)
             .set({ Authorization: `Bearer ${token}` });
 
         expect(responseDelete.body.log.description).toBe(
-            "Course successfully deleted!"
+            "Class successfully deleted!"
         );
         expect(responseDelete.status).toBe(200);
     });
 
-    it("Should not be able to delete a course if you was not logged", async () => {
-        const responseToken = await request(app)
-            .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
-
-        const course2 = await request(app)
-            .post("/courses")
+    it("Should not be able to delete a class if you was not logged", async () => {
+        const class2 = await request(app)
+            .post("/classes")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "test",
-                schoolLevel: "SUPERIOR",
+                name: "Teste De Class 2",
+                courseId: course.body.course.id,
             });
 
         const responseDelete = await request(app).delete(
-            `/courses/${course2.body.course.id}`
+            `/classes/${course.body.course.id}`
         );
 
         expect(responseDelete.body.message).toBe("Token missing");
     });
 
     it("Should not be able to delete a course if token is invalid or expired", async () => {
-        const responseToken = await request(app)
-            .post("/sessions")
-            .send({ email: "admin@admin.com", password: "admin" });
-
-        const course3 = await request(app)
-            .post("/courses")
+        const class3 = await request(app)
+            .post("/classes")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "test 2",
-                schoolLevel: "SUPERIOR",
+                name: "Teste De Class 3",
+                courseId: course.body.course.id,
             });
 
         const responseDelete = await request(app)
-            .delete(`/courses/${course3.body.course.id}`)
+            .delete(`/courses/${class3.body.course.id}`)
             .set({ Authorization: `Bearer 1111` });
 
         expect(responseDelete.body.message).toBe("Invalid Token");

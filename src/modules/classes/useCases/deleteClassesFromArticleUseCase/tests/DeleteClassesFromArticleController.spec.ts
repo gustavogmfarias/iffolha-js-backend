@@ -5,11 +5,13 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("COURSES - Delete Courses of Article Controller", () => {
+describe("CLASSES - Delete Classes of Article Controller", () => {
     let token;
     let admin;
     let course1;
     let course2;
+    let class1;
+    let class2;
 
     beforeAll(async () => {
         const responseToken = await request(app)
@@ -33,9 +35,25 @@ describe("COURSES - Delete Courses of Article Controller", () => {
                 name: "test 2",
                 schoolLevel: "SUPERIOR",
             });
+
+        class1 = await request(app)
+            .post("/classes")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Teste De Class 1",
+                courseId: course1.body.course.id,
+            });
+
+        class2 = await request(app)
+            .post("/classes")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Teste De Class 2",
+                courseId: course2.body.course.id,
+            });
     });
 
-    it("Should be able to delete all courses of an article", async () => {
+    it("Should be able to delete all classes of an article", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -45,27 +63,26 @@ describe("COURSES - Delete Courses of Article Controller", () => {
                 content: "tu tens o nome do heroico portugues",
                 isHighlight: false,
                 authors: [admin],
-                classes: [],
-                courses: [course1.body.course.id, course2.body.course.id],
+                classes: [class1.body.newClass.id, class2.body.newClass.id],
             });
 
-        const coursesDeleted = await request(app)
-            .patch("/courses/deleteallcourses")
+        const classesDeleted = await request(app)
+            .patch("/classes/deleteallclasses")
             .set({ Authorization: `Bearer ${token}` })
             .send({ articleId: article.body.articleWithRelations.id });
 
-        const articleWithCourseDeleted = await request(app)
+        const articleWithClassDeleted = await request(app)
             .get(`/articles/${article.body.articleWithRelations.id}`)
             .set({ Authorization: `Bearer ${token}` });
 
-        expect(
-            article.body.articleWithRelations.CoursesOnArticles
-        ).toHaveLength(2);
+        expect(article.body.articleWithRelations.ClassOnArticles).toHaveLength(
+            2
+        );
 
-        expect(articleWithCourseDeleted.body.CoursesOnArticles).toHaveLength(0);
+        expect(articleWithClassDeleted.body.ClassesOnArticles).toHaveLength(0);
     });
 
-    it("Should not able to delete all courses of an article if the token is invalid", async () => {
+    it("Should not able to delete all classes of an article if the token is invalid", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -75,19 +92,18 @@ describe("COURSES - Delete Courses of Article Controller", () => {
                 content: "tu tens o nome do heroico portugues",
                 isHighlight: false,
                 authors: [admin],
-                classes: [],
-                courses: [course1.body.course.id, course2.body.course.id],
+                classes: [class1.body.newClass.id, class2.body.newClass.id],
             });
 
-        const coursesDeleted = await request(app)
-            .patch("/courses/deleteallcourses")
+        const classesDeleted = await request(app)
+            .patch("/classes/deleteallclasses")
             .set({ Authorization: `1111` })
             .send({ articleId: article.body.articleWithRelations.id });
 
-        expect(coursesDeleted.body.message).toBe("Invalid Token");
+        expect(classesDeleted.body.message).toBe("Invalid Token");
     });
 
-    it("Should not able to delete all courses of an article if user is not logged", async () => {
+    it("Should not able to delete all classes of an article if user is not logged", async () => {
         const article = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -97,14 +113,13 @@ describe("COURSES - Delete Courses of Article Controller", () => {
                 content: "tu tens o nome do heroico portugues",
                 isHighlight: false,
                 authors: [admin],
-                classes: [],
-                courses: [course1.body.course.id, course2.body.course.id],
+                classes: [class1.body.newClass.id, class2.body.newClass.id],
             });
 
-        const coursesDeleted = await request(app)
-            .patch("/courses/deleteallcourses")
+        const classesDeleted = await request(app)
+            .patch("/classes/deleteallclasses")
             .send({ articleId: article.body.articleWithRelations.id });
 
-        expect(coursesDeleted.body.message).toBe("Token missing");
+        expect(classesDeleted.body.message).toBe("Token missing");
     });
 });

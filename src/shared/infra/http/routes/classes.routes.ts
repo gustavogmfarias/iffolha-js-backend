@@ -2,6 +2,8 @@ import { Router } from "express";
 
 import { CreateClassController } from "@modules/classes/useCases/createClassUseCase/CreateClassController";
 import { ListClassesController } from "@modules/classes/useCases/ListClasses/ListClassesController";
+import { DeleteClassesFromArticleController } from "@modules/classes/useCases/deleteClassesFromArticleUseCase/DeleteClassesFromArticleController";
+import { DeleteClassController } from "@modules/classes/useCases/deleteClassUseCase/DeleteClassController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -9,9 +11,9 @@ const classesRoutes = Router();
 
 const createClassController = new CreateClassController();
 const listClassesController = new ListClassesController();
-// const deleteClassController = new DeleteClassController();
-// const deleteClassesFromArticleController =
-//     new DeleteClassesFromArticleController();
+const deleteClassController = new DeleteClassController();
+const deleteClassesFromArticleController =
+    new DeleteClassesFromArticleController();
 // const listArticlesByClassController = new ListArticlesByClassController();
 // const listClassesByLevelController = new ListClassesByLevelController();
 
@@ -42,18 +44,18 @@ classesRoutes.get(
 //     listClassesByLevelController.handle
 // );
 
-// classesRoutes.delete(
-//     "/:id",
-//     ensureAuthenticated,
-//     ensureAdmin,
-//     deleteClassController.handle
-// );
+classesRoutes.delete(
+    "/:id",
+    ensureAuthenticated,
+    ensureAdmin,
+    deleteClassController.handle
+);
 
-// classesRoutes.patch(
-//     "/deleteallclasses",
-//     ensureAuthenticated,
-//     ensureAdmin,
-//     deleteClassesFromArticleController.handle
-// );
+classesRoutes.patch(
+    "/deleteallclasses",
+    ensureAuthenticated,
+    ensureAdmin,
+    deleteClassesFromArticleController.handle
+);
 
 export { classesRoutes };
