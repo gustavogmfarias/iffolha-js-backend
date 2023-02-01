@@ -71,7 +71,7 @@ describe("COURSE - Delete Course Controller", () => {
             });
 
         const responseDelete = await request(app)
-            .delete(`/courses/${class3.body.course.id}`)
+            .delete(`/courses/${class3.body.newClass.id}`)
             .set({ Authorization: `Bearer 1111` });
 
         expect(responseDelete.body.message).toBe("Invalid Token");

@@ -4,6 +4,7 @@ import { CreateClassController } from "@modules/classes/useCases/createClassUseC
 import { ListClassesController } from "@modules/classes/useCases/ListClasses/ListClassesController";
 import { DeleteClassesFromArticleController } from "@modules/classes/useCases/deleteClassesFromArticleUseCase/DeleteClassesFromArticleController";
 import { DeleteClassController } from "@modules/classes/useCases/deleteClassUseCase/DeleteClassController";
+import { ListArticlesByClassController } from "@modules/classes/useCases/ListArticlesByClass/ListArticlesByClassController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -14,7 +15,7 @@ const listClassesController = new ListClassesController();
 const deleteClassController = new DeleteClassController();
 const deleteClassesFromArticleController =
     new DeleteClassesFromArticleController();
-// const listArticlesByClassController = new ListArticlesByClassController();
+const listArticlesByClassController = new ListArticlesByClassController();
 // const listClassesByLevelController = new ListClassesByLevelController();
 
 classesRoutes.post(
@@ -31,12 +32,12 @@ classesRoutes.get(
     listClassesController.handle
 );
 
-// classesRoutes.get(
-//     "/articlesbyclass",
-//     ensureAuthenticated,
-//     ensureAdmin,
-//     listArticlesByClassController.handle
-// );
+classesRoutes.get(
+    "/articlesbyclass",
+    ensureAuthenticated,
+    ensureAdmin,
+    listArticlesByClassController.handle
+);
 // classesRoutes.get(
 //     "/classesbylevel",
 //     ensureAuthenticated,

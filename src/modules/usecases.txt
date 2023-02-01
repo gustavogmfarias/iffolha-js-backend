@@ -64,8 +64,9 @@ e) editar artigos
 [x] listar classs
 [ x] Adicionar class a um artigo
 [x] deletar class de um artigo
-[] deletar class
+[x] deletar class
 [] list articles by class
+[] list classes by course
 [ ] fazer documentação 
 [ ] fazer test
 

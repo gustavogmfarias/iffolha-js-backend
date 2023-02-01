@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { inject, injectable } from "tsyringe";
-import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
+import { IClassesRepository } from "@modules/classes/repositories/IClassesRepository";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
-import { Article, Course } from "@prisma/client";
+import { Article, Class } from "@prisma/client";
 
 interface IResponse {
     articles: Article[];
@@ -10,19 +10,19 @@ interface IResponse {
 }
 
 @injectable()
-class ListArticlesByCourseUseCase {
+class ListArticlesByClassUseCase {
     constructor(
-        @inject("CoursesRepository")
-        private coursesRepository: ICoursesRepository
+        @inject("ClassesRepository")
+        private classesRepository: IClassesRepository
     ) {}
 
     async execute(
         { page, perPage }: IPaginationRequestDTO,
-        courseName?: string,
+        className?: string,
         articleTitle?: string
     ): Promise<IResponse> {
-        if (courseName === undefined || courseName === "undefined") {
-            courseName = null;
+        if (className === undefined || className === "undefined") {
+            className = null;
         }
         if (articleTitle === undefined || articleTitle === "undefined") {
             articleTitle = null;
@@ -36,21 +36,21 @@ class ListArticlesByCourseUseCase {
             perPage = null;
         }
 
-        const totalCountArr = await this.coursesRepository.listArticlesByCourse(
+        const totalCountArr = await this.classesRepository.listArticlesByClass(
             {},
-            courseName,
+            className,
             articleTitle
         );
-        const articles = await this.coursesRepository.listArticlesByCourse(
+        const articles = await this.classesRepository.listArticlesByClass(
             {
                 page,
                 perPage,
             },
-            courseName,
+            className,
             articleTitle
         );
 
         return { articles, totalCount: totalCountArr.length };
     }
 }
-export { ListArticlesByCourseUseCase };
+export { ListArticlesByClassUseCase };

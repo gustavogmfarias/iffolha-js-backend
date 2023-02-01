@@ -5,8 +5,10 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("COURSES - List Articles by Courses Controller", () => {
+describe("CLASSES - List Articles by Classes Controller", () => {
     let token: string;
+    let newCourse;
+    let newClass1;
 
     beforeAll(async () => {
         const loginAdmin = await request(app)
@@ -15,20 +17,20 @@ describe("COURSES - List Articles by Courses Controller", () => {
 
         token = loginAdmin.body.token;
 
-        const aaa = await request(app)
+        newCourse = await request(app)
             .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "aaa",
+                name: "Teste De Course 1",
                 schoolLevel: "SUPERIOR",
             });
 
-        const bbb = await request(app)
-            .post("/courses")
+        newClass1 = await request(app)
+            .post("/classes")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "bbb",
-                schoolLevel: "SUPERIOR",
+                name: "Teste De Class 1",
+                courseId: newCourse.body.course.id,
             });
 
         const article1 = await request(app)
@@ -41,7 +43,7 @@ describe("COURSES - List Articles by Courses Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["aaa"],
-                courses: [aaa.body.course.id],
+                classes: [newClass1.body.newClass.id],
             });
 
         const article2 = await request(app)
@@ -54,7 +56,7 @@ describe("COURSES - List Articles by Courses Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["bbb"],
-                courses: [bbb.body.course.id],
+                classes: [newClass1.body.newClass.id],
             });
 
         const article3 = await request(app)
@@ -67,20 +69,40 @@ describe("COURSES - List Articles by Courses Controller", () => {
                 isHighlight: false,
                 authors: [],
                 tags: ["bbb"],
-                courses: [bbb.body.course.id],
+                classes: [newClass1.body.newClass.id],
             });
     });
 
-    it("Should be able to list articles by courses", async () => {
+    it("Should be able to list articles by classes", async () => {
+        const searchA = await request(app)
+            .get(`/classes/articlesbyclass?className=Teste%20De%20Class%201`)
+            .set({ Authorization: `Bearer ${token}` });
+
+        expect(searchA.status).toBe(200);
+        expect(searchA.body).toHaveLength(3);
+    });
+
+    it("Should be able to list articles by classes & titleName", async () => {
         const searchA = await request(app)
             .get(
-                `/courses/articlesbycourse?articleTitle&page&perPage&courseName=aaa`
+                `/classes/articlesbyclass?articleTitle=aaa%20aaa&className=Teste%20De%20Class%201`
+            )
+            .set({ Authorization: `Bearer ${token}` });
+
+        expect(searchA.status).toBe(200);
+        expect(searchA.body).toHaveLength(1);
+    });
+
+    it("Should be able to list articles by classes with pagination", async () => {
+        const searchA = await request(app)
+            .get(
+                `/classes/articlesbyclass?page=2&perPage=1&className=Teste%20De%20Class%201`
             )
             .set({ Authorization: `Bearer ${token}` });
 
         const searchB = await request(app)
             .get(
-                `/courses/articlesbycourse?articleTitle&page&perPage&courseName=bbb`
+                `/classes/articlesbyclass?page=1&perPage=2&className=Teste%20De%20Class%201`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -90,48 +112,18 @@ describe("COURSES - List Articles by Courses Controller", () => {
         expect(searchB.body).toHaveLength(2);
     });
 
-    it("Should be able to list articles by courses & titleName", async () => {
-        const searchA = await request(app)
-            .get(
-                `/courses/articlesbycourse?articleTitle=aqui&page&perPage&courseName=bbb`
-            )
-            .set({ Authorization: `Bearer ${token}` });
-
-        expect(searchA.status).toBe(200);
-        expect(searchA.body).toHaveLength(1);
-    });
-
-    it("Should be able to list articles by courses with pagination", async () => {
-        const searchA = await request(app)
-            .get(
-                `/courses/articlesbycourse?articleTitle&page=1&perPage=1&courseName=bbb`
-            )
-            .set({ Authorization: `Bearer ${token}` });
-
-        const searchB = await request(app)
-            .get(
-                `/courses/articlesbycourse?articleTitle&page=2&perPage=1&courseName=bbb`
-            )
-            .set({ Authorization: `Bearer ${token}` });
-
-        expect(searchA.status).toBe(200);
-        expect(searchA.body).toHaveLength(1);
-        expect(searchB.status).toBe(200);
-        expect(searchB.body).toHaveLength(1);
-    });
-
-    it("Should not be able to list all courses if you was not logged", async () => {
+    it("Should not be able to list all classes if you was not logged", async () => {
         const response = await request(app).get(
-            `/courses/articlesbycourse?articleTitle&page&perPage&courseName`
+            `/classes/articlesbyclass?articleTitle=aaa%20aaa&page=1&perPage=1&className=Teste%20De%20Class%201`
         );
 
         expect(response.body.message).toBe("Token missing");
     });
 
-    it("Should not be able to list all courses if token was expired or invalid", async () => {
+    it("Should not be able to list all classes if token was expired or invalid", async () => {
         const response = await request(app)
             .get(
-                `/courses/articlesbycourse?articleTitle&page&perPage&courseName`
+                `/classes/articlesbyclass?articleTitle=aaa%20aaa&page=1&perPage=1&className=Teste%20De%20Class%201`
             )
             .set({ Authorization: `Bearer 111` });
 
