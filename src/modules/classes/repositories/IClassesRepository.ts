@@ -11,22 +11,22 @@ export interface IClassesRepository {
     findClassById(id: string): Promise<Class>;
     findClassesByIds(id: string[]): Promise<Class[]>;
 
+    listClasses(
+        { page, perPage }: IPaginationRequestDTO,
+        name?: string
+    ): Promise<Class[]>;
     listAllClassesOnArticle(articleId?: string): Promise<ClassOnArticles[]>;
     listArticlesByClass(
         { page, perPage }: IPaginationRequestDTO,
         className: string,
         articleTitle?: string
     ): Promise<ArticleWithRelations[]>;
-    listClassesByLevel(
+    listClassesByCourse(
         { page, perPage }: IPaginationRequestDTO,
-        level: string
-    ): Promise<Class[]>;
-    addClassesToArticle(articleId: string, classesId: string[]): Promise<void>;
-
-    listClasses(
-        { page, perPage }: IPaginationRequestDTO,
-        name?: string
+        courseId: string
     ): Promise<Class[]>;
 
     totalClasses(): Promise<number>;
+
+    addClassesToArticle(articleId: string, classesId: string[]): Promise<void>;
 }

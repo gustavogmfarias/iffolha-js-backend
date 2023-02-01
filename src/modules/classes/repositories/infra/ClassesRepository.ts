@@ -139,7 +139,7 @@ export class ClassesRepository implements IClassesRepository {
         return classes;
     }
 
-    async listClassesByLevel(
+    async listClassesByCourse(
         { page, perPage }: IPaginationRequestDTO,
         courseId: string
     ): Promise<Class[]> {

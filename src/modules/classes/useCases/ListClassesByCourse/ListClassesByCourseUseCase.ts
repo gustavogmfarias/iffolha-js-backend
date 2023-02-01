@@ -1,27 +1,27 @@
 /* eslint-disable no-param-reassign */
 import { inject, injectable } from "tsyringe";
-import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
+import { IClassesRepository } from "@modules/classes/repositories/IClassesRepository";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
-import { Article, Course } from "@prisma/client";
+import { Article, Class } from "@prisma/client";
 
 interface IResponse {
-    courses: Course[];
+    classes: Class[];
     totalCount: number;
 }
 
 @injectable()
-class ListCoursesByLevelUseCase {
+class ListClassesByCourseUseCase {
     constructor(
-        @inject("CoursesRepository")
-        private coursesRepository: ICoursesRepository
+        @inject("ClassesRepository")
+        private classesRepository: IClassesRepository
     ) {}
 
     async execute(
         { page, perPage }: IPaginationRequestDTO,
-        level: string
+        courseId: string
     ): Promise<IResponse> {
-        if (level === undefined || level === "undefined") {
-            level = null;
+        if (courseId === undefined || courseId === "undefined") {
+            courseId = null;
         }
 
         if (page === undefined) {
@@ -32,19 +32,19 @@ class ListCoursesByLevelUseCase {
             perPage = null;
         }
 
-        const totalCountArr = await this.coursesRepository.listCoursesByLevel(
+        const totalCountArr = await this.classesRepository.listClassesByCourse(
             {},
-            level
+            courseId
         );
-        const courses = await this.coursesRepository.listCoursesByLevel(
+        const classes = await this.classesRepository.listClassesByCourse(
             {
                 page,
                 perPage,
             },
-            level
+            courseId
         );
 
-        return { courses, totalCount: totalCountArr.length };
+        return { classes, totalCount: totalCountArr.length };
     }
 }
-export { ListCoursesByLevelUseCase };
+export { ListClassesByCourseUseCase };
