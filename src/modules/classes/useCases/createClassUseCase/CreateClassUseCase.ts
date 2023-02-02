@@ -22,12 +22,7 @@ class CreateClassUseCase {
         userAdminId: string,
         courseId: string
     ): Promise<IResponse> {
-        let newClass = await this.classesRepository.findClassByName(name);
-
-        if (newClass) {
-            throw new AppError("Class already exists", 400);
-        }
-
+        let newClass: Class;
         try {
             newClass = await this.classesRepository.createClass(name, courseId);
         } catch (err) {

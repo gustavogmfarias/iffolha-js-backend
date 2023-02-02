@@ -145,7 +145,6 @@ export class ClassesRepository implements IClassesRepository {
     ): Promise<Class[]> {
         let classes: Class[];
 
-        // se não tiver os 3
         if (!page && !perPage && !courseId) {
             classes = await prisma.class.findMany({
                 orderBy: {

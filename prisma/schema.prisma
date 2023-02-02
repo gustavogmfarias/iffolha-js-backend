@@ -160,7 +160,7 @@ model CoursesOnArticles {
 
 model Class {
     id              String            @id @default(uuid())
-    name            String            @unique
+    name            String
     course          Course            @relation(fields: [courseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     courseId        String
     ClassOnArticles ClassOnArticles[]
