@@ -75,7 +75,9 @@ describe("CLASSES - List Articles by Classes Controller", () => {
 
     it("Should be able to list articles by classes", async () => {
         const searchA = await request(app)
-            .get(`/classes/articlesbyclass?className=Teste%20De%20Class%201`)
+            .get(
+                `/classes/articlesbyclass?classId=${newClass1.body.newClass.id}`
+            )
             .set({ Authorization: `Bearer ${token}` });
 
         expect(searchA.status).toBe(200);
@@ -85,7 +87,7 @@ describe("CLASSES - List Articles by Classes Controller", () => {
     it("Should be able to list articles by classes & titleName", async () => {
         const searchA = await request(app)
             .get(
-                `/classes/articlesbyclass?articleTitle=aaa%20aaa&className=Teste%20De%20Class%201`
+                `/classes/articlesbyclass?articleTitle=aaa%20aaa&classId=${newClass1.body.newClass.id}`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -96,13 +98,13 @@ describe("CLASSES - List Articles by Classes Controller", () => {
     it("Should be able to list articles by classes with pagination", async () => {
         const searchA = await request(app)
             .get(
-                `/classes/articlesbyclass?page=2&perPage=1&className=Teste%20De%20Class%201`
+                `/classes/articlesbyclass?page=2&perPage=1&classId=${newClass1.body.newClass.id}`
             )
             .set({ Authorization: `Bearer ${token}` });
 
         const searchB = await request(app)
             .get(
-                `/classes/articlesbyclass?page=1&perPage=2&className=Teste%20De%20Class%201`
+                `/classes/articlesbyclass?page=1&perPage=2&classId=${newClass1.body.newClass.id}`
             )
             .set({ Authorization: `Bearer ${token}` });
 
@@ -114,7 +116,7 @@ describe("CLASSES - List Articles by Classes Controller", () => {
 
     it("Should not be able to list all classes if you was not logged", async () => {
         const response = await request(app).get(
-            `/classes/articlesbyclass?articleTitle=aaa%20aaa&page=1&perPage=1&className=Teste%20De%20Class%201`
+            `/classes/articlesbyclass?articleTitle=aaa%20aaa&page=1&perPage=1&classId=${newClass1.body.newClass.id}`
         );
 
         expect(response.body.message).toBe("Token missing");
@@ -123,7 +125,7 @@ describe("CLASSES - List Articles by Classes Controller", () => {
     it("Should not be able to list all classes if token was expired or invalid", async () => {
         const response = await request(app)
             .get(
-                `/classes/articlesbyclass?articleTitle=aaa%20aaa&page=1&perPage=1&className=Teste%20De%20Class%201`
+                `/classes/articlesbyclass?articleTitle=aaa%20aaa&page=1&perPage=1&classId=${newClass1.body.newClass.id}`
             )
             .set({ Authorization: `Bearer 111` });
 

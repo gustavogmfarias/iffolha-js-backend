@@ -8,7 +8,7 @@ class ListArticlesByClassController {
         const listArticlesByClassUseCase = container.resolve(
             ListArticlesByClassUseCase
         );
-        const { articleTitle, className } = request.query;
+        const { articleTitle, classId } = request.query;
         const { perPage, page }: IPaginationRequestDTO = request.query;
 
         const all = await listArticlesByClassUseCase.execute(
@@ -16,7 +16,7 @@ class ListArticlesByClassController {
                 page,
                 perPage,
             },
-            String(className),
+            String(classId),
             String(articleTitle)
         );
 

@@ -38,7 +38,7 @@ class DeleteClassUseCase {
         }
 
         const log = await this.logProvider.create({
-            logRepository: "COURSE",
+            logRepository: "CLASS",
             description: `Class successfully deleted!`,
             previousContent: JSON.stringify(classToDelete),
             contentEdited: JSON.stringify(classToDelete),

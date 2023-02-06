@@ -5,7 +5,7 @@
 import request from "supertest";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("COURSE - Delete Course Controller", () => {
+describe("CLASS - Delete Course Controller", () => {
     let token: string;
     let course;
     let class1;

@@ -1519,6 +1519,283 @@
                 }
             }
         },
+        "/classes": {
+            "post": {
+                "tags": ["Classes"],
+                "summary": "Create Class",
+                "description": "Create a new Class",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "courseId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "4º Período",
+                                    "courseId": "3e1e6e70-62e9-452b-a7c0-932c308cd82c"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Class already exists"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Classes"],
+                "summary": "List all Classes",
+                "description": "List all Classes",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Initial or part of the name",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Classes"],
+                "summary": "Delete a class",
+                "description": "Delete a class",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Class id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "Class successfully deleted!"
+                    },
+                    "404": {
+                        "description": "Class doesn't exists"
+                    }
+                }
+            }
+        },
+        "/classes/classesbycourse": {
+            "get": {
+                "tags": ["Classes"],
+                "summary": "List all Class with a specifc Course",
+                "description": "List all Class with a specifc Course",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+
+                    {
+                        "name": "courseId",
+                        "in": "query",
+                        "description": "Id of the course",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/classes/articlesbyclass": {
+            "get": {
+                "tags": ["Classes"],
+                "summary": "List all Articles with a specifc Class",
+                "description": "List all Articles with a specifc Class",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "articleTitle",
+                        "in": "query",
+                        "description": "Initial or part of the Article Title",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "classId",
+                        "in": "query",
+                        "description": "Id of the Class",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/classes/deleteallclasses": {
+            "patch": {
+                "tags": ["Classes"],
+                "summary": "Delete all classes of an Article",
+                "description": "Delete all classes of an Article",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "articleId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "articleId": "86e85c1f-cdfd-4772-81f5-92ef7ddae97f"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Classes successfully deleted!"
+                    },
+                    "404 A": {
+                        "description": "Article doesn't exists"
+                    }
+                }
+            }
+        },
         "/categories/import": {
             "post": {
                 "tags": ["Category"],

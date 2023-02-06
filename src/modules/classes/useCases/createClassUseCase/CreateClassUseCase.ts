@@ -30,7 +30,7 @@ class CreateClassUseCase {
         }
 
         const log = await this.logProvider.create({
-            logRepository: "COURSE",
+            logRepository: "CLASS",
             description: `Class created successfully!`,
             previousContent: JSON.stringify(newClass),
             contentEdited: JSON.stringify(newClass),

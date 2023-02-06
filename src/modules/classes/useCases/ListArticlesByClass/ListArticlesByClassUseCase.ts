@@ -18,11 +18,11 @@ class ListArticlesByClassUseCase {
 
     async execute(
         { page, perPage }: IPaginationRequestDTO,
-        className?: string,
+        classId?: string,
         articleTitle?: string
     ): Promise<IResponse> {
-        if (className === undefined || className === "undefined") {
-            className = null;
+        if (classId === undefined || classId === "undefined") {
+            classId = null;
         }
         if (articleTitle === undefined || articleTitle === "undefined") {
             articleTitle = null;
@@ -38,7 +38,7 @@ class ListArticlesByClassUseCase {
 
         const totalCountArr = await this.classesRepository.listArticlesByClass(
             {},
-            className,
+            classId,
             articleTitle
         );
         const articles = await this.classesRepository.listArticlesByClass(
@@ -46,7 +46,7 @@ class ListArticlesByClassUseCase {
                 page,
                 perPage,
             },
-            className,
+            classId,
             articleTitle
         );
 

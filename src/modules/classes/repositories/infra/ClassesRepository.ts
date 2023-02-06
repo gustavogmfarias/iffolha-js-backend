@@ -52,7 +52,7 @@ export class ClassesRepository implements IClassesRepository {
     }
 
     async findClassByName(name: string): Promise<Class> {
-        const className = await prisma.class.findUnique({
+        const className = await prisma.class.findFirst({
             where: { name },
         });
 
@@ -207,19 +207,19 @@ export class ClassesRepository implements IClassesRepository {
 
     async listArticlesByClass(
         { page, perPage }: IPaginationRequestDTO,
-        className: string,
+        classId: string,
         articleTitle?: string
     ): Promise<ArticleWithRelations[]> {
         let articles: ArticleWithRelations[];
 
-        if (!page && !perPage && articleTitle && className) {
+        if (!page && !perPage && articleTitle && classId) {
             articles = await prisma.article.findMany({
                 where: {
                     title: { contains: articleTitle },
                     ClassOnArticles: {
                         some: {
                             class: {
-                                name: { contains: className },
+                                id: { equals: classId },
                             },
                         },
                     },
@@ -256,13 +256,13 @@ export class ClassesRepository implements IClassesRepository {
                     images: true,
                 },
             });
-        } else if (!page && !perPage && !articleTitle && className) {
+        } else if (!page && !perPage && !articleTitle && classId) {
             articles = await prisma.article.findMany({
                 where: {
                     ClassOnArticles: {
                         some: {
                             class: {
-                                name: { contains: className },
+                                id: { equals: classId },
                             },
                         },
                     },
@@ -299,13 +299,13 @@ export class ClassesRepository implements IClassesRepository {
                     images: true,
                 },
             });
-        } else if (page && perPage && !articleTitle && className) {
+        } else if (page && perPage && !articleTitle && classId) {
             articles = await prisma.article.findMany({
                 where: {
                     ClassOnArticles: {
                         some: {
                             class: {
-                                name: { contains: className },
+                                id: { equals: classId },
                             },
                         },
                     },
@@ -351,7 +351,7 @@ export class ClassesRepository implements IClassesRepository {
                     ClassOnArticles: {
                         some: {
                             class: {
-                                name: { contains: className },
+                                id: { equals: classId },
                             },
                         },
                     },

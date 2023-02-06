@@ -60,14 +60,14 @@ e) editar artigos
 [ ] fazer test
 
 3- classes
+[] list articles by class id (corrigir)
 [x ] criar class
 [x] listar classs
 [ x] Adicionar class a um artigo
 [x] deletar class de um artigo
 [x] deletar class
-[x] list articles by class
 [x] classes podem ter nome igual
-[] list classes by course
+[x] list classes by course
 [] update Class (e todos os outros)
 [ ] fazer documentação 
 [ ] fazer test
