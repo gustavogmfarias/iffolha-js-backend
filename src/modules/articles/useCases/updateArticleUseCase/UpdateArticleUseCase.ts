@@ -126,10 +126,10 @@ class UpdateArticleUseCase {
                 //     });
                 // });
 
-                await this.authorsRepository.delAuthorsToArticle(
-                    article.id,
-                    previousAuthorsOnArticle
-                );
+                // await this.authorsRepository.delAuthorsToArticle(
+                //     article.id,
+                //     previousAuthorsOnArticle
+                // );
 
                 await this.authorsRepository.addAuthorsToArticle(
                     article.id,

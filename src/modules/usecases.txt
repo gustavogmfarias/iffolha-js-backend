@@ -60,7 +60,9 @@ e) editar artigos
 [ ] fazer test
 
 3- classes
-[] list articles by class id (corrigir)
+
+[] update Class (e todos os outros)
+[x] list articles by class id (corrigir)
 [x ] criar class
 [x] listar classs
 [ x] Adicionar class a um artigo
@@ -68,12 +70,12 @@ e) editar artigos
 [x] deletar class
 [x] classes podem ter nome igual
 [x] list classes by course
-[] update Class (e todos os outros)
-[ ] fazer documentação 
+[x ] fazer documentação 
 [ ] fazer test
 
 
 6- Categorias
+[] update
 [x] deletar Categorias de um artigo
 [ x ] criar categoria test ok
 [x ] listar categoria test ok
@@ -84,6 +86,8 @@ e) editar artigos
 [x ] fazer documentação (falta delete all)
 
 7- Generos
+[] update
+
 [ x] criar genero
 [x ] listar
 [x] adicionar Generos a um artigo
@@ -93,6 +97,8 @@ e) editar artigos
 [x ] fazer test
 
 3- cursos
+[] update
+
 [ x] adicionar curso
 [x ] Adicionar curso a um artigo
 [x] deletar curso de um artigo

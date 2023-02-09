@@ -7,6 +7,7 @@ import multer from "multer";
 import { DeleteArticleController } from "@modules/articles/useCases/deleteArticleUseCase/DeleteArticleController";
 import { UpdateArticleController } from "@modules/articles/useCases/updateArticleUseCase/UpdateArticleController";
 import { FindArticleByIdController } from "@modules/articles/useCases/findArticleById/FindArticleByIdController";
+import { DeleteAuthorsOfAnArticleController } from "@modules/articles/useCases/deleteAuthorsOfAnArticleUseCase/DeleteAuthorsOfAnArticleController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -19,12 +20,21 @@ const addImagesArticleController = new AddImagesArticleController();
 const deleteArticleController = new DeleteArticleController();
 const updateArticleController = new UpdateArticleController();
 const findArticleByIdController = new FindArticleByIdController();
+const deleteAuthorsOfAnArticleController =
+    new DeleteAuthorsOfAnArticleController();
 
 articlesRoutes.post(
     "/",
     ensureAuthenticated,
     ensureAdmin,
     createArticleController.handle
+);
+
+articlesRoutes.patch(
+    "/deleteallauthors",
+    ensureAuthenticated,
+    ensureAdmin,
+    deleteAuthorsOfAnArticleController.handle
 );
 
 articlesRoutes.patch(
