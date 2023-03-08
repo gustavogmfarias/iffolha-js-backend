@@ -35,6 +35,18 @@ export class ClassesRepository implements IClassesRepository {
         });
     }
 
+    async update(id: string, name?: string, courseId?: string): Promise<Class> {
+        const classUpdated = await prisma.class.update({
+            where: { id },
+            data: {
+                name,
+                courseId,
+            },
+        });
+
+        return classUpdated;
+    }
+
     async findClassById(id: string): Promise<Class> {
         const className = await prisma.class.findUnique({
             where: { id },

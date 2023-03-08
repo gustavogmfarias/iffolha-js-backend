@@ -6,6 +6,7 @@ export interface IClassesRepository {
     createClass(name: string, courseId: string): Promise<Class>;
     deleteClass(id: string): Promise<void>;
     deleteAllClassesFromArticle(articleId: string): Promise<void>;
+    update(id: string, name?: string, courseId?: string): Promise<Class>;
 
     findClassByName(name: string): Promise<Class>;
     findClassById(id: string): Promise<Class>;

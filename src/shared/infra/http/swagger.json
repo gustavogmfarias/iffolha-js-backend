@@ -1639,6 +1639,52 @@
                         "description": "Class doesn't exists"
                     }
                 }
+            },
+            "put": {
+                "tags": ["Classes"],
+                "summary": "Update Class",
+                "description": "Update a Class",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Class id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "courseId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "4º Período",
+                                    "courseId": "3e1e6e70-62e9-452b-a7c0-932c308cd82c"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Updated"
+                    },
+                    "400": {}
+                }
             }
         },
         "/classes/classesbycourse": {

@@ -6,6 +6,7 @@ import { DeleteClassesFromArticleController } from "@modules/classes/useCases/de
 import { DeleteClassController } from "@modules/classes/useCases/deleteClassUseCase/DeleteClassController";
 import { ListArticlesByClassController } from "@modules/classes/useCases/ListArticlesByClass/ListArticlesByClassController";
 import { ListClassesByCourseController } from "@modules/classes/useCases/ListClassesByCourse/ListClassesByCourseController";
+import { UpdateClassController } from "@modules/classes/useCases/updateClassUseCase/UpdateClassController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -18,6 +19,7 @@ const deleteClassesFromArticleController =
     new DeleteClassesFromArticleController();
 const listArticlesByClassController = new ListArticlesByClassController();
 const listClassesByCourseController = new ListClassesByCourseController();
+const updateClassController = new UpdateClassController();
 
 classesRoutes.post(
     "/",
@@ -58,6 +60,13 @@ classesRoutes.patch(
     ensureAuthenticated,
     ensureAdmin,
     deleteClassesFromArticleController.handle
+);
+
+classesRoutes.put(
+    "/:id",
+    ensureAuthenticated,
+    ensureAdmin,
+    updateClassController.handle
 );
 
 export { classesRoutes };

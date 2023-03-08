@@ -5,12 +5,12 @@ import { AppError } from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 
 interface IResponse {
-    newClass: Class;
+    classUpdated: Class;
     log: Log;
 }
 
 @injectable()
-class CreateClassUseCase {
+class UpdateClassUseCase {
     constructor(
         @inject("ClassesRepository")
         private classesRepository: IClassesRepository,
@@ -18,11 +18,14 @@ class CreateClassUseCase {
     ) {}
 
     async execute(
+        classId: string,
         name: string,
         userAdminId: string,
         courseId: string
     ): Promise<IResponse> {
-        let newClass: Class;
+        let classUpdated: Class;
+
+        const classToUpdate = this.classesRepository.findClassById(classId);
 
         const classNameAlreadyExistis =
             await this.classesRepository.findClassByName(name);
@@ -32,22 +35,26 @@ class CreateClassUseCase {
         }
 
         try {
-            newClass = await this.classesRepository.createClass(name, courseId);
+            classUpdated = await this.classesRepository.update(
+                classId,
+                name,
+                courseId
+            );
         } catch (err) {
             throw new AppError(err.message, 400);
         }
 
         const log = await this.logProvider.create({
             logRepository: "CLASS",
-            description: `Class created successfully!`,
-            previousContent: JSON.stringify(newClass),
-            contentEdited: JSON.stringify(newClass),
+            description: `Class updated successfully!`,
+            previousContent: JSON.stringify(classToUpdate),
+            contentEdited: JSON.stringify(classUpdated),
             editedByUserId: userAdminId,
-            modelEditedId: newClass.id,
+            modelEditedId: classUpdated.id,
         });
 
-        return { newClass, log };
+        return { classUpdated, log };
     }
 }
 
-export { CreateClassUseCase };
+export { UpdateClassUseCase };
