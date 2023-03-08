@@ -32,6 +32,14 @@ e) editar artigos
 [ ] fazer documentação
 [ ] fazer test
 
+5- Imagens
+[x] adicionar imagens a um artigo
+[] adicionar imgens junto a um artigo
+[] deletar imagens de um artigo
+[] deletar imagens
+[ ] fazer documentação
+[ ] fazer test
+
 2- Tags
 [x] adicionar tags a um artigo
 [x] criar tags
@@ -48,20 +56,14 @@ e) editar artigos
 4- autores
 
 [x] Adicionar autor a um artigo
-[] deletar autor de um artigo
+[x] deletar autor de um artigo
 [] listar autores
 
-5- Imagens
-[x] adicionar imagens a um artigo
-[] adicionar imgens junto a um artigo
-[] deletar imagens de um artigo
-[] deletar imagens
-[ ] fazer documentação
-[ ] fazer test
+
 
 3- classes
 
-[] update Class (e todos os outros)
+[x] update Class (e todos os outros)
 [x] list articles by class id (corrigir)
 [x ] criar class
 [x] listar classs
@@ -71,7 +73,7 @@ e) editar artigos
 [x] classes podem ter nome igual
 [x] list classes by course
 [x ] fazer documentação 
-[ ] fazer test
+[ x] fazer test
 
 
 6- Categorias
