@@ -77,7 +77,7 @@ e) editar artigos
 
 
 6- Categorias
-[] update
+[x] update
 [x] deletar Categorias de um artigo
 [ x ] criar categoria test ok
 [x ] listar categoria test ok
