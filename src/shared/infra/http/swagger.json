@@ -986,6 +986,48 @@
                         "description": "Category doesn't exists"
                     }
                 }
+            },
+            "put": {
+                "tags": ["Category"],
+                "summary": "Update Category",
+                "description": "Update a Category",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Class id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Nome de Categoria"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Updated"
+                    },
+                    "400": {}
+                }
             }
         },
         "/categories/deleteallcategories": {
