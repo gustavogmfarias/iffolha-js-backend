@@ -4,6 +4,7 @@ import { ListCategoriesController } from "@modules/categories/useCases/ListCateg
 import { DeleteCategoryController } from "@modules/categories/useCases/deleteCategoryUseCase/DeleteCategoryController";
 import { ListArticlesByCategoryController } from "@modules/categories/useCases/ListArticlesByCategory/ListArticlesByCategoryController";
 import { DeleteCategoriesFromArticleController } from "@modules/categories/useCases/deleteCategoriesFromArticleUseCase/DeleteCategoriesFromArticleController";
+import { UpdateCategoryController } from "@modules/categories/useCases/updateCategoryUseCase/UpdateCategoryController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -15,6 +16,7 @@ const deleteCategoryController = new DeleteCategoryController();
 const listArticlesByCategoryController = new ListArticlesByCategoryController();
 const deleteCategoriesFromArticleController =
     new DeleteCategoriesFromArticleController();
+const updateCategoryController = new UpdateCategoryController();
 
 categoryRoutes.post(
     "/",
@@ -48,6 +50,13 @@ categoryRoutes.patch(
     ensureAuthenticated,
     ensureAdmin,
     deleteCategoriesFromArticleController.handle
+);
+
+categoryRoutes.put(
+    "/:id",
+    ensureAuthenticated,
+    ensureAdmin,
+    updateCategoryController.handle
 );
 
 export { categoryRoutes };

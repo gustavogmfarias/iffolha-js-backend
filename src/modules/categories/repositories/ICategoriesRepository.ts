@@ -4,6 +4,7 @@ import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 
 export interface ICategoriesRepository {
     createCategory(name: string): Promise<Category>;
+    update(id: string, name: string): Promise<Category>;
     deleteCategory(id: string): Promise<void>;
     deleteAllCategoriesFromArticle(articleId: string): Promise<void>;
 
@@ -14,11 +15,13 @@ export interface ICategoriesRepository {
     listAllCategoriesOnArticle(
         articleId?: string
     ): Promise<CategoryOnArticles[]>;
+
     listArticlesByCategory(
         { page, perPage }: IPaginationRequestDTO,
         categoryName: string,
         articleTitle?: string
     ): Promise<ArticleWithRelations[]>;
+
     addCategoriesToArticle(
         articleId: string,
         categoriesId: string[]
