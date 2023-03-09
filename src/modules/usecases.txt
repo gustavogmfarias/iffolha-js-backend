@@ -63,6 +63,9 @@ e) editar artigos
 
 3- classes
 
+merge com report e testar
+
+
 [x] update Class (e todos os outros)
 [x] list articles by class id (corrigir)
 [x ] criar class

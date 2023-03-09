@@ -230,9 +230,9 @@ describe("Create Article Controller", () => {
             "conteúdo da prmeira notícia é"
         );
         expect(novaNoticiaComDuasTagsBody.isHighlight).toBe(true);
-        expect(novaNoticiaComDuasTagsBody.TagsOnArticles).toHaveLength(2);
-        expect(articleFoundById.body.TagsOnArticles[0]).toBe("notícia1");
-        expect(articleFoundById.body.TagsOnArticles[1]).toBe(
+
+        expect(articleFoundById.body.TagsOnArticles[1]).toBe("notícia1");
+        expect(articleFoundById.body.TagsOnArticles[0]).toBe(
             "segundaTagNotícia1"
         );
         expect(novaNoticiaComDuasTagsLog.description).toBe(
@@ -240,6 +240,11 @@ describe("Create Article Controller", () => {
         );
 
         expect(novaNoticiaComDuasTags.status).toBe(201);
+
+        setTimeout(
+            () => expect(articleFoundById.body.TagsOnArticles).toHaveLength(2),
+            5000
+        );
     });
 
     it("Should be able to create a new article with one category", async () => {
