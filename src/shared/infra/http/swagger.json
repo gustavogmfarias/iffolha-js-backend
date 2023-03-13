@@ -1446,6 +1446,52 @@
                         "description": "Course doesn't exists"
                     }
                 }
+            },
+            "put": {
+                "tags": ["Courses"],
+                "summary": "Update a Course",
+                "description": "Update a Course",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Course id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "schoolLevel": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Nome do Curso",
+                                    "schoolLevel": "SUPERIOR"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Updated"
+                    },
+                    "400": {}
+                }
             }
         },
         "/courses/coursesbylevel": {

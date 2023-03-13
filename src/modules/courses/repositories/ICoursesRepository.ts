@@ -4,6 +4,7 @@ import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 
 export interface ICoursesRepository {
     createCourse(name: string, schoolLevel: SchoolLevel): Promise<Course>;
+    update(id: string, name: string, schoolLevel: SchoolLevel): Promise<Course>;
     deleteCourse(id: string): Promise<void>;
     deleteAllCoursesFromArticle(articleId: string): Promise<void>;
 

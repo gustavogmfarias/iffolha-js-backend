@@ -18,6 +18,19 @@ export class CoursesRepository implements ICoursesRepository {
         return course;
     }
 
+    async update(
+        id: string,
+        name: string,
+        schoolLevel: SchoolLevel
+    ): Promise<Course> {
+        const course = await prisma.course.update({
+            where: { id },
+            data: { name, schoolLevel },
+        });
+
+        return course;
+    }
+
     async deleteCourse(id: string): Promise<void> {
         await prisma.course.delete({
             where: { id },
