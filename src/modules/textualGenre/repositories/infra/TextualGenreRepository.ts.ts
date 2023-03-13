@@ -14,6 +14,15 @@ export class TextualGenreRepository implements ITextualGenreRepository {
         return textualGenre;
     }
 
+    async update(id: string, name: string): Promise<TextualGenre> {
+        const textualGenre = await prisma.textualGenre.update({
+            where: { id },
+            data: { name },
+        });
+
+        return textualGenre;
+    }
+
     async deleteTextualGenre(id: string): Promise<void> {
         await prisma.textualGenre.delete({
             where: { id },

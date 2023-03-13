@@ -6,6 +6,7 @@ import { ListTextualGenresController } from "@modules/textualGenre/useCases/List
 import { DeleteTextualGenresFromArticleController } from "@modules/textualGenre/useCases/deleteTextualGenresFromArticleUseCase/DeleteTextualGenreFromArticleController";
 import { DeleteTextualGenreController } from "@modules/textualGenre/useCases/deleteTextualGenreUseCase/DeleteTextualGenreController";
 import { ListArticlesByTextualGenreController } from "@modules/textualGenre/useCases/ListArticlesByTextualGenre/ListArticlesByTextualGenreController";
+import { UpdateTextualGenreController } from "@modules/textualGenre/useCases/updateTextualGenreUseCase/UpdateTextualGenreController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { ensureAdmin } from "../middlewares/ensureAdmin";
 
@@ -18,6 +19,7 @@ const listArticlesByTextualGenreController =
     new ListArticlesByTextualGenreController();
 const deleteTextualGenresFromArticleController =
     new DeleteTextualGenresFromArticleController();
+const updateTextualGenreController = new UpdateTextualGenreController();
 
 textualGenreRoutes.post(
     "/",
@@ -44,6 +46,13 @@ textualGenreRoutes.delete(
     ensureAuthenticated,
     ensureAdmin,
     deleteTextualGenreController.handle
+);
+
+textualGenreRoutes.put(
+    "/:id",
+    ensureAuthenticated,
+    ensureAdmin,
+    updateTextualGenreController.handle
 );
 
 textualGenreRoutes.patch(

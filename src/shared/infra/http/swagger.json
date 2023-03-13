@@ -1183,6 +1183,48 @@
                         "description": "Textual Genre doesn't exists"
                     }
                 }
+            },
+            "put": {
+                "tags": ["Textual Genre"],
+                "summary": "Update Textual Genre",
+                "description": "Update a Textual Genre",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Textual Genre id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Nome de Genero Textual"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Updated"
+                    },
+                    "400": {}
+                }
             }
         },
         "/textualgenre/articlesbytextualgenre": {

@@ -4,6 +4,7 @@ import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 
 export interface ITextualGenreRepository {
     createTextualGenre(name: string): Promise<TextualGenre>;
+    update(id: string, name: string): Promise<TextualGenre>;
     deleteTextualGenre(id: string): Promise<void>;
     deleteAllTextualGenresFromArticle(articleId: string): Promise<void>;
 
