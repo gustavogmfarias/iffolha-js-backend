@@ -88,7 +88,7 @@ e) editar artigos
 [x ] fazer documentação (falta delete all)
 
 7- Generos
-[] update
+[x] update
 
 [ x] criar genero
 [x ] listar
@@ -99,7 +99,7 @@ e) editar artigos
 [x ] fazer test
 
 3- cursos
-[] update
+[] update - falta o teste
 
 [ x] adicionar curso
 [x ] Adicionar curso a um artigo
