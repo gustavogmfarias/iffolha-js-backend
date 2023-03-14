@@ -101,7 +101,7 @@ e) editar artigos
 [x ] fazer test
 
 3- cursos
-[] update - falta o teste
+[x] update - falta o teste
 
 [ x] adicionar curso
 [x ] Adicionar curso a um artigo
