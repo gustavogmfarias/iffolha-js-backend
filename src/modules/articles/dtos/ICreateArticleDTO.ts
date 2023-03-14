@@ -8,5 +8,10 @@ export interface ICreateArticleDTO {
     editedByUserId?: string;
     isHighlight: boolean;
     url: string;
-    tags?: Tag[];
+    tags?: string[];
+    courses?: string[];
+    categories?: string[];
+    textualGenres?: string[];
+    authors?: string[];
+    classes?: string[];
 }

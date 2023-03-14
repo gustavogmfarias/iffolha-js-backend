@@ -20,6 +20,11 @@ export class ArticleRepository implements IArticleRepository {
         isHighlight,
         url,
         tags,
+        courses,
+        categories,
+        textualGenres,
+        authors,
+        classes,
     }: ICreateArticleDTO): Promise<ArticleWithRelations> {
         const article = await prisma.article.create({
             data: {
@@ -29,12 +34,61 @@ export class ArticleRepository implements IArticleRepository {
                 publishedByUserId,
                 isHighlight,
                 url,
-            },
-        });
-
-        const articleWithRelations = await prisma.article.findUnique({
-            where: {
-                id: article.id,
+                TagsOnArticles: {
+                    create: tags.map((tag) => ({
+                        tag: {
+                            connectOrCreate: {
+                                where: { name: tag },
+                                create: { name: tag },
+                            },
+                        },
+                    })),
+                },
+                CoursesOnArticles: {
+                    create: courses.map((course) => ({
+                        course: {
+                            connect: {
+                                id: course,
+                            },
+                        },
+                    })),
+                },
+                CategoryOnArticles: {
+                    create: categories.map((category) => ({
+                        category: {
+                            connect: {
+                                id: category,
+                            },
+                        },
+                    })),
+                },
+                TextualGenreOnArticles: {
+                    create: textualGenres.map((textualGenre) => ({
+                        textualGenre: {
+                            connect: {
+                                id: textualGenre,
+                            },
+                        },
+                    })),
+                },
+                AuthorsOnArticles: {
+                    create: authors.map((author) => ({
+                        author: {
+                            connect: {
+                                id: author,
+                            },
+                        },
+                    })),
+                },
+                ClassOnArticles: {
+                    create: classes.map((classe) => ({
+                        class: {
+                            connect: {
+                                id: classe,
+                            },
+                        },
+                    })),
+                },
             },
             include: {
                 TagsOnArticles: {
@@ -65,7 +119,7 @@ export class ArticleRepository implements IArticleRepository {
             },
         });
 
-        return articleWithRelations;
+        return article;
     }
 
     async update(

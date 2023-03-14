@@ -80,179 +80,38 @@ class CreateArticleUseCase {
         let article;
 
         try {
-            article = await this.articleRepository.create({
+            articleWithRelations = await this.articleRepository.create({
                 title,
                 subTitle,
                 content,
                 publishedByUserId,
                 isHighlight,
                 url: this.articleRepository.generateUrl(title),
+                tags,
+                courses,
+                categories,
+                textualGenres,
+                authors,
+                classes,
             });
         } catch (error) {
             throw new AppError(error.message, 401);
         }
 
-        if (article) {
-            try {
-                if (authors) {
-                    this.addAuthorsToArticle(authors, article.id);
-                }
-
-                if (tags) {
-                    this.addTagsToArticle(tags, article.id);
-                }
-
-                if (categories) {
-                    this.addCategoriesToArticle(categories, article.id);
-                }
-
-                if (textualGenres) {
-                    this.addTextualGenresToArticle(textualGenres, article.id);
-                }
-
-                if (courses) {
-                    this.addCoursesToArticle(courses, article.id);
-                }
-
-                if (classes) {
-                    this.addClassesToArticle(classes, article.id);
-                }
-
-                // this.articleRepository.updateImages(article.id, images);
-            } catch (err) {
-                throw new AppError(err.message);
-            } finally {
-                articleWithRelations = await this.articleRepository.findById(
-                    article.id
-                );
-
-                try {
-                    log = await this.logProvider.create({
-                        logRepository: "ARTICLE",
-                        description: `Article created successfully!`,
-                        previousContent: JSON.stringify(articleWithRelations),
-                        contentEdited: JSON.stringify(articleWithRelations),
-                        editedByUserId: userAdminId,
-                        modelEditedId: article.id,
-                    });
-                } catch (err) {
-                    throw new AppError(err.message);
-                }
-            }
+        try {
+            log = await this.logProvider.create({
+                logRepository: "ARTICLE",
+                description: `Article created successfully!`,
+                previousContent: JSON.stringify(articleWithRelations),
+                contentEdited: JSON.stringify(articleWithRelations),
+                editedByUserId: userAdminId,
+                modelEditedId: articleWithRelations.id,
+            });
+        } catch (err) {
+            throw new AppError(err.message);
         }
 
         return { articleWithRelations, log };
     }
-
-    private async addAuthorsToArticle(
-        authors: string[],
-        articleId: string
-    ): Promise<void> {
-        try {
-            await this.authorsRepository.addAuthorsToArticle(
-                articleId,
-                authors
-            );
-        } catch (error) {
-            throw new AppError(error.message, 401);
-        }
-    }
-
-    private async addTagsToArticle(
-        tags: string[],
-        articleId: string
-    ): Promise<void> {
-        tags = tags.filter((este, i) => tags.indexOf(este) === i);
-        tags.map(async (tag) => {
-            let tagFound;
-            try {
-                tagFound = await this.tagsRepository.findTagByName(tag);
-            } catch (error) {
-                throw new AppError(error.message, 401);
-            }
-
-            if (tagFound) {
-                try {
-                    await this.tagsRepository.addTagsToArticle(
-                        articleId,
-                        tagFound.id
-                    );
-                } catch (error) {
-                    throw new AppError(error.message, 401);
-                }
-            } else {
-                let newTag;
-
-                try {
-                    newTag = await this.tagsRepository.createTag(tag);
-                    await this.tagsRepository.addTagsToArticle(
-                        articleId,
-                        newTag.id
-                    );
-                } catch (error) {
-                    throw new AppError(error.message, 401);
-                }
-            }
-        });
-    }
-
-    private async addCategoriesToArticle(
-        categories: string[],
-        articleId: string
-    ): Promise<void> {
-        try {
-            await this.categoriesRepository.addCategoriesToArticle(
-                articleId,
-                categories
-            );
-        } catch (error) {
-            throw new AppError(error.message, 401);
-        }
-    }
-
-    private async addTextualGenresToArticle(
-        textualGenres: string[],
-        articleId: string
-    ): Promise<void> {
-        try {
-            await this.textualGenreRepository.addTextualGenresToArticle(
-                articleId,
-                textualGenres
-            );
-        } catch (error) {
-            throw new AppError(error.message, 401);
-        }
-    }
-
-    private async addCoursesToArticle(
-        courses: string[],
-        articleId: string
-    ): Promise<void> {
-        if (courses) {
-            try {
-                await this.coursesRepository.addCoursesToArticle(
-                    articleId,
-                    courses
-                );
-            } catch (error) {
-                throw new AppError(error.message, 401);
-            }
-        }
-    }
-
-    private async addClassesToArticle(
-        classes: string[],
-        articleId: string
-    ): Promise<void> {
-        try {
-            await this.classesRepository.addClassesToArticle(
-                articleId,
-                classes
-            );
-        } catch (error) {
-            throw new AppError(error.message, 401);
-        }
-    }
 }
-
 export { CreateArticleUseCase };
