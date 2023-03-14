@@ -7,7 +7,7 @@ import { SchoolLevel } from "@prisma/client";
 import { AppError } from "../../../../../shared/errors/AppError";
 import { app } from "../../../../../shared/infra/http/app";
 
-describe("COURSES - Create Course Controller", () => {
+describe("COURSES - Update Course Controller", () => {
     let token: string;
 
     beforeAll(async () => {
@@ -18,54 +18,91 @@ describe("COURSES - Create Course Controller", () => {
         token = loginAdmin.body.token;
     });
 
-    it("Should be able to create a new course", async () => {
+    it("Should be able to update a course", async () => {
         const response = await request(app)
             .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
                 name: "Teste De Course 1",
+                schoolLevel: "SUPERIOR",
+            });
+
+        const courseUpdate = await request(app)
+            .put(`/courses/${response.body.course.id}`)
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Teste De Course 2",
                 schoolLevel: "SUPERIOR",
             });
 
         expect(response.body.course.name).toBe("Teste De Course 1");
-        expect(response.body.log.description).toBe(
-            "Course created successfully!"
-        );
-
-        expect(response.status).toBe(201);
+        expect(courseUpdate.body.course.name).toBe("Teste De Course 2");
     });
 
-    it("Should not be able to create a new course with same name", async () => {
+    it("Should not be able to update a course with same name", async () => {
         const response = await request(app)
             .post("/courses")
             .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "Teste De Course 1",
+                name: "Teste De Course 3",
                 schoolLevel: "SUPERIOR",
             });
 
-        expect(response.body.message).toBe("Course already exists");
-        expect(response.status).toBe(400);
+        const response2 = await request(app)
+            .post("/courses")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Teste De Course 4",
+                schoolLevel: "SUPERIOR",
+            });
+
+        const courseUpdate = await request(app)
+            .put(`/courses/${response2.body.course.id}`)
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "Teste De Course 3",
+                schoolLevel: "SUPERIOR",
+            });
+
+        expect(courseUpdate.body.message).toBe("Course already exists");
     });
 
-    it("Should not be able to create a new course if the token is invalid", async () => {
+    it("Should not be able to update a course if the token is invalid", async () => {
         const response = await request(app)
             .post("/courses")
-            .set({ Authorization: `Bearer 111111` })
+            .set({ Authorization: `Bearer ${token}` })
             .send({
-                name: "test2",
+                name: "test5",
                 schoolLevel: "SUPERIOR",
             });
 
-        expect(response.body.message).toBe("Invalid Token");
+        const courseUpdate = await request(app)
+            .put(`/courses/${response.body.course.id}`)
+            .set({ Authorization: `Bearer 111111` })
+            .send({
+                name: "Teste De Course 3",
+                schoolLevel: "SUPERIOR",
+            });
+
+        expect(courseUpdate.body.message).toBe("Invalid Token");
     });
 
-    it("Should not be able to create a new Course if user is not logged", async () => {
-        const response = await request(app).post("/courses").send({
-            name: "test2",
-            schoolLevel: "SUPERIOR",
-        });
+    it("Should not be able to update a Course if user is not logged", async () => {
+        const response = await request(app)
+            .post("/courses")
+            .set({ Authorization: `Bearer ${token}` })
+            .send({
+                name: "tes6",
+                schoolLevel: "SUPERIOR",
+            });
 
-        expect(response.body.message).toBe("Token missing");
+        const courseUpdate = await request(app)
+            .put(`/courses/${response.body.course.id}`)
+            .send({
+                name: "Teste De Course 3",
+                schoolLevel: "SUPERIOR",
+            });
+
+        expect(courseUpdate.body.message).toBe("Token missing");
     });
 });

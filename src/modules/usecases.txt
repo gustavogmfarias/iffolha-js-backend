@@ -10,7 +10,9 @@ a) criar
 [] adicionar imagens
 [] adicionar imagens JUNTO com a criação de articles
 [ ] fazer documentação
-[ ] fazer test
+[ ] fazer test list articles
+[ ] fazer list articles entre períodos
+ 
 
 b) listar
 [x] listar artigos

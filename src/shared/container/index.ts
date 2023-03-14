@@ -21,7 +21,7 @@ import { ITextualGenreRepository } from "@modules/textualGenre/repositories/ITex
 import { TextualGenreRepository } from "@modules/textualGenre/repositories/infra/TextualGenreRepository.ts";
 
 import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
-import { CoursesRepository } from "@modules/courses/repositories/infra/CoursesRepository.ts";
+import { CoursesRepository } from "@modules/courses/repositories/infra/CoursesRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
