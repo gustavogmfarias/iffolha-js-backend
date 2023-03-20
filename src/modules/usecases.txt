@@ -59,7 +59,6 @@ e) editar artigos
 
 [x] Adicionar autor a um artigo
 [x] deletar autor de um artigo
-[] listar autores
 
 
 
