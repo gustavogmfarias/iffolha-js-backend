@@ -589,6 +589,215 @@
                 }
             }
         },
+        "/articles": {
+            "post": {
+                "tags": ["Articles"],
+                "summary": "Create a new Article",
+                "description": "Create a new Article",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "subTitle": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "isHighlight": {
+                                        "type": "boolean"
+                                    },
+                                    "authors": {
+                                        "type": "string[]"
+                                    },
+                                    "tags": {
+                                        "type": "string[]"
+                                    },
+                                    "categories": {
+                                        "type": "string[]"
+                                    },
+                                    "textualGenres": {
+                                        "type": "string[]"
+                                    },
+                                    "courses": {
+                                        "type": "string[]"
+                                    },
+                                    "classes": {
+                                        "type": "string[]"
+                                    },
+                                    "authors": {
+                                        "type": "string[]"
+                                    }
+                                },
+                                "example": {
+                                    "title": "Essa notícia é nova",
+                                    "subTitle": "Uma nova notícia para a comunidade",
+                                    "content": "Essa notícia não é muito imporante",
+                                    "isHighlight": true,
+                                    "authors": [
+                                        "ce632c92-1e28-4c97-8539-61fba9973ea2"
+                                    ],
+                                    "tags": ["g1", "g 2"],
+                                    "categories": [
+                                        "dc0505bf-a01e-47e6-8800-0cff46626f68",
+                                        "6c0db1e0-cecb-41a4-b0bc-d6f50c8eb876"
+                                    ],
+                                    "textualGenres": [
+                                        "9cadd757-f791-4a14-a7fa-c00beef7ecc7",
+                                        "e6633804-a672-4ba8-a700-ad0068963a57"
+                                    ],
+                                    "courses": [
+                                        "b99b0148-dd61-4606-bedd-d44b408b9195"
+                                    ],
+                                    "classes": [
+                                        "66b7e3ab-c025-48a2-a246-dcba72dbcd1c",
+                                        "959e2616-63f4-49f3-be28-937e0bae6de8"
+                                    ],
+                                    "authors": [
+                                        "63f451ea-0ccc-48fa-9e67-a496b6abe4fd",
+                                        "ce632c92-1e28-4c97-8539-61fba9973ea2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Articles"],
+                "summary": "List all articles",
+                "description": "List all articles",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Number of the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of objects in the page of view",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Initial or part of the name",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "startDate",
+                        "in": "query",
+                        "description": "Start date for search, it's inclusive",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "query",
+                        "description": "End date for search, it's inclusive",
+                        "required": false,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "articleWithRelations": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "3a06a2ed-087d-4cd1-a029-b62d76775424"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Uma notícia nova"
+                                        },
+                                        "subTitle": {
+                                            "type": "string",
+                                            "example": "Essa notícia é nova"
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "example": "Uma nova notícia"
+                                        },
+                                        "mainImage": {
+                                            "type": "string",
+                                            "example": "a.jpg"
+                                        },
+                                        "publishedByUserId": {
+                                            "type": "string",
+                                            "example": "36675328-e1ba-4d37-bb92-46236939d116"
+                                        },
+                                        "editedByUserId": {
+                                            "type": "string",
+                                            "example": "36675328-e1ba-4d37-bb92-46236939d116"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            "delete": {
+                "tags": ["Users"],
+                "summary": "Delete a user",
+                "description": "Delete a user",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "Schema": { "type": "string" }
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "User Deleted Successfully"
+                    },
+                    "404": {
+                        "description": "User doesn't exists"
+                    }
+                }
+            }
+        },
         "/tags": {
             "post": {
                 "tags": ["Tags"],

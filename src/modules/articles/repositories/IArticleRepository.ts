@@ -37,10 +37,12 @@ export interface IArticleRepository {
     update(id: string, data: ICreateArticleDTO): Promise<Article>;
     delete(id: string): Promise<void>;
     findById(id: string): Promise<ArticleWithRelations | null>;
-    list({
-        page,
-        perPage,
-    }: IPaginationRequestDTO): Promise<ArticleWithRelations[]>;
+    list(
+        { page, perPage }: IPaginationRequestDTO,
+        title?: string,
+        startDate?: string,
+        endDate?: string
+    ): Promise<ArticleWithRelations[]>;
     convertDTO(
         article: Article,
         tags: string[],

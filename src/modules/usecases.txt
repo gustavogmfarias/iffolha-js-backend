@@ -7,9 +7,9 @@ a) criar
 [x] adicionar cursos
 [x] adicionar turmas
 [x] adicionar classes
-[] adicionar imagens
-[] adicionar imagens JUNTO com a criação de articles
-[ ] fazer documentação
+[x] adicionar imagens
+[x] adicionar imagens JUNTO com a criação de articles
+[x ] fazer documentação
 [ ] fazer test list articles
 [ ] fazer list articles entre períodos
  

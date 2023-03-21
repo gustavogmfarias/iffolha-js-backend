@@ -7,13 +7,19 @@ class ListArticlesController {
     async handle(request: Request, response: Response): Promise<Response> {
         const listArticlesUseCase = container.resolve(ListArticlesUseCase);
         const { perPage, page }: IPaginationRequestDTO = request.query;
+        const { name, startDate, endDate } = request.query;
 
-        const all = await listArticlesUseCase.execute({
-            page,
-            perPage,
-        });
+        const all = await listArticlesUseCase.execute(
+            { page, perPage },
+            String(name),
+            String(startDate),
+            String(endDate)
+        );
 
-        return response.json(all);
+        return response
+            .setHeader("x-total-count", String(all.totalCount))
+            .json(all.articles)
+            .status(200);
     }
 }
 

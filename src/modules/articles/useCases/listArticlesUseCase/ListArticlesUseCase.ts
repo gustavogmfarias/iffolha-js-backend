@@ -10,6 +10,10 @@ import { Article, TagsOnArticles } from "@prisma/client";
 import { IArticleResponseDTO } from "@modules/articles/dtos/IArticleResponseDTO";
 import { ITagsRepository } from "@modules/tags/repositories/ITagsRepository";
 
+interface IResponse {
+    articles: ArticleWithRelations[];
+    totalCount: number;
+}
 @injectable()
 class ListArticlesUseCase {
     constructor(
@@ -19,16 +23,23 @@ class ListArticlesUseCase {
         private tagsRepository: ITagsRepository
     ) {}
 
-    async execute({
-        page,
-        perPage,
-    }: IPaginationRequestDTO): Promise<ArticleWithRelations[]> {
-        const articles = await this.articleRepository.list({
-            page,
-            perPage,
-        });
+    async execute(
+        { page, perPage }: IPaginationRequestDTO,
+        title: string,
+        startDate: string,
+        endDate: string
+    ): Promise<IResponse> {
+        const articles = await this.articleRepository.list(
+            {
+                page,
+                perPage,
+            },
+            title,
+            startDate,
+            endDate
+        );
 
-        return articles;
+        return { articles, totalCount: articles.length };
     }
 }
 export { ListArticlesUseCase };

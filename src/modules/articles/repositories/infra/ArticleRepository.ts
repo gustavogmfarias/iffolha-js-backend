@@ -197,83 +197,71 @@ export class ArticleRepository implements IArticleRepository {
 
     async list(
         { page, perPage }: IPaginationRequestDTO,
-        name?: string
+        title?: string,
+        startDate?: string,
+        endDate?: string
     ): Promise<ArticleWithRelations[]> {
-        let articles: ArticleWithRelations[];
+        const where: Record<string, any> = {};
 
-        if (!page || !perPage) {
-            articles = await prisma.article.findMany({
-                orderBy: {
-                    publishedDate: "desc",
-                },
-                include: {
-                    TagsOnArticles: {
-                        include: {
-                            tag: {
-                                select: {
-                                    name: true,
-                                },
-                            },
-                        },
-                    },
-                    AuthorsOnArticles: {
-                        include: {
-                            author: {
-                                select: {
-                                    name: true,
-                                    lastName: true,
-                                    id: true,
-                                    avatarUrl: true,
-                                    email: true,
-                                },
-                            },
-                        },
-                    },
-                    CoursesOnArticles: { include: { course: true } },
-                    ClassOnArticles: { include: { class: true } },
-                    CategoryOnArticles: { include: { category: true } },
-                    TextualGenreOnArticles: { include: { textualGenre: true } },
-                    images: true,
-                },
-            });
-        } else {
-            articles = await prisma.article.findMany({
-                take: Number(perPage),
-                skip: (Number(page) - 1) * Number(perPage),
-                orderBy: {
-                    publishedDate: "desc",
-                },
-                include: {
-                    TagsOnArticles: {
-                        include: {
-                            tag: {
-                                select: {
-                                    name: true,
-                                },
-                            },
-                        },
-                    },
-                    AuthorsOnArticles: {
-                        include: {
-                            author: {
-                                select: {
-                                    name: true,
-                                    lastName: true,
-                                    id: true,
-                                    avatarUrl: true,
-                                    email: true,
-                                },
-                            },
-                        },
-                    },
-                    CoursesOnArticles: { include: { course: true } },
-                    ClassOnArticles: { include: { class: true } },
-                    CategoryOnArticles: { include: { category: true } },
-                    TextualGenreOnArticles: { include: { textualGenre: true } },
-                    images: true,
-                },
-            });
+        if (title != null && title !== "undefined") {
+            where.title = { contains: title };
         }
+
+        if (startDate != null && startDate !== "undefined") {
+            where.publishedDate = {
+                ...(where.publishedDate ?? {}),
+                gte: new Date(`${startDate}T00:00:00.000Z`),
+            };
+        }
+
+        if (endDate != null && startDate !== "undefined") {
+            where.publishedDate = {
+                ...(where.publishedDate ?? {}),
+                lte: new Date(`${endDate}T23:59:59.999Z`),
+            };
+        }
+
+        const articles = await prisma.article.findMany({
+            where,
+            ...(page && perPage
+                ? {
+                      take: perPage * 1,
+                      skip: (page - 1) * perPage,
+                  }
+                : {}),
+            orderBy: {
+                publishedDate: "desc",
+            },
+            include: {
+                TagsOnArticles: {
+                    include: {
+                        tag: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+                AuthorsOnArticles: {
+                    include: {
+                        author: {
+                            select: {
+                                name: true,
+                                lastName: true,
+                                id: true,
+                                avatarUrl: true,
+                                email: true,
+                            },
+                        },
+                    },
+                },
+                CoursesOnArticles: { include: { course: true } },
+                ClassOnArticles: { include: { class: true } },
+                CategoryOnArticles: { include: { category: true } },
+                TextualGenreOnArticles: { include: { textualGenre: true } },
+                images: true,
+            },
+        });
 
         return articles;
     }
@@ -302,7 +290,7 @@ export class ArticleRepository implements IArticleRepository {
         return articleDTO;
     }
 
-    generateUrl(title: string): string {
+    public generateUrl(title: string): string {
         const url = title
             .toLowerCase()
             .slice(0, 30)
