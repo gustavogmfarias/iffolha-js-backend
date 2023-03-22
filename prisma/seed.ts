@@ -32,7 +32,7 @@ async function main() {
         data: userData[0],
     });
     const user = await prisma.user.create({
-        data: userData[0],
+        data: userData[1],
     });
 
     const tag1 = await prisma.tag.create({
@@ -118,7 +118,7 @@ async function main() {
             content: "Nova notícia",
             publishedByUserId: user.id,
             isHighlight: true,
-            url: articleRepository.generateUrl(this.title),
+            url: articleRepository.generateUrl("Minha notícia"),
             TagsOnArticles: {
                 create: [
                     {
@@ -232,7 +232,7 @@ async function main() {
             content: "Nova notícia 2",
             publishedByUserId: admin.id,
             isHighlight: true,
-            url: articleRepository.generateUrl(this.title),
+            url: articleRepository.generateUrl("Minha notícia 2"),
             TagsOnArticles: {
                 create: [
                     {

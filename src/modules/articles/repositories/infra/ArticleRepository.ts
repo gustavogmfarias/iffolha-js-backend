@@ -208,16 +208,22 @@ export class ArticleRepository implements IArticleRepository {
         }
 
         if (startDate != null && startDate !== "undefined") {
+            const startOfDay = new Date(startDate);
+            startOfDay.setHours(0, 0, 0, 0);
+
             where.publishedDate = {
                 ...(where.publishedDate ?? {}),
-                gte: new Date(`${startDate}T00:00:00.000Z`),
+                gte: startOfDay,
             };
         }
 
-        if (endDate != null && startDate !== "undefined") {
+        if (endDate != null && endDate !== "undefined") {
+            const endOfDay = new Date(endDate);
+            endOfDay.setHours(23, 59, 59, 999);
+
             where.publishedDate = {
                 ...(where.publishedDate ?? {}),
-                lte: new Date(`${endDate}T23:59:59.999Z`),
+                lte: endOfDay,
             };
         }
 
