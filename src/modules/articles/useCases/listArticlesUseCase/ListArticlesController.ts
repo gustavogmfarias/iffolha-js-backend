@@ -7,11 +7,11 @@ class ListArticlesController {
     async handle(request: Request, response: Response): Promise<Response> {
         const listArticlesUseCase = container.resolve(ListArticlesUseCase);
         const { perPage, page }: IPaginationRequestDTO = request.query;
-        const { name, startDate, endDate } = request.query;
+        const { title, startDate, endDate } = request.query;
 
         const all = await listArticlesUseCase.execute(
             { page, perPage },
-            String(name),
+            String(title),
             String(startDate),
             String(endDate)
         );

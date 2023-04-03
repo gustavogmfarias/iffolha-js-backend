@@ -20,9 +20,11 @@ class DeleteArticleUseCase {
 
     async execute(
         userAdminId: string,
-        articleToDelete: string
+        articleToDeleteId: string
     ): Promise<IResponse> {
-        const article = await this.articleRepository.findById(articleToDelete);
+        const article = await this.articleRepository.findById(
+            articleToDeleteId
+        );
 
         if (!article) {
             throw new AppError("Article doesn't exists", 404);
@@ -30,7 +32,7 @@ class DeleteArticleUseCase {
         let articleDeleted;
 
         try {
-            articleDeleted = this.articleRepository.delete(articleToDelete);
+            articleDeleted = this.articleRepository.delete(articleToDeleteId);
         } catch (err) {
             throw new AppError("Article wasn't deleted", 401);
         }
@@ -41,7 +43,7 @@ class DeleteArticleUseCase {
             previousContent: JSON.stringify(article),
             contentEdited: JSON.stringify(article),
             editedByUserId: userAdminId,
-            modelEditedId: articleToDelete,
+            modelEditedId: articleToDeleteId,
         });
 
         return { article, log };

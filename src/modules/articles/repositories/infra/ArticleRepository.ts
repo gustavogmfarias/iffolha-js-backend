@@ -150,10 +150,12 @@ export class ArticleRepository implements IArticleRepository {
         return article;
     }
 
-    async delete(id: string): Promise<void> {
-        await prisma.article.delete({
+    async delete(id: string): Promise<Article> {
+        const article = await prisma.article.delete({
             where: { id },
         });
+
+        return article;
     }
 
     async findById(id: string): Promise<ArticleWithRelations | null> {

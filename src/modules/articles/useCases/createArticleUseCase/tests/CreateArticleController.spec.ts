@@ -142,6 +142,7 @@ describe("Create Article Controller", () => {
         expect(novaNoticiaBody.subTitle).toBe(
             "Essa é a primeira notícia criada"
         );
+
         expect(novaNoticiaBody.content).toBe("conteúdo da prmeira notícia é");
         expect(novaNoticiaBody.isHighlight).toBe(true);
         expect(novaNoticiaBody.TagsOnArticles).toHaveLength(0);
