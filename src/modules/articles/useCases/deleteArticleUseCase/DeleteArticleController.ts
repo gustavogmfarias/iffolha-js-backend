@@ -8,14 +8,14 @@ class DeleteArticleController {
         const { id: userAdminId } = request.user;
         const deleteUserUseCase = container.resolve(DeleteArticleUseCase);
 
-        const userDeleted = await deleteUserUseCase.execute(
+        const articleDeleted = await deleteUserUseCase.execute(
             userAdminId,
             articleToDeleteId
         );
 
         return response
             .status(200)
-            .json(userDeleted.article)
+            .json(articleDeleted)
             .send("Article successfully deleted!");
     }
 }
