@@ -1,1 +1,3 @@
-parei em fazendo teste do delete article
+
+
+arrumar teste create article

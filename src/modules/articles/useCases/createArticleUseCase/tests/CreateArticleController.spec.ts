@@ -170,6 +170,10 @@ describe("Create Article Controller", () => {
                 isHighlight: true,
                 authors: [],
                 tags: ["notícia1"],
+                categories: [],
+                textualGenres: [],
+                courses: [],
+                classes: [],
             });
 
         const articleFoundById = await request(app)
@@ -211,6 +215,10 @@ describe("Create Article Controller", () => {
                 isHighlight: true,
                 authors: [],
                 tags: ["notícia1", "segundaTagNotícia1"],
+                categories: [],
+                textualGenres: [],
+                courses: [],
+                classes: [],
             });
 
         const articleFoundById = await request(app)
@@ -260,6 +268,9 @@ describe("Create Article Controller", () => {
                 authors: [],
                 tags: ["notícia1"],
                 categories: [category1.body.category.id],
+                textualGenres: [],
+                courses: [],
+                classes: [],
             });
 
         const articleFoundById = await request(app)
@@ -308,6 +319,10 @@ describe("Create Article Controller", () => {
                     category1.body.category.id,
                     category2.body.category.id,
                 ],
+
+                textualGenres: [],
+                courses: [],
+                classes: [],
             });
 
         const articleFoundById = await request(app)
@@ -354,6 +369,9 @@ describe("Create Article Controller", () => {
                 tags: ["notícia1"],
                 categories: [category1.body.category.id],
                 textualGenres: [textualGenre1.body.textualGenre.id],
+
+                courses: [],
+                classes: [],
             });
 
         const articleFoundById = await request(app)
@@ -403,6 +421,9 @@ describe("Create Article Controller", () => {
                     textualGenre1.body.textualGenre.id,
                     textualGenre2.body.textualGenre.id,
                 ],
+
+                courses: [],
+                classes: [],
             });
 
         const articleFoundById = await request(app)
@@ -451,6 +472,7 @@ describe("Create Article Controller", () => {
                 categories: [category1.body.category.id],
                 textualGenres: [textualGenre1.body.textualGenre.id],
                 courses: [course1.body.course.id],
+                classes: [],
             });
 
         const articleFoundById = await request(app)
@@ -495,6 +517,7 @@ describe("Create Article Controller", () => {
                 categories: [category1.body.category.id],
                 textualGenres: [textualGenre1.body.textualGenre.id],
                 courses: [course1.body.course.id, course2.body.course.id],
+                classes: [],
             });
 
         const articleFoundById = await request(app)
@@ -716,20 +739,17 @@ describe("Create Article Controller", () => {
         expect(novaNoticiaComDoisAuthors.status).toBe(201);
     });
 
-    //     Must be able to create an article with Tags, Authors, Courses, Classes, Categories and Textual Generos, and as a highlight.
-    // You should not be able to create an article without a title.
-    // You should not be able to create an article without a subtitle.
-    // You should not be able to create an article without content.
-    // Should be able to create an article with Authors, Courses, Classes, Categories and Textual Generos, and as a highlight.
-    // You should be able to create an article with Tags, Courses, Classes, Categories and Text Genres, and as a highlight.
-    // You should be able to create an article with Tags, Authors, Classes, Categories and Genres, and as a highlight.
-    // You should be able to create an article with Tags, Authors, Courses, Categories and Textual Generos, and as a highlight.
-    // You should be able to create an article with Tags, Authors, Courses, Classes and Generos Textuais, and as a highlight.
-    // You should be able to create an article with Tags, Authors, Courses, Classes and Categories and as a highlight.
-    // Must be able to create an article with Tags, Authors, Courses, Classes, Categories and Textual Generos, without highlighting.
-    // You should be able to create an article with only one tag.
-    // You must be able to create an article and the publisher is the logged in user.
-    // You should not be able to create an article if the logged in user is not an admin.
-    // You should not be able to create an article if you are not logged in.
-    // You should not be able to create an article if the token is invalid.
+    it("Should not be able to create an article if you was not logged", async () => {
+        const responseArticle = await request(app).post(`/articles`);
+
+        expect(responseArticle.body.message).toBe("Token missing");
+    });
+
+    it("Should not be able to delete a user if token is invalid or expired", async () => {
+        const responseArticle = await request(app)
+            .post(`/articles`)
+            .set({ Authorization: `Bearer 1111` });
+
+        expect(responseArticle.body.message).toBe("Invalid Token");
+    });
 });

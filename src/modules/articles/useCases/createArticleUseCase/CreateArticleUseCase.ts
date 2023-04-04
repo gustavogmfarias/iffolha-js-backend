@@ -66,14 +66,14 @@ class CreateArticleUseCase {
         content,
         publishedByUserId,
         isHighlight,
-        authors = null,
-        courses = null,
-        categories = null,
-        textualGenres = null,
-        images = null,
-        tags = null,
+        authors,
+        courses,
+        categories,
+        textualGenres,
+        images,
+        tags,
         userAdminId,
-        classes = null,
+        classes,
     }: IRequest): Promise<IResponse> {
         let log: Log;
         let articleWithRelations: ArticleWithRelations;
