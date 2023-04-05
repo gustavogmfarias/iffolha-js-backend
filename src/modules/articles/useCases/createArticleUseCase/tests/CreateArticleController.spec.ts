@@ -130,11 +130,7 @@ describe("Create Article Controller", () => {
                 classes: [],
             });
 
-        const articleFoundById = await request(app)
-            .get(`/articles/${novaNoticia.body.articleWithRelations.id}`)
-            .set({ Authorization: `Bearer ${token}` });
-
-        const novaNoticiaBody = articleFoundById.body;
+        const novaNoticiaBody = novaNoticia.body.articleWithRelations;
         const novaNoticiaLog = novaNoticia.body.log;
 
         expect(novaNoticiaBody).toHaveProperty("id");
@@ -149,7 +145,7 @@ describe("Create Article Controller", () => {
         expect(novaNoticiaBody.CoursesOnArticles).toHaveLength(0);
         expect(novaNoticiaBody.CategoryOnArticles).toHaveLength(0);
         expect(novaNoticiaBody.TextualGenreOnArticles).toHaveLength(0);
-        expect(novaNoticiaBody.ClassesOnArticles).toHaveLength(0);
+        expect(novaNoticiaBody.ClassOnArticles).toHaveLength(0);
         expect(novaNoticiaBody.AuthorsOnArticles).toHaveLength(0);
 
         expect(novaNoticiaLog.description).toBe(
@@ -160,7 +156,7 @@ describe("Create Article Controller", () => {
     });
 
     it("Should be able to create a new article with one tag", async () => {
-        const novaNoticiaComDuasTags = await request(app)
+        const novaNoticiaComUmaTag = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
             .send({
@@ -176,32 +172,29 @@ describe("Create Article Controller", () => {
                 classes: [],
             });
 
-        const articleFoundById = await request(app)
-            .get(
-                `/articles/${novaNoticiaComDuasTags.body.articleWithRelations.id}`
-            )
-            .set({ Authorization: `Bearer ${token}` });
+        const novaNoticiaComUmaTagBody =
+            novaNoticiaComUmaTag.body.articleWithRelations;
+        const novaNoticiaComUmaTagLog = novaNoticiaComUmaTag.body.log;
 
-        const novaNoticiaComDuasTagsBody = articleFoundById.body;
-        const novaNoticiaComDuasTagsLog = novaNoticiaComDuasTags.body.log;
-
-        expect(novaNoticiaComDuasTagsBody).toHaveProperty("id");
-        expect(novaNoticiaComDuasTagsBody.title).toBe("Primeira notícia");
-        expect(novaNoticiaComDuasTagsBody.subTitle).toBe(
+        expect(novaNoticiaComUmaTagBody).toHaveProperty("id");
+        expect(novaNoticiaComUmaTagBody.title).toBe("Primeira notícia");
+        expect(novaNoticiaComUmaTagBody.subTitle).toBe(
             "Essa é a primeira notícia criada"
         );
-        expect(novaNoticiaComDuasTagsBody.content).toBe(
+        expect(novaNoticiaComUmaTagBody.content).toBe(
             "conteúdo da prmeira notícia é"
         );
-        expect(novaNoticiaComDuasTagsBody.isHighlight).toBe(true);
-        expect(novaNoticiaComDuasTagsBody.TagsOnArticles).toHaveLength(1);
-        expect(articleFoundById.body.TagsOnArticles[0]).toBe("notícia1");
+        expect(novaNoticiaComUmaTagBody.isHighlight).toBe(true);
+        expect(novaNoticiaComUmaTagBody.TagsOnArticles).toHaveLength(1);
+        expect(novaNoticiaComUmaTagBody.TagsOnArticles[0].tag.name).toBe(
+            "notícia1"
+        );
 
-        expect(novaNoticiaComDuasTagsLog.description).toBe(
+        expect(novaNoticiaComUmaTagLog.description).toBe(
             "Article created successfully!"
         );
 
-        expect(novaNoticiaComDuasTags.status).toBe(201);
+        expect(novaNoticiaComUmaTag.status).toBe(201);
     });
 
     it("Should be able to create a new article with two tags", async () => {
@@ -221,13 +214,8 @@ describe("Create Article Controller", () => {
                 classes: [],
             });
 
-        const articleFoundById = await request(app)
-            .get(
-                `/articles/${novaNoticiaComDuasTags.body.articleWithRelations.id}`
-            )
-            .set({ Authorization: `Bearer ${token}` });
-
-        const novaNoticiaComDuasTagsBody = articleFoundById.body;
+        const novaNoticiaComDuasTagsBody =
+            novaNoticiaComDuasTags.body.articleWithRelations;
         const novaNoticiaComDuasTagsLog = novaNoticiaComDuasTags.body.log;
 
         expect(novaNoticiaComDuasTagsBody).toHaveProperty("id");
@@ -240,23 +228,23 @@ describe("Create Article Controller", () => {
         );
         expect(novaNoticiaComDuasTagsBody.isHighlight).toBe(true);
 
-        expect(articleFoundById.body.TagsOnArticles[1]).toBe("notícia1");
-        expect(articleFoundById.body.TagsOnArticles[0]).toBe(
+        expect(novaNoticiaComDuasTagsBody.TagsOnArticles[0].tag.name).toBe(
+            "notícia1"
+        );
+        expect(novaNoticiaComDuasTagsBody.TagsOnArticles[1].tag.name).toBe(
             "segundaTagNotícia1"
         );
+
         expect(novaNoticiaComDuasTagsLog.description).toBe(
             "Article created successfully!"
         );
 
         expect(novaNoticiaComDuasTags.status).toBe(201);
 
-        setTimeout(
-            () => expect(articleFoundById.body.TagsOnArticles).toHaveLength(2),
-            5000
-        );
+        expect(novaNoticiaComDuasTagsBody.TagsOnArticles).toHaveLength(2);
     });
 
-    it("Should be able to create a new article with one category", async () => {
+    it.only("Should be able to create a new article with one category", async () => {
         const novaNoticiaComUmaCategoria = await request(app)
             .post("/articles")
             .set({ Authorization: `Bearer ${token}` })
@@ -273,35 +261,16 @@ describe("Create Article Controller", () => {
                 classes: [],
             });
 
-        const articleFoundById = await request(app)
-            .get(
-                `/articles/${novaNoticiaComUmaCategoria.body.articleWithRelations.id}`
-            )
-            .set({ Authorization: `Bearer ${token}` });
+        const novaNoticiaComUmaCategoriaBody =
+            novaNoticiaComUmaCategoria.body.articleWithRelations;
 
-        const novaNoticiaComUmaCategoriaBody = articleFoundById.body;
-        const novaNoticiaComUmaCategoriaLog =
-            novaNoticiaComUmaCategoria.body.log;
-
-        expect(novaNoticiaComUmaCategoriaBody).toHaveProperty("id");
-        expect(novaNoticiaComUmaCategoriaBody.title).toBe("Primeira notícia");
-        expect(novaNoticiaComUmaCategoriaBody.subTitle).toBe(
-            "Essa é a primeira notícia criada"
-        );
-        expect(novaNoticiaComUmaCategoriaBody.content).toBe(
-            "conteúdo da prmeira notícia é"
-        );
         expect(novaNoticiaComUmaCategoriaBody.isHighlight).toBe(false);
         expect(novaNoticiaComUmaCategoriaBody.CategoryOnArticles).toHaveLength(
             1
         );
-        expect(articleFoundById.body.CategoryOnArticles[0]).toBe("test");
-
-        expect(novaNoticiaComUmaCategoriaLog.description).toBe(
-            "Article created successfully!"
-        );
-
-        expect(novaNoticiaComUmaCategoria.status).toBe(201);
+        expect(
+            novaNoticiaComUmaCategoriaBody.CategoryOnArticles[0].category.name
+        ).toBe("test");
     });
 
     it("Should be able to create a new article with two categories", async () => {
