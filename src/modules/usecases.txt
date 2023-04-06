@@ -1,1 +1,5 @@
-continuar teste create article a partir da linha 276
+parei em 
+
+    it("Should be able to create a new article with one class", async () => {
+
+linha 449
