@@ -1,5 +1,4 @@
-parei em 
+Para retornar a imagem principal eu vou ter que:
 
-    it("Should be able to create a new article with one class", async () => {
-
-linha 449
+1- eu tenho acesso as imagens por http://localhost:5000/article-images/nome da imagem
+2- fazer o delete das imagens

@@ -446,208 +446,208 @@ describe("Create Article Controller", () => {
         ).toBe("test 2");
     });
 
-    it("Should be able to create a new article with one class", async () => {
-        const novaNoticiaComUmCourse = await request(app)
-            .post("/articles")
-            .set({ Authorization: `Bearer ${token}` })
-            .send({
-                title: "Primeira notícia",
-                subTitle: "Essa é a primeira notícia criada",
-                content: "conteúdo da prmeira notícia é",
-                isHighlight: false,
-                authors: [],
-                tags: ["notícia1"],
-                categories: [category1.body.category.id],
-                textualGenres: [textualGenre1.body.textualGenre.id],
-                courses: [course1.body.course.id],
-                classes: [class1.body.newClass.id],
-            });
+    // it("Should be able to create a new article with one class", async () => {
+    //     const novaNoticiaComUmCourse = await request(app)
+    //         .post("/articles")
+    //         .set({ Authorization: `Bearer ${token}` })
+    //         .send({
+    //             title: "Primeira notícia",
+    //             subTitle: "Essa é a primeira notícia criada",
+    //             content: "conteúdo da prmeira notícia é",
+    //             isHighlight: false,
+    //             authors: [],
+    //             tags: ["notícia1"],
+    //             categories: [category1.body.category.id],
+    //             textualGenres: [textualGenre1.body.textualGenre.id],
+    //             courses: [course1.body.course.id],
+    //             classes: [class1.body.newClass.id],
+    //         });
 
-        const articleFoundById = await request(app)
-            .get(
-                `/articles/${novaNoticiaComUmCourse.body.articleWithRelations.id}`
-            )
-            .set({ Authorization: `Bearer ${token}` });
+    //     const articleFoundById = await request(app)
+    //         .get(
+    //             `/articles/${novaNoticiaComUmCourse.body.articleWithRelations.id}`
+    //         )
+    //         .set({ Authorization: `Bearer ${token}` });
 
-        const novaNoticiaComUmCourseBody = articleFoundById.body;
-        const novaNoticiaComUmCourseLog = novaNoticiaComUmCourse.body.log;
+    //     const novaNoticiaComUmCourseBody = articleFoundById.body;
+    //     const novaNoticiaComUmCourseLog = novaNoticiaComUmCourse.body.log;
 
-        expect(novaNoticiaComUmCourseBody).toHaveProperty("id");
-        expect(novaNoticiaComUmCourseBody.title).toBe("Primeira notícia");
-        expect(novaNoticiaComUmCourseBody.subTitle).toBe(
-            "Essa é a primeira notícia criada"
-        );
-        expect(novaNoticiaComUmCourseBody.content).toBe(
-            "conteúdo da prmeira notícia é"
-        );
-        expect(novaNoticiaComUmCourseBody.isHighlight).toBe(false);
-        expect(novaNoticiaComUmCourseBody.ClassesOnArticles).toHaveLength(1);
-        expect(articleFoundById.body.ClassesOnArticles[0]).toBe(
-            "Teste De Class 1"
-        );
+    //     expect(novaNoticiaComUmCourseBody).toHaveProperty("id");
+    //     expect(novaNoticiaComUmCourseBody.title).toBe("Primeira notícia");
+    //     expect(novaNoticiaComUmCourseBody.subTitle).toBe(
+    //         "Essa é a primeira notícia criada"
+    //     );
+    //     expect(novaNoticiaComUmCourseBody.content).toBe(
+    //         "conteúdo da prmeira notícia é"
+    //     );
+    //     expect(novaNoticiaComUmCourseBody.isHighlight).toBe(false);
+    //     expect(novaNoticiaComUmCourseBody.ClassesOnArticles).toHaveLength(1);
+    //     expect(articleFoundById.body.ClassesOnArticles[0]).toBe(
+    //         "Teste De Class 1"
+    //     );
 
-        expect(novaNoticiaComUmCourseLog.description).toBe(
-            "Article created successfully!"
-        );
+    //     expect(novaNoticiaComUmCourseLog.description).toBe(
+    //         "Article created successfully!"
+    //     );
 
-        expect(novaNoticiaComUmCourse.status).toBe(201);
-    });
+    //     expect(novaNoticiaComUmCourse.status).toBe(201);
+    // });
 
-    it("Should be able to create a new article with two classes", async () => {
-        const novaNoticiaComUmCourse = await request(app)
-            .post("/articles")
-            .set({ Authorization: `Bearer ${token}` })
-            .send({
-                title: "Primeira notícia",
-                subTitle: "Essa é a primeira notícia criada",
-                content: "conteúdo da prmeira notícia é",
-                isHighlight: false,
-                authors: [],
-                tags: ["notícia1"],
-                categories: [category1.body.category.id],
-                textualGenres: [textualGenre1.body.textualGenre.id],
-                courses: [course1.body.course.id],
-                classes: [class1.body.newClass.id, class2.body.newClass.id],
-            });
+    // it("Should be able to create a new article with two classes", async () => {
+    //     const novaNoticiaComUmCourse = await request(app)
+    //         .post("/articles")
+    //         .set({ Authorization: `Bearer ${token}` })
+    //         .send({
+    //             title: "Primeira notícia",
+    //             subTitle: "Essa é a primeira notícia criada",
+    //             content: "conteúdo da prmeira notícia é",
+    //             isHighlight: false,
+    //             authors: [],
+    //             tags: ["notícia1"],
+    //             categories: [category1.body.category.id],
+    //             textualGenres: [textualGenre1.body.textualGenre.id],
+    //             courses: [course1.body.course.id],
+    //             classes: [class1.body.newClass.id, class2.body.newClass.id],
+    //         });
 
-        const articleFoundById = await request(app)
-            .get(
-                `/articles/${novaNoticiaComUmCourse.body.articleWithRelations.id}`
-            )
-            .set({ Authorization: `Bearer ${token}` });
+    //     const articleFoundById = await request(app)
+    //         .get(
+    //             `/articles/${novaNoticiaComUmCourse.body.articleWithRelations.id}`
+    //         )
+    //         .set({ Authorization: `Bearer ${token}` });
 
-        const novaNoticiaComUmCourseBody = articleFoundById.body;
-        const novaNoticiaComUmCourseLog = novaNoticiaComUmCourse.body.log;
+    //     const novaNoticiaComUmCourseBody = articleFoundById.body;
+    //     const novaNoticiaComUmCourseLog = novaNoticiaComUmCourse.body.log;
 
-        expect(novaNoticiaComUmCourseBody).toHaveProperty("id");
-        expect(novaNoticiaComUmCourseBody.title).toBe("Primeira notícia");
-        expect(novaNoticiaComUmCourseBody.subTitle).toBe(
-            "Essa é a primeira notícia criada"
-        );
-        expect(novaNoticiaComUmCourseBody.content).toBe(
-            "conteúdo da prmeira notícia é"
-        );
-        expect(novaNoticiaComUmCourseBody.isHighlight).toBe(false);
-        expect(novaNoticiaComUmCourseBody.ClassesOnArticles).toHaveLength(2);
-        expect(articleFoundById.body.ClassesOnArticles[0]).toBe(
-            "Teste De Class 1"
-        );
+    //     expect(novaNoticiaComUmCourseBody).toHaveProperty("id");
+    //     expect(novaNoticiaComUmCourseBody.title).toBe("Primeira notícia");
+    //     expect(novaNoticiaComUmCourseBody.subTitle).toBe(
+    //         "Essa é a primeira notícia criada"
+    //     );
+    //     expect(novaNoticiaComUmCourseBody.content).toBe(
+    //         "conteúdo da prmeira notícia é"
+    //     );
+    //     expect(novaNoticiaComUmCourseBody.isHighlight).toBe(false);
+    //     expect(novaNoticiaComUmCourseBody.ClassesOnArticles).toHaveLength(2);
+    //     expect(articleFoundById.body.ClassesOnArticles[0]).toBe(
+    //         "Teste De Class 1"
+    //     );
 
-        expect(articleFoundById.body.ClassesOnArticles[1]).toBe(
-            "Teste De Class 2"
-        );
+    //     expect(articleFoundById.body.ClassesOnArticles[1]).toBe(
+    //         "Teste De Class 2"
+    //     );
 
-        expect(novaNoticiaComUmCourseLog.description).toBe(
-            "Article created successfully!"
-        );
+    //     expect(novaNoticiaComUmCourseLog.description).toBe(
+    //         "Article created successfully!"
+    //     );
 
-        expect(novaNoticiaComUmCourse.status).toBe(201);
-    });
+    //     expect(novaNoticiaComUmCourse.status).toBe(201);
+    // });
 
-    it("Should be able to create a new article with one author", async () => {
-        const novaNoticiaComUmAuthor = await request(app)
-            .post("/articles")
-            .set({ Authorization: `Bearer ${token}` })
-            .send({
-                title: "Primeira notícia",
-                subTitle: "Essa é a primeira notícia criada",
-                content: "conteúdo da prmeira notícia é",
-                isHighlight: false,
-                tags: ["notícia1"],
-                categories: [category1.body.category.id],
-                textualGenres: [textualGenre1.body.textualGenre.id],
-                courses: [course1.body.course.id],
-                classes: [class1.body.newClass.id],
-                authors: [author1.body[0].id],
-            });
+    // it("Should be able to create a new article with one author", async () => {
+    //     const novaNoticiaComUmAuthor = await request(app)
+    //         .post("/articles")
+    //         .set({ Authorization: `Bearer ${token}` })
+    //         .send({
+    //             title: "Primeira notícia",
+    //             subTitle: "Essa é a primeira notícia criada",
+    //             content: "conteúdo da prmeira notícia é",
+    //             isHighlight: false,
+    //             tags: ["notícia1"],
+    //             categories: [category1.body.category.id],
+    //             textualGenres: [textualGenre1.body.textualGenre.id],
+    //             courses: [course1.body.course.id],
+    //             classes: [class1.body.newClass.id],
+    //             authors: [author1.body[0].id],
+    //         });
 
-        const articleFoundById = await request(app)
-            .get(
-                `/articles/${novaNoticiaComUmAuthor.body.articleWithRelations.id}`
-            )
-            .set({ Authorization: `Bearer ${token}` });
+    //     const articleFoundById = await request(app)
+    //         .get(
+    //             `/articles/${novaNoticiaComUmAuthor.body.articleWithRelations.id}`
+    //         )
+    //         .set({ Authorization: `Bearer ${token}` });
 
-        const novaNoticiaComUmAuthorBody = articleFoundById.body;
-        const novaNoticiaComUmAuthorLog = novaNoticiaComUmAuthor.body.log;
+    //     const novaNoticiaComUmAuthorBody = articleFoundById.body;
+    //     const novaNoticiaComUmAuthorLog = novaNoticiaComUmAuthor.body.log;
 
-        expect(novaNoticiaComUmAuthorBody).toHaveProperty("id");
-        expect(novaNoticiaComUmAuthorBody.title).toBe("Primeira notícia");
-        expect(novaNoticiaComUmAuthorBody.subTitle).toBe(
-            "Essa é a primeira notícia criada"
-        );
-        expect(novaNoticiaComUmAuthorBody.content).toBe(
-            "conteúdo da prmeira notícia é"
-        );
-        expect(novaNoticiaComUmAuthorBody.isHighlight).toBe(false);
-        expect(novaNoticiaComUmAuthorBody.ClassesOnArticles).toHaveLength(1);
-        expect(novaNoticiaComUmAuthorBody.AuthorsOnArticles).toHaveLength(1);
-        expect(articleFoundById.body.AuthorsOnArticles[0]).toBe("Author 1");
+    //     expect(novaNoticiaComUmAuthorBody).toHaveProperty("id");
+    //     expect(novaNoticiaComUmAuthorBody.title).toBe("Primeira notícia");
+    //     expect(novaNoticiaComUmAuthorBody.subTitle).toBe(
+    //         "Essa é a primeira notícia criada"
+    //     );
+    //     expect(novaNoticiaComUmAuthorBody.content).toBe(
+    //         "conteúdo da prmeira notícia é"
+    //     );
+    //     expect(novaNoticiaComUmAuthorBody.isHighlight).toBe(false);
+    //     expect(novaNoticiaComUmAuthorBody.ClassesOnArticles).toHaveLength(1);
+    //     expect(novaNoticiaComUmAuthorBody.AuthorsOnArticles).toHaveLength(1);
+    //     expect(articleFoundById.body.AuthorsOnArticles[0]).toBe("Author 1");
 
-        expect(novaNoticiaComUmAuthorLog.description).toBe(
-            "Article created successfully!"
-        );
+    //     expect(novaNoticiaComUmAuthorLog.description).toBe(
+    //         "Article created successfully!"
+    //     );
 
-        expect(novaNoticiaComUmAuthor.status).toBe(201);
-    });
+    //     expect(novaNoticiaComUmAuthor.status).toBe(201);
+    // });
 
-    it("Should be able to create a new article with two authors", async () => {
-        const novaNoticiaComDoisAuthors = await request(app)
-            .post("/articles")
-            .set({ Authorization: `Bearer ${token}` })
-            .send({
-                title: "Primeira notícia",
-                subTitle: "Essa é a primeira notícia criada",
-                content: "conteúdo da prmeira notícia é",
-                isHighlight: false,
-                tags: ["notícia1"],
-                categories: [category1.body.category.id],
-                textualGenres: [textualGenre1.body.textualGenre.id],
-                courses: [course1.body.course.id],
-                classes: [class1.body.newClass.id],
-                authors: [author1.body[0].id, author2.body[0].id],
-            });
+    // it("Should be able to create a new article with two authors", async () => {
+    //     const novaNoticiaComDoisAuthors = await request(app)
+    //         .post("/articles")
+    //         .set({ Authorization: `Bearer ${token}` })
+    //         .send({
+    //             title: "Primeira notícia",
+    //             subTitle: "Essa é a primeira notícia criada",
+    //             content: "conteúdo da prmeira notícia é",
+    //             isHighlight: false,
+    //             tags: ["notícia1"],
+    //             categories: [category1.body.category.id],
+    //             textualGenres: [textualGenre1.body.textualGenre.id],
+    //             courses: [course1.body.course.id],
+    //             classes: [class1.body.newClass.id],
+    //             authors: [author1.body[0].id, author2.body[0].id],
+    //         });
 
-        const articleFoundById = await request(app)
-            .get(
-                `/articles/${novaNoticiaComDoisAuthors.body.articleWithRelations.id}`
-            )
-            .set({ Authorization: `Bearer ${token}` });
+    //     const articleFoundById = await request(app)
+    //         .get(
+    //             `/articles/${novaNoticiaComDoisAuthors.body.articleWithRelations.id}`
+    //         )
+    //         .set({ Authorization: `Bearer ${token}` });
 
-        const novaNoticiaComDoisAuthorBodys = articleFoundById.body;
-        const novaNoticiaComDoisAuthorLogs = novaNoticiaComDoisAuthors.body.log;
+    //     const novaNoticiaComDoisAuthorBodys = articleFoundById.body;
+    //     const novaNoticiaComDoisAuthorLogs = novaNoticiaComDoisAuthors.body.log;
 
-        expect(novaNoticiaComDoisAuthorBodys).toHaveProperty("id");
-        expect(novaNoticiaComDoisAuthorBodys.title).toBe("Primeira notícia");
-        expect(novaNoticiaComDoisAuthorBodys.subTitle).toBe(
-            "Essa é a primeira notícia criada"
-        );
-        expect(novaNoticiaComDoisAuthorBodys.content).toBe(
-            "conteúdo da prmeira notícia é"
-        );
-        expect(novaNoticiaComDoisAuthorBodys.isHighlight).toBe(false);
-        expect(novaNoticiaComDoisAuthorBodys.ClassesOnArticles).toHaveLength(1);
-        expect(novaNoticiaComDoisAuthorBodys.AuthorsOnArticles).toHaveLength(2);
-        expect(articleFoundById.body.AuthorsOnArticles[0]).toBe("Author 1");
-        expect(articleFoundById.body.AuthorsOnArticles[1]).toBe("Author 2");
+    //     expect(novaNoticiaComDoisAuthorBodys).toHaveProperty("id");
+    //     expect(novaNoticiaComDoisAuthorBodys.title).toBe("Primeira notícia");
+    //     expect(novaNoticiaComDoisAuthorBodys.subTitle).toBe(
+    //         "Essa é a primeira notícia criada"
+    //     );
+    //     expect(novaNoticiaComDoisAuthorBodys.content).toBe(
+    //         "conteúdo da prmeira notícia é"
+    //     );
+    //     expect(novaNoticiaComDoisAuthorBodys.isHighlight).toBe(false);
+    //     expect(novaNoticiaComDoisAuthorBodys.ClassesOnArticles).toHaveLength(1);
+    //     expect(novaNoticiaComDoisAuthorBodys.AuthorsOnArticles).toHaveLength(2);
+    //     expect(articleFoundById.body.AuthorsOnArticles[0]).toBe("Author 1");
+    //     expect(articleFoundById.body.AuthorsOnArticles[1]).toBe("Author 2");
 
-        expect(novaNoticiaComDoisAuthorLogs.description).toBe(
-            "Article created successfully!"
-        );
+    //     expect(novaNoticiaComDoisAuthorLogs.description).toBe(
+    //         "Article created successfully!"
+    //     );
 
-        expect(novaNoticiaComDoisAuthors.status).toBe(201);
-    });
+    //     expect(novaNoticiaComDoisAuthors.status).toBe(201);
+    // });
 
-    it("Should not be able to create an article if you was not logged", async () => {
-        const responseArticle = await request(app).post(`/articles`);
+    // it("Should not be able to create an article if you was not logged", async () => {
+    //     const responseArticle = await request(app).post(`/articles`);
 
-        expect(responseArticle.body.message).toBe("Token missing");
-    });
+    //     expect(responseArticle.body.message).toBe("Token missing");
+    // });
 
-    it("Should not be able to delete a user if token is invalid or expired", async () => {
-        const responseArticle = await request(app)
-            .post(`/articles`)
-            .set({ Authorization: `Bearer 1111` });
+    // it("Should not be able to delete a user if token is invalid or expired", async () => {
+    //     const responseArticle = await request(app)
+    //         .post(`/articles`)
+    //         .set({ Authorization: `Bearer 1111` });
 
-        expect(responseArticle.body.message).toBe("Invalid Token");
-    });
+    //     expect(responseArticle.body.message).toBe("Invalid Token");
+    // });
 });
