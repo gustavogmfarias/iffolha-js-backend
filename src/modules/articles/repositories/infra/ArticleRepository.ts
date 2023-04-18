@@ -117,7 +117,6 @@ export class ArticleRepository implements IArticleRepository {
                 ClassOnArticles: { include: { class: true } },
                 CategoryOnArticles: { include: { category: true } },
                 TextualGenreOnArticles: { include: { textualGenre: true } },
-                images: true,
             },
         });
 
@@ -125,7 +124,7 @@ export class ArticleRepository implements IArticleRepository {
     }
 
     async update(
-        id,
+        id: string,
         {
             title,
             subTitle,
@@ -133,10 +132,11 @@ export class ArticleRepository implements IArticleRepository {
             editedByUserId,
             isHighlight,
             url,
+            mainImage,
         }: ICreateArticleDTO
     ): Promise<Article> {
         const article = await prisma.article.update({
-            where: id,
+            where: { id },
             data: {
                 title,
                 subTitle,
@@ -144,6 +144,7 @@ export class ArticleRepository implements IArticleRepository {
                 editedByUserId,
                 isHighlight,
                 url,
+                mainImage,
             },
         });
 
@@ -190,7 +191,6 @@ export class ArticleRepository implements IArticleRepository {
                 ClassOnArticles: { include: { class: true } },
                 CategoryOnArticles: { include: { category: true } },
                 TextualGenreOnArticles: { include: { textualGenre: true } },
-                images: true,
             },
         });
 
@@ -267,7 +267,6 @@ export class ArticleRepository implements IArticleRepository {
                 ClassOnArticles: { include: { class: true } },
                 CategoryOnArticles: { include: { category: true } },
                 TextualGenreOnArticles: { include: { textualGenre: true } },
-                images: true,
             },
         });
 
@@ -306,16 +305,6 @@ export class ArticleRepository implements IArticleRepository {
             .replace(/([\u0300-\u036f]|[^0-9a-zA-Z\s])/g, "")
             .replaceAll(" ", "-");
         return url;
-    }
-
-    async saveImageOnArticle(
-        articleId: string,
-        image: string,
-        isMain: boolean
-    ): Promise<void> {
-        const articleImage = await prisma.articleImages.create({
-            data: { image, ArticleId: articleId, isMain },
-        });
     }
 
     imageUrl(image: string): string {

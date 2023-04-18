@@ -56,11 +56,11 @@ articlesRoutes.delete(
     deleteArticleController.handle
 );
 
-articlesRoutes.post(
+articlesRoutes.patch(
     "/images/:articleId",
     ensureAuthenticated,
     ensureAdmin,
-    uploadImageArticles.array("images"),
+    uploadImageArticles.single("image"),
     addImagesArticleController.handle
 );
 

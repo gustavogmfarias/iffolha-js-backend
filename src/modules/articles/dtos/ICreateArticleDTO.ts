@@ -4,6 +4,7 @@ export interface ICreateArticleDTO {
     title: string;
     subTitle: string;
     content: string;
+    mainImage?: string;
     publishedByUserId?: string;
     editedByUserId?: string;
     isHighlight: boolean;

@@ -6,7 +6,7 @@ import { IArticleRepository } from "@modules/articles/repositories/IArticleRepos
 
 interface IRequest {
     articleId: string;
-    fileNames: string[];
+    image: string;
     isMain: boolean;
 }
 
@@ -19,21 +19,25 @@ class AddImagesArticleUseCase {
         private articleRepository: IArticleRepository
     ) {}
 
-    async execute({ articleId, fileNames, isMain }: IRequest): Promise<void> {
-        // const user = await this.articleRepository.findById(articleId);
+    async execute({ articleId, image, isMain }: IRequest): Promise<void> {
+        const article = await this.articleRepository.findById(articleId);
 
-        if (!articleId) {
+        if (!article) {
             throw new AppError("Article doesn't exist");
         }
 
-        fileNames.map(async (articleImage) => {
-            await this.storageProvider.save(articleImage, "article-images");
-
-            await this.articleRepository.saveImageOnArticle(
-                articleId,
-                articleImage,
-                isMain
+        if (article.mainImage) {
+            await this.storageProvider.delete(
+                article.mainImage,
+                "article-images"
             );
+        }
+
+        await this.storageProvider.save(image, "article-images");
+
+        await this.articleRepository.update(article.id, {
+            ...article,
+            mainImage: image,
         });
     }
 }

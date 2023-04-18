@@ -29,7 +29,6 @@ export type ArticleWithRelations = Prisma.ArticleGetPayload<{
         ClassOnArticles: { include: { class: true } };
         CategoryOnArticles: { include: { category: true } };
         TextualGenreOnArticles: { include: { textualGenre: true } };
-        images: true;
     };
 }>;
 export interface IArticleRepository {
@@ -55,10 +54,6 @@ export interface IArticleRepository {
     ): IArticleResponseDTO;
     generateUrl(title: string): string;
     generateContentSummary(content: string): string;
-    saveImageOnArticle(
-        articleId: string,
-        image: string,
-        isMain: boolean
-    ): Promise<void>;
+
     imageUrl(image: string): string;
 }
