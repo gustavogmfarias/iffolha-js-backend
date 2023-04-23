@@ -2,36 +2,34 @@ import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { UpdateArticleUseCase } from "./UpdateArticleUseCase";
 
+export interface IUpdateArticleRequest {
+    id: string;
+    title: string;
+    subTitle: string;
+    content: string;
+    editedByUserId: string;
+    isHighlight: boolean;
+    authors?: string[];
+    tags?: string[];
+    courses?: string[];
+    classes?: string[];
+    categories?: string[];
+    textualGenres?: string[];
+}
+
 class UpdateArticleController {
     async handle(request: Request, response: Response): Promise<Response> {
         const images = [];
 
         const { id: userId } = request.user;
-        const articleId = String(request.params);
-        const {
-            title,
-            subTitle,
-            content,
-            isHighlight,
-            authors,
-            tags,
-            courses,
-            classes,
-        } = request.body;
+        const { articleId } = request.params;
+        const data: IUpdateArticleRequest = request.body;
         const updateArticleUseCase = container.resolve(UpdateArticleUseCase);
 
         const article = await updateArticleUseCase.execute({
+            ...data,
             id: articleId,
-
-            title,
-            subTitle,
-            content,
             editedByUserId: userId,
-            isHighlight,
-            authors,
-            tags,
-            courses,
-            classes,
         });
 
         return response.status(201).send(article);

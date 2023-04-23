@@ -33,7 +33,7 @@ export type ArticleWithRelations = Prisma.ArticleGetPayload<{
 }>;
 export interface IArticleRepository {
     create(data: ICreateArticleDTO): Promise<ArticleWithRelations>;
-    update(id: string, data: ICreateArticleDTO): Promise<Article>;
+    update(data: ICreateArticleDTO): Promise<ArticleWithRelations>;
     delete(id: string): Promise<Article>;
     findById(id: string): Promise<ArticleWithRelations | null>;
     list(

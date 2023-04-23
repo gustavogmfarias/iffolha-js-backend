@@ -28,7 +28,7 @@ articlesRoutes.post(
     createArticleController.handle
 );
 
-articlesRoutes.patch(
+articlesRoutes.put(
     "/:articleId",
     ensureAuthenticated,
     ensureAdmin,

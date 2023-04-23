@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 import { IPaginationRequestDTO } from "@modules/accounts/dtos/IPaginationRequestDTO";
@@ -123,29 +124,155 @@ export class ArticleRepository implements IArticleRepository {
         return article;
     }
 
-    async update(
-        id: string,
-        {
-            title,
-            subTitle,
-            content,
-            editedByUserId,
-            isHighlight,
-            url,
-            mainImage,
-        }: ICreateArticleDTO
-    ): Promise<Article> {
-        const article = await prisma.article.update({
-            where: { id },
-            data: {
-                title,
-                subTitle,
-                content,
-                editedByUserId,
-                isHighlight,
-                url,
-                mainImage,
-            },
+    async update(data: ICreateArticleDTO): Promise<ArticleWithRelations> {
+        // Transaction
+        const article = await prisma.$transaction(async (prisma) => {
+            // Courses
+            await prisma.coursesOnArticles.deleteMany({
+                where: {
+                    articleId: data.id,
+                    courseId: { notIn: data.courses },
+                },
+            });
+
+            await prisma.coursesOnArticles.createMany({
+                data: data.courses.map((courseId) => ({
+                    courseId,
+                    articleId: data.id,
+                })),
+                skipDuplicates: true,
+            });
+
+            // Classes
+            await prisma.classOnArticles.deleteMany({
+                where: {
+                    articleId: data.id,
+                    classId: { notIn: data.classes },
+                },
+            });
+
+            await prisma.classOnArticles.createMany({
+                data: data.classes.map((classId) => ({
+                    classId,
+                    articleId: data.id,
+                })),
+                skipDuplicates: true,
+            });
+
+            // Tags;
+            await prisma.tagsOnArticles.deleteMany({
+                where: {
+                    articleId: data.id,
+                    tag: { name: { notIn: data.tags } },
+                },
+            });
+
+            await prisma.tag.createMany({
+                data: data.tags.map((name) => ({ name })),
+                skipDuplicates: true,
+            });
+
+            const tagsId = await prisma.tag.findMany({
+                where: { name: { in: data.tags } },
+            });
+
+            await prisma.tagsOnArticles.createMany({
+                data: tagsId.map((tagId) => ({
+                    tagId: tagId.id,
+                    articleId: data.id,
+                })),
+                skipDuplicates: true,
+            });
+
+            // Categories
+            await prisma.categoryOnArticles.deleteMany({
+                where: {
+                    articleId: data.id,
+                    categoryId: { notIn: data.categories },
+                },
+            });
+
+            await prisma.categoryOnArticles.createMany({
+                data: data.categories.map((categoryId) => ({
+                    categoryId,
+                    articleId: data.id,
+                })),
+                skipDuplicates: true,
+            });
+
+            // Textual Genres
+            await prisma.textualGenreOnArticles.deleteMany({
+                where: {
+                    articleId: data.id,
+                    textualGenreId: { notIn: data.textualGenres },
+                },
+            });
+
+            await prisma.textualGenreOnArticles.createMany({
+                data: data.textualGenres.map((textualGenreId) => ({
+                    textualGenreId,
+                    articleId: data.id,
+                })),
+                skipDuplicates: true,
+            });
+
+            // Authors
+            await prisma.authorsOnArticles.deleteMany({
+                where: {
+                    ArticleId: data.id,
+                    authorId: { notIn: data.authors },
+                },
+            });
+
+            await prisma.authorsOnArticles.createMany({
+                data: data.authors.map((authorId) => ({
+                    authorId,
+                    ArticleId: data.id,
+                })),
+                skipDuplicates: true,
+            });
+
+            const updatedArticle = await prisma.article.update({
+                where: { id: data.id },
+                include: {
+                    TagsOnArticles: {
+                        include: {
+                            tag: {
+                                select: {
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                    AuthorsOnArticles: {
+                        include: {
+                            author: {
+                                select: {
+                                    name: true,
+                                    lastName: true,
+                                    id: true,
+                                    avatarUrl: true,
+                                    email: true,
+                                },
+                            },
+                        },
+                    },
+                    CoursesOnArticles: { include: { course: true } },
+                    ClassOnArticles: { include: { class: true } },
+                    CategoryOnArticles: { include: { category: true } },
+                    TextualGenreOnArticles: { include: { textualGenre: true } },
+                },
+                data: {
+                    editedByUserId: data.editedByUserId,
+                    title: data.title,
+                    subTitle: data.subTitle,
+                    content: data.content,
+                    isHighlight: data.isHighlight,
+                    updatedDate: new Date(),
+                },
+            });
+
+            return updatedArticle;
         });
 
         return article;
@@ -323,3 +450,22 @@ export class ArticleRepository implements IArticleRepository {
         return contentSummary;
     }
 }
+
+/*
+
+CoursesOnArticles: {
+                    create: coursesToAdd.map((course) => ({
+                        course: {
+                            connect: {
+                                id: course,
+                            },
+                            disconnect: {
+                                id: coursesToRemove.map(
+                                    (courseToDisconnect) => courseToDisconnect
+                                ),
+                            },
+                        },
+                    })),
+                },
+
+                */
