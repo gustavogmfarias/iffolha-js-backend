@@ -212,3 +212,35 @@ model TextualGenreOnArticles {
 
     @@id([textualGenreId, articleId])
 }
+
+model Setting {
+    id                String        @id @default(uuid())
+    title             String
+    logo              String?
+    favicon           String?
+    mainBarColor      String?
+    socialMedia       SocialMedia[]
+    menuAlertIsActive Boolean       @default(false)
+    menuAlert         MenuAlert?    @relation(fields: [menuAlertId], references: [id])
+    menuAlertId       String?
+
+    @@map("settings")
+}
+
+model SocialMedia {
+    id   String @id @default(uuid())
+    name String
+    url  String
+    logo String
+
+    Setting   Setting? @relation(fields: [settingId], references: [id])
+    settingId String?
+}
+
+model MenuAlert {
+    id        String    @id @default(uuid())
+    content   String
+    color     String
+    settingId String?
+    Setting   Setting[]
+}

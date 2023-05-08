@@ -30,7 +30,7 @@ Olá a todos. Esse projeto será meu trabalho de graduação (TCC) na instituiç
 -   Only admins should be able to delete a user;
 -   Only admins should be able to edit a user;
 -   Should be able to list users;
--   Should be able to search an user by name;
+-   Should be able to search an user by title;
 -   Should be able to search an user by email;
 -   Should be able to search an user by id;
 
