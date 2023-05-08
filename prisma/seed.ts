@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Prisma, SchoolLevel } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { ArticleRepository } from "../src/modules/articles/repositories/infra/ArticleRepository";
 
@@ -24,10 +24,9 @@ async function main() {
             role: "USER",
         },
     ];
+
     console.log(`Start seeding ...`);
 
-    // eslint-disable-next-line no-restricted-syntax
-    //   eslint-disable-next-line no-await-in-loop
     const admin = await prisma.user.create({
         data: userData[0],
     });
@@ -53,17 +52,32 @@ async function main() {
         },
     });
 
+    const schoolLevel1 = await prisma.schoolLevel.create({
+        data: {
+            name: "Superior",
+        },
+    });
+    const schoolLevel2 = await prisma.schoolLevel.create({
+        data: {
+            name: "Ensino Médio",
+        },
+    });
+    const schoolLevel3 = await prisma.schoolLevel.create({
+        data: {
+            name: "Técnico",
+        },
+    });
     const course1 = await prisma.course.create({
         data: {
             name: "Sistemas de Informação",
-            schoolLevel: "SUPERIOR",
+            schoolLevelId: schoolLevel1.id,
         },
     });
 
     const course2 = await prisma.course.create({
         data: {
             name: "Informática",
-            schoolLevel: "ENSINO_MEDIO",
+            schoolLevelId: schoolLevel2.id,
         },
     });
 

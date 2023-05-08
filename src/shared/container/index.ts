@@ -22,6 +22,8 @@ import { TextualGenreRepository } from "@modules/textualGenre/repositories/infra
 
 import { ICoursesRepository } from "@modules/courses/repositories/ICoursesRepository";
 import { CoursesRepository } from "@modules/courses/repositories/infra/CoursesRepository";
+import { ISchoolLevelRepository } from "@modules/schoolLevel/repositories/ISchoolLevelRepository";
+import { SchoolLevelRepository } from "@modules/schoolLevel/repositories/infra/SchoolLevelRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -68,4 +70,8 @@ container.registerSingleton<ITextualGenreRepository>(
 container.registerSingleton<ICoursesRepository>(
     "CoursesRepository",
     CoursesRepository
+);
+container.registerSingleton<ISchoolLevelRepository>(
+    "SchoolLevelRepository",
+    SchoolLevelRepository
 );

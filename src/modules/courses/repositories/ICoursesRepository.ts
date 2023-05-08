@@ -1,10 +1,10 @@
 import { ArticleWithRelations } from "@modules/articles/repositories/IArticleRepository";
-import { Course, CoursesOnArticles, SchoolLevel } from "@prisma/client";
+import { Course, CoursesOnArticles } from "@prisma/client";
 import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 
 export interface ICoursesRepository {
-    createCourse(name: string, schoolLevel: SchoolLevel): Promise<Course>;
-    update(id: string, name: string, schoolLevel: SchoolLevel): Promise<Course>;
+    createCourse(name: string, schoolLevelId: string): Promise<Course>;
+    update(id: string, name: string, schoolLevelId: string): Promise<Course>;
     deleteCourse(id: string): Promise<void>;
     deleteAllCoursesFromArticle(articleId: string): Promise<void>;
 

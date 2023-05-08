@@ -72,6 +72,7 @@ enum LogRepository {
     USERTOKEN
     LOG
     ARTICLE
+    SCHOOLLEVEL
 }
 
 model Article {
@@ -88,7 +89,7 @@ model Article {
     publishedDate          DateTime                 @default(now())
     updatedDate            DateTime?                @default(now())
     isHighlight            Boolean                  @default(true)
-    url                    String
+    url                    String                   @unique
     AuthorsOnArticles      AuthorsOnArticles[]
     TagsOnArticles         TagsOnArticles[]
     CoursesOnArticles      CoursesOnArticles[]
@@ -136,17 +137,18 @@ model TagsOnArticles {
 model Course {
     id                String              @id @default(uuid())
     name              String              @unique
-    schoolLevel       SchoolLevel
+    schoolLevel       SchoolLevel         @relation(fields: [schoolLevelId], references: [id], onDelete: Cascade)
     Class             Class[]
     CoursesOnArticles CoursesOnArticles[]
+    schoolLevelId     String
 
     @@map("courses")
 }
 
-enum SchoolLevel {
-    SUPERIOR
-    TECNICO
-    ENSINO_MEDIO
+model SchoolLevel {
+    id     String   @id @default(uuid())
+    name   String   @unique
+    Course Course[]
 }
 
 model CoursesOnArticles {

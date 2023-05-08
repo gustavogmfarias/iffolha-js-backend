@@ -28,4 +28,8 @@ b) editar menu alert
 
 
 
-4) criar rota para persistir novas modalides
+4) SchoolLevel
+create
+delete
+list
+update

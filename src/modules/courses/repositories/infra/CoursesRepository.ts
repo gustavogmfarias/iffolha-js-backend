@@ -7,12 +7,9 @@ import { IPaginationRequestDTO } from "@shared/dtos/IPaginationRequestDTO";
 import { ICoursesRepository } from "../ICoursesRepository";
 
 export class CoursesRepository implements ICoursesRepository {
-    async createCourse(
-        name: string,
-        schoolLevel: SchoolLevel
-    ): Promise<Course> {
+    async createCourse(name: string, schoolLevelId: string): Promise<Course> {
         const course = await prisma.course.create({
-            data: { name, schoolLevel },
+            data: { name, schoolLevelId },
         });
 
         return course;
@@ -21,11 +18,11 @@ export class CoursesRepository implements ICoursesRepository {
     async update(
         id: string,
         name: string,
-        schoolLevel: SchoolLevel
+        schoolLevelId: string
     ): Promise<Course> {
         const course = await prisma.course.update({
             where: { id },
-            data: { name, schoolLevel },
+            data: { name, schoolLevelId },
         });
 
         return course;
@@ -79,6 +76,13 @@ export class CoursesRepository implements ICoursesRepository {
                 orderBy: {
                     name: "asc",
                 },
+                include: {
+                    schoolLevel: {
+                        select: {
+                            name: true,
+                        },
+                    },
+                },
             });
         } else if (page && perPage && !name) {
             courses = await prisma.course.findMany({
@@ -86,6 +90,13 @@ export class CoursesRepository implements ICoursesRepository {
                 skip: (Number(page) - 1) * Number(perPage),
                 orderBy: {
                     name: "asc",
+                },
+                include: {
+                    schoolLevel: {
+                        select: {
+                            name: true,
+                        },
+                    },
                 },
             });
         } else if (!page && !page && name) {
@@ -98,6 +109,13 @@ export class CoursesRepository implements ICoursesRepository {
                 },
                 orderBy: {
                     name: "asc",
+                },
+                include: {
+                    schoolLevel: {
+                        select: {
+                            name: true,
+                        },
+                    },
                 },
             });
         } else {
@@ -121,18 +139,18 @@ export class CoursesRepository implements ICoursesRepository {
 
     async listCoursesByLevel(
         { page, perPage }: IPaginationRequestDTO,
-        level: string
+        schoolLevelId: string
     ): Promise<Course[]> {
         let courses: Course[];
 
         // se não tiver os 3
-        if (!page && !perPage && !level) {
+        if (!page && !perPage && !schoolLevelId) {
             courses = await prisma.course.findMany({
                 orderBy: {
                     name: "asc",
                 },
             });
-        } else if (page && perPage && !level) {
+        } else if (page && perPage && !schoolLevelId) {
             courses = await prisma.course.findMany({
                 take: Number(perPage),
                 skip: (Number(page) - 1) * Number(perPage),
@@ -140,11 +158,11 @@ export class CoursesRepository implements ICoursesRepository {
                     name: "asc",
                 },
             });
-        } else if (!page && !page && level) {
+        } else if (!page && !page && schoolLevelId) {
             courses = await prisma.course.findMany({
                 where: {
-                    schoolLevel: {
-                        equals: SchoolLevel[level],
+                    schoolLevelId: {
+                        equals: schoolLevelId,
                     },
                 },
                 orderBy: {
@@ -154,8 +172,8 @@ export class CoursesRepository implements ICoursesRepository {
         } else {
             courses = await prisma.course.findMany({
                 where: {
-                    schoolLevel: {
-                        equals: SchoolLevel[level],
+                    schoolLevelId: {
+                        equals: schoolLevelId,
                     },
                 },
                 take: Number(perPage),
