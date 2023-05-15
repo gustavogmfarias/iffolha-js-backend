@@ -10,6 +10,7 @@ import { coursesRoutes } from "./courses.routes";
 import { classesRoutes } from "./classes.routes";
 import { schoollevelRoutes } from "./schoolLevel.routes";
 import { socialMediaRoutes } from "./socialMedia.routes";
+import { menuAlertRoutes } from "./menuAlert.routes";
 
 const router = Router();
 router.use("/users", usersRoutes);
@@ -22,6 +23,7 @@ router.use("/courses", coursesRoutes);
 router.use("/classes", classesRoutes);
 router.use("/schoollevel", schoollevelRoutes);
 router.use("/socialmedia", socialMediaRoutes);
+router.use("/menualert", menuAlertRoutes);
 router.use(authenticateRoutes);
 
 export { router };

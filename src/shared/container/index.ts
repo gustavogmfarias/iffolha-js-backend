@@ -26,6 +26,8 @@ import { ISchoolLevelRepository } from "@modules/schoolLevel/repositories/ISchoo
 import { SchoolLevelRepository } from "@modules/schoolLevel/repositories/infra/SchoolLevelRepository";
 import { ISocialMediaRepository } from "@modules/socialMedia/repositories/ISocialMediaRepository";
 import { SocialMediaRepository } from "@modules/socialMedia/repositories/infra/SocialMediaRepository";
+import { IMenuAlertRepository } from "@modules/menuAlert/repositories/IMenuAlertRepository";
+import { MenuAlertRepository } from "@modules/menuAlert/repositories/infra/MenuAlertRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -80,4 +82,8 @@ container.registerSingleton<ISchoolLevelRepository>(
 container.registerSingleton<ISocialMediaRepository>(
     "SocialMediaRepository",
     SocialMediaRepository
+);
+container.registerSingleton<IMenuAlertRepository>(
+    "MenuAlertRepository",
+    MenuAlertRepository
 );
