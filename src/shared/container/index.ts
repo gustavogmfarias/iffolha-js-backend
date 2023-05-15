@@ -28,6 +28,8 @@ import { ISocialMediaRepository } from "@modules/socialMedia/repositories/ISocia
 import { SocialMediaRepository } from "@modules/socialMedia/repositories/infra/SocialMediaRepository";
 import { IMenuAlertRepository } from "@modules/menuAlert/repositories/IMenuAlertRepository";
 import { MenuAlertRepository } from "@modules/menuAlert/repositories/infra/MenuAlertRepository";
+import { ISettingRepository } from "@modules/setting/repositories/ISettingRepository";
+import { SettingRepository } from "@modules/setting/repositories/infra/SettingRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -86,4 +88,9 @@ container.registerSingleton<ISocialMediaRepository>(
 container.registerSingleton<IMenuAlertRepository>(
     "MenuAlertRepository",
     MenuAlertRepository
+);
+
+container.registerSingleton<ISettingRepository>(
+    "SettingRepository",
+    SettingRepository
 );

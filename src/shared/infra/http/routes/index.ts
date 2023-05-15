@@ -11,6 +11,7 @@ import { classesRoutes } from "./classes.routes";
 import { schoollevelRoutes } from "./schoolLevel.routes";
 import { socialMediaRoutes } from "./socialMedia.routes";
 import { menuAlertRoutes } from "./menuAlert.routes";
+import { settingRoutes } from "./setting.routes";
 
 const router = Router();
 router.use("/users", usersRoutes);
@@ -24,6 +25,7 @@ router.use("/classes", classesRoutes);
 router.use("/schoollevel", schoollevelRoutes);
 router.use("/socialmedia", socialMediaRoutes);
 router.use("/menualert", menuAlertRoutes);
+router.use("/setting", settingRoutes);
 router.use(authenticateRoutes);
 
 export { router };
