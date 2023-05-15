@@ -9,15 +9,7 @@ c) adicionar imagem favicon
 d) trocar imagem favicon
 e) apagar imagem favicon
 
-2) Social media
 
-a) criar socialmedia
-b) deletar social media
-c) editar social media
-d) excluir social media
-e) listar socialmedia
-f) adicionar imagem
-g) trocar imagem
 
 
 3) Menu alert
@@ -26,10 +18,3 @@ a) criar menu alert
 b) editar menu alert
 
 
-
-
-4) SchoolLevel
-create
-delete
-list
-update
