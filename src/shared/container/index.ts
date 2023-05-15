@@ -24,6 +24,8 @@ import { ICoursesRepository } from "@modules/courses/repositories/ICoursesReposi
 import { CoursesRepository } from "@modules/courses/repositories/infra/CoursesRepository";
 import { ISchoolLevelRepository } from "@modules/schoolLevel/repositories/ISchoolLevelRepository";
 import { SchoolLevelRepository } from "@modules/schoolLevel/repositories/infra/SchoolLevelRepository";
+import { ISocialMediaRepository } from "@modules/socialMedia/repositories/ISocialMediaRepository";
+import { SocialMediaRepository } from "@modules/socialMedia/repositories/infra/SocialMediaRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -74,4 +76,8 @@ container.registerSingleton<ICoursesRepository>(
 container.registerSingleton<ISchoolLevelRepository>(
     "SchoolLevelRepository",
     SchoolLevelRepository
+);
+container.registerSingleton<ISocialMediaRepository>(
+    "SocialMediaRepository",
+    SocialMediaRepository
 );

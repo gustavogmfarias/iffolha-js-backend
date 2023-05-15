@@ -354,6 +354,34 @@ async function main() {
         },
     });
 
+    const setting = await prisma.setting.create({
+        data: {
+            title: "IFFolha - Itaperuna",
+        },
+    });
+
+    const socialMedia1 = await prisma.socialMedia.create({
+        data: {
+            name: "Facebook",
+            url: "https://www.facebook.com/iffolhaitaperuna",
+        },
+    });
+
+    const socialMedia2 = await prisma.socialMedia.create({
+        data: {
+            name: "Instagram",
+            url: "https://www.instagram.com/iffolhaitaperuna",
+        },
+    });
+
+    const menuAlert = await prisma.menuAlert.create({
+        data: {
+            color: "#111111",
+            menuAlertIsActive: false,
+            content: "Aniversário de Itaperuna",
+        },
+    });
+
     console.log(`Seeding finished.`);
 }
 

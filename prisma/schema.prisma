@@ -73,6 +73,9 @@ enum LogRepository {
     LOG
     ARTICLE
     SCHOOLLEVEL
+    SOCIALMEDIA
+    SETTING
+    MENUALERT
 }
 
 model Article {
@@ -216,33 +219,25 @@ model TextualGenreOnArticles {
 }
 
 model Setting {
-    id                String        @id @default(uuid())
-    title             String
-    logo              String?
-    favicon           String?
-    mainBarColor      String?
-    socialMedia       SocialMedia[]
-    menuAlertIsActive Boolean       @default(false)
-    menuAlert         MenuAlert?    @relation(fields: [menuAlertId], references: [id])
-    menuAlertId       String?
+    id           String  @id @default(uuid())
+    title        String
+    logo         String?
+    favicon      String?
+    mainBarColor String?
 
     @@map("settings")
 }
 
 model SocialMedia {
-    id   String @id @default(uuid())
-    name String
+    id   String  @id @default(uuid())
+    name String  @unique
     url  String
-    logo String
-
-    Setting   Setting? @relation(fields: [settingId], references: [id])
-    settingId String?
+    logo String?
 }
 
 model MenuAlert {
-    id        String    @id @default(uuid())
-    content   String
-    color     String
-    settingId String?
-    Setting   Setting[]
+    id                String  @id @default(uuid())
+    content           String
+    color             String
+    menuAlertIsActive Boolean @default(false)
 }
