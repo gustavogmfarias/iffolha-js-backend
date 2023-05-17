@@ -34,6 +34,8 @@ import { IContactRepository } from "@modules/contact/repositories/IContactReposi
 import { ContactRepository } from "@modules/contact/repositories/infra/ContactRepository";
 import { INewsletterRepository } from "@modules/newsletter/repositories/INewsletterRepository";
 import { NewsletterRepository } from "@modules/newsletter/repositories/infra/NewsletterRepository";
+import { IVideoRepository } from "@modules/video/repositories/IVideoRepository";
+import { VideoRepository } from "@modules/video/repositories/infra/VideoRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -105,4 +107,9 @@ container.registerSingleton<IContactRepository>(
 container.registerSingleton<INewsletterRepository>(
     "NewsletterRepository",
     NewsletterRepository
+);
+
+container.registerSingleton<IVideoRepository>(
+    "VideoRepository",
+    VideoRepository
 );
