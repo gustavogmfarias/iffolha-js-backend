@@ -32,6 +32,7 @@ model User {
     Publisher         Article[]           @relation("Publisher")
     Editor            Article[]           @relation("Editor")
     AuthorsOnArticles AuthorsOnArticles[]
+    Contact           Contact[]
 
     @@map("users")
 }
@@ -76,6 +77,9 @@ enum LogRepository {
     SOCIALMEDIA
     SETTING
     MENUALERT
+    CONTACT
+    NEWSLETTER
+    VIDEO
 }
 
 model Article {
@@ -249,19 +253,22 @@ model MenuAlert {
 model Newsletter {
     id        String   @id @default(uuid())
     name      String
-    email     String
+    email     String   @unique
     createdAt DateTime @default(now())
 
     @@map("newsletters")
 }
 
 model Contact {
-    id          String   @id @default(uuid())
-    name        String
-    email       String
-    description String
-    content     String
-    createdAt   DateTime @default(now())
+    id               String   @id @default(uuid())
+    name             String
+    email            String
+    description      String
+    content          String
+    isAnswered       Boolean  @default(false)
+    answeredBy       User?    @relation(fields: [answeredByUserId], references: [id])
+    createdAt        DateTime @default(now())
+    answeredByUserId String?
 
     @@map("contacts")
 }

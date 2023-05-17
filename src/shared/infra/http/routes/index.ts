@@ -12,6 +12,8 @@ import { schoollevelRoutes } from "./schoolLevel.routes";
 import { socialMediaRoutes } from "./socialMedia.routes";
 import { menuAlertRoutes } from "./menuAlert.routes";
 import { settingRoutes } from "./setting.routes";
+import { contactRoutes } from "./contacts.routes";
+import { newsletterRoutes } from "./newsletter.routes";
 
 const router = Router();
 router.use("/users", usersRoutes);
@@ -26,6 +28,8 @@ router.use("/schoollevel", schoollevelRoutes);
 router.use("/socialmedia", socialMediaRoutes);
 router.use("/menualert", menuAlertRoutes);
 router.use("/setting", settingRoutes);
+router.use("/contacts", contactRoutes);
+router.use("/newsletter", newsletterRoutes);
 router.use(authenticateRoutes);
 
 export { router };

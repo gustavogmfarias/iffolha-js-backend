@@ -30,6 +30,10 @@ import { IMenuAlertRepository } from "@modules/menuAlert/repositories/IMenuAlert
 import { MenuAlertRepository } from "@modules/menuAlert/repositories/infra/MenuAlertRepository";
 import { ISettingRepository } from "@modules/setting/repositories/ISettingRepository";
 import { SettingRepository } from "@modules/setting/repositories/infra/SettingRepository";
+import { IContactRepository } from "@modules/contact/repositories/IContactRepository";
+import { ContactRepository } from "@modules/contact/repositories/infra/ContactRepository";
+import { INewsletterRepository } from "@modules/newsletter/repositories/INewsletterRepository";
+import { NewsletterRepository } from "@modules/newsletter/repositories/infra/NewsletterRepository";
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
@@ -93,4 +97,12 @@ container.registerSingleton<IMenuAlertRepository>(
 container.registerSingleton<ISettingRepository>(
     "SettingRepository",
     SettingRepository
+);
+container.registerSingleton<IContactRepository>(
+    "ContactRepository",
+    ContactRepository
+);
+container.registerSingleton<INewsletterRepository>(
+    "NewsletterRepository",
+    NewsletterRepository
 );
