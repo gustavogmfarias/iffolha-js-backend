@@ -233,6 +233,8 @@ model SocialMedia {
     name String  @unique
     url  String
     logo String?
+
+    @@map("socialMedias")
 }
 
 model MenuAlert {
@@ -240,4 +242,35 @@ model MenuAlert {
     content           String
     color             String
     menuAlertIsActive Boolean @default(false)
+
+    @@map("menuAlerts")
+}
+
+model Newsletter {
+    id        String   @id @default(uuid())
+    name      String
+    email     String
+    createdAt DateTime @default(now())
+
+    @@map("newsletters")
+}
+
+model Contact {
+    id          String   @id @default(uuid())
+    name        String
+    email       String
+    description String
+    content     String
+    createdAt   DateTime @default(now())
+
+    @@map("contacts")
+}
+
+model Video {
+    id          String   @id @default(uuid())
+    description String
+    url         String
+    createdAt   DateTime @default(now())
+
+    @@map("videos")
 }

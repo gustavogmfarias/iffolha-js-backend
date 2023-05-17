@@ -382,6 +382,28 @@ async function main() {
         },
     });
 
+    const video = await prisma.video.create({
+        data: {
+            description: "Conheça o IFFluminense",
+            url: "https://www.youtube.com/watch?v=HZGCu7xWzxY",
+        },
+    });
+    const contact = await prisma.contact.create({
+        data: {
+            description: "Gostaria de uma informação",
+            name: "Gustavo",
+            email: "gustavo@iff.edu.br",
+            content: "A minha dúvida é a seguinte...",
+        },
+    });
+
+    const newsletter = await prisma.newsletter.create({
+        data: {
+            name: "Gustavo",
+            email: "gustavo@iff.edu.br",
+        },
+    });
+
     console.log(`Seeding finished.`);
 }
 
